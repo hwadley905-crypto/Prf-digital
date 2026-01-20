@@ -59,7 +59,7 @@ textarea {
 </head>
 <body>
 
-<h1>WMAS Patient Report Form – Training Simulation</h1>
+<h1>University College Birmingham Patient Report Form – Training Simulation</h1>
 
 <div class="section">
 <h2>Incident Details</h2>
