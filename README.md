@@ -176,7 +176,7 @@ textarea {
 </div>
 
 <div class="footer">
-WMAS-style PRF Simulation • Training use only • Not for live clinical use
+PRF Simulation • Training use only • Not for live clinical use
 </div>
 
 </body>
