@@ -257,7 +257,7 @@ textarea {
 </div>
 
 <div class="section">
-<h2> Handover and transport notes</h2>
+<h2> Handover and transport log</h2>
 <textarea class="auto-expand" id="atmist"></textarea>
 </div>
 
