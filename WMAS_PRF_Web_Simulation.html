@@ -40,14 +40,23 @@ input, textarea, select {
 }
 .checkbox-group {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 6px;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 12px;
 }
 .checkbox-group label {
-    font-weight: normal;
-    display: flex;
+    display: grid;
+    grid-template-columns: 24px 1fr 120px; /* checkbox | text | note */
     align-items: center;
     gap: 8px;
+    margin: 0;
+    font-weight: normal;
+}
+/* ensure native checkbox doesn't add unexpected spacing */
+.checkbox-group input[type="checkbox"] {
+    margin: 0;
+    width: 18px;
+    height: 18px;
+    justify-self: start;
 }
 textarea {
     min-height: 40px;
@@ -88,9 +97,9 @@ textarea {
 }
 .top-actions button:active { transform: translateY(1px); }
 
-/* Align note textareas inside checkbox groups to the right */
+/* note box sits in the right column */
 .checkbox-group .note {
-    margin-left: auto;
+    margin: 0;
     width: 120px;
     min-height: 40px;
     padding: 6px;
@@ -98,6 +107,22 @@ textarea {
     border: 1px solid #ccc;
     overflow: hidden;
     resize: none;
+}
+
+/* Responsive fallback on small screens */
+@media (max-width: 600px) {
+    .checkbox-group {
+        grid-template-columns: 1fr;
+    }
+    /* collapse each label to two columns: checkbox + text; move note full width below */
+    .checkbox-group label {
+        grid-template-columns: 24px 1fr;
+        grid-row-gap: 6px;
+    }
+    .checkbox-group .note {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
 }
 
 /* Print styles */
