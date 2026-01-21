@@ -50,7 +50,8 @@ input, textarea, select {
     gap: 8px;
 }
 textarea {
-    height: 80px;
+    min-height: 40px;
+    height: auto;
     overflow: hidden; /* hide scrollbars because we auto-expand */
     resize: none; /* prevent manual resizing; auto-expand handles it */
 }
@@ -86,6 +87,18 @@ textarea {
     background: #6c757d;
 }
 .top-actions button:active { transform: translateY(1px); }
+
+/* Align note textareas inside checkbox groups to the right */
+.checkbox-group .note {
+    margin-left: auto;
+    width: 120px;
+    min-height: 40px;
+    padding: 6px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    overflow: hidden;
+    resize: none;
+}
 
 /* Print styles */
 @media print {
@@ -155,14 +168,14 @@ textarea {
 <div class="section">
 <h2>Primary Survey</h2>
 <div class="checkbox-group">
-<label><input type="text" placeholder="tick/notes"> Airway clear</label>
-<label><input type="text" placeholder="tick/notes"> Airway compromised</label>
-<label><input type="text" placeholder="tick/notes"> Breathing adequate</label>
-<label><input type="text" placeholder="tick/notes"> Respiratory distress</label>
-<label><input type="text" placeholder="tick/notes"> Circulation stable</label>
-<label><input type="text" placeholder="tick/notes"> Haemorrhage controlled</label>
-<label><input type="text" placeholder="tick/notes"> Disability assessed</label>
-<label><input type="text" placeholder="tick/notes"> Exposure completed</label>
+<label><input type="checkbox" class="chk"> <span>Airway clear</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Airway compromised</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Breathing adequate</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Respiratory distress</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Circulation stable</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Haemorrhage controlled</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Disability assessed</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Exposure completed</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
 </div>
 </div>
 
@@ -182,14 +195,14 @@ textarea {
 <div class="section">
 <h2>Treatment & Interventions</h2>
 <div class="checkbox-group">
-<label><input type="text" placeholder="tick/notes"> Oxygen</label>
-<label><input type="text" placeholder="tick/notes"> IV access</label>
-<label><input type="text" placeholder="tick/notes"> Analgesia</label>
-<label><input type="text" placeholder="tick/notes"> Anti-emetic</label>
-<label><input type="text" placeholder="tick/notes"> Immobilisation</label>
-<label><input type="text" placeholder="tick/notes"> Fluids</label>
-<label><input type="text" placeholder="tick/notes"> ECG</label>
-<label><input type="text" placeholder="tick/notes"> Other</label>
+<label><input type="checkbox" class="chk"> <span>Oxygen</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>IV access</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Analgesia</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Anti-emetic</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Immobilisation</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Fluids</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>ECG</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Other</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
 </div>
 <label>Details<textarea class="auto-expand" id="treatmentDetails"></textarea></label>
 </div>
@@ -197,12 +210,12 @@ textarea {
 <div class="section">
 <h2>Safeguarding & Capacity</h2>
 <div class="checkbox-group">
-<label><input type="text" placeholder="tick/notes"> Capacity present</label>
-<label><input type="text" placeholder="tick/notes"> Capacity lacking</label>
-<label><input type="text" placeholder="tick/notes"> Safeguarding concern</label>
-<label><input type="text" placeholder="tick/notes"> Mental health crisis</label>
-<label><input type="text" placeholder="tick/notes"> Alcohol involved</label>
-<label><input type="text" placeholder="tick/notes"> Drugs involved</label>
+<label><input type="checkbox" class="chk"> <span>Capacity present</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Capacity lacking</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Safeguarding concern</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Mental health crisis</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Alcohol involved</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
+<label><input type="checkbox" class="chk"> <span>Drugs involved</span> <textarea class="note auto-expand small" placeholder="notes"></textarea></label>
 </div>
 </div>
 
@@ -242,7 +255,7 @@ function autoExpandTextarea(textarea) {
     // Reset height to compute scrollHeight correctly
     textarea.style.height = 'auto';
     // Add a little extra so there's no cutting at the bottom
-    textarea.style.height = (textarea.scrollHeight) + 'px';
+    textarea.style.height = (textarea.scrollHeight + 2) + 'px';
 }
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -266,7 +279,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var allTextareas = document.querySelectorAll('textarea');
         allTextareas.forEach(function(ta) {
             ta.style.height = 'auto';
-            ta.style.height = (ta.scrollHeight) + 'px';
+            ta.style.height = (ta.scrollHeight + 2) + 'px';
         });
 
         // Options for html2pdf
@@ -296,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var allTextareas = document.querySelectorAll('textarea');
         allTextareas.forEach(function(ta) {
             ta.style.height = 'auto';
-            ta.style.height = (ta.scrollHeight) + 'px';
+            ta.style.height = (ta.scrollHeight + 2) + 'px';
         });
         window.print();
     });
