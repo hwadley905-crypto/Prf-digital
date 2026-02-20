@@ -6,18 +6,19 @@
 <title>Advanced Practice PRF</title>
 <style>
 :root{
---primary:#2979ff;--bg:#f2f6fc;--card-bg:#fff;--text:#1a1a1a;--border:#ccc;--divider:#ddd;--green:#2e7d32;--amber:#f9a825;--red:#c62828;--highlight:#2979ff;
+--primary:#005EB8;--bg:#f4f7fb;--card-bg:#fff;--text:#111;--border:#cfddea;--divider:#e6eef6;
+--green:#2e7d32;--amber:#f9a825;--red:#c62828;
 }
 body.dark{
---bg:#1c1c1c;--card-bg:#2a2a2a;--text:#e0e0e0;--border:#555;--divider:#444;
+--bg:#1e1e1e;--card-bg:#2a2a2a;--text:#e0e0e0;--border:#555;--divider:#444;
 }
-body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text);}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}
 .container{max-width:1000px;margin:25px auto;padding:20px;}
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
 .logo{background:var(--primary);color:white;padding:8px 14px;border-radius:4px;font-weight:700;font-size:14px;}
 h1{margin:0;font-size:18px;color:var(--primary);}
 button{background:var(--primary);color:white;border:none;padding:8px 14px;border-radius:4px;cursor:pointer;font-weight:600;}
-.section{background:var(--card-bg);padding:18px;margin-bottom:18px;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:6px;}
+.section{background:var(--card-bg);padding:18px;margin-bottom:18px;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:6px;transition:0.3s;}
 .section h2{margin:0 0 12px 0;font-size:15px;color:var(--primary);padding-bottom:6px;border-bottom:1px solid var(--divider);}
 .field{margin-bottom:14px;}
 label{font-size:13px;font-weight:600;display:block;margin-bottom:5px;}
@@ -32,7 +33,8 @@ textarea{resize:none;overflow:hidden;min-height:50px;}
 table{width:100%;border-collapse:collapse;margin-bottom:10px;background:var(--card-bg);color:var(--text);}
 th,td{border:1px solid var(--border);padding:6px;text-align:center;font-size:13px;}
 th{background:var(--divider);}
-.add-row-btn{margin-top:6px;background:var(--highlight);color:white;}
+.add-row-btn{margin-top:6px;background:var(--primary);color:white;}
+@media print{button,input[type=file]{display:none;}.section{page-break-inside:avoid;}}
 </style>
 </head>
 <body>
@@ -166,7 +168,7 @@ th{background:var(--divider);}
 <div class="field"><label>Working Diagnosis & Notes</label><textarea class="auto"></textarea></div>
 </section>
 
-<!-- Patient Observations Table -->
+<!-- Observations Table -->
 <section class="section">
 <h2>Patient Observations</h2>
 <table id="obsTable"><tr>
@@ -201,7 +203,7 @@ th{background:var(--divider);}
 <!-- Body Map -->
 <section class="section">
 <h2>Body Map / Injury Documentation</h2>
-<textarea placeholder="Describe injury locations..."></textarea>
+<textarea class="auto" placeholder="Describe injury locations..."></textarea>
 <label>Upload Body Map Image</label>
 <input type="file" accept="image/*" multiple onchange="previewImages(event,'bodyPreview')">
 <div class="image-preview" id="bodyPreview"></div>
@@ -243,7 +245,7 @@ function previewImages(e,id){const p=document.getElementById(id);p.innerHTML='';
 let canvas=document.getElementById("signatureCanvas"),ctx=canvas.getContext("2d"),drawing=false;
 canvas.width=canvas.offsetWidth; canvas.height=canvas.offsetHeight;
 canvas.addEventListener("mousedown",e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);});
-canvas.addEventListener("mousemove",e=>{if(drawing){ctx.lineTo(e.offsetX,e.offsetY);ctx.strokeStyle="white";ctx.lineWidth=2;ctx.stroke();}});
+canvas.addEventListener("mousemove",e=>{if(drawing){ctx.lineTo(e.offsetX,e.offsetY);ctx.strokeStyle=canvas.classList.contains('dark')?"#fff":"#000";ctx.lineWidth=2;ctx.stroke();}});
 canvas.addEventListener("mouseup",()=>drawing=false); canvas.addEventListener("mouseout",()=>drawing=false);
 function clearSignature(){ctx.clearRect(0,0,canvas.width,canvas.height);}
 
@@ -258,10 +260,20 @@ function scoreSpO2(s){return s<=91?3:s<=93?2:s<=95?1:0;}
 function scoreTemp(t){return t<=35?3:t<=36?1:t<=38?0:t<=39?1:2;}
 function scoreSBP(s){return s<=90?3:s<=100?2:s<=110?1:s<=219?0:3;}
 function scoreHR(h){return h<=40?3:h<=50?1:h<=90?0:h<=110?1:h<=130?2:3;}
-function calculateNEWS2(){let rr=parseFloat(document.getElementById('rr').value)||0,s=parseFloat(document.getElementById('spo2').value)||0,t=parseFloat(document.getElementById('temp').value)||0,sbp=parseFloat(document.getElementById('sbp').value)||0,hr=parseFloat(document.getElementById('hr').value)||0,acvpu=parseInt(document.getElementById('acvpu').value)||0,total=scoreRR(rr)+scoreSpO2(s)+scoreTemp(t)+scoreSBP(s)+scoreHR(hr)+acvpu,sepsisTrigger=(total>=5||rr>=22||hr>=90||t>=38||t<=36||sbp<=100);document.getElementById('newsScore').innerText=total;document.getElementById('sepsisBox').style.display=sepsisTrigger?'block':'none';document.getElementById('riskText').innerHTML=sepsisTrigger?"<strong style='color:#c62828;'>Sepsis criteria met</strong>":"";}
+function calculateNEWS2(){
+let rr=parseFloat(document.getElementById('rr').value)||0,
+spo2=parseFloat(document.getElementById('spo2').value)||0,
+t=parseFloat(document.getElementById('temp').value)||0,
+sbp=parseFloat(document.getElementById('sbp').value)||0,
+hr=parseFloat(document.getElementById('hr').value)||0,
+acvpu=parseInt(document.getElementById('acvpu').value)||0,
+total=scoreRR(rr)+scoreSpO2(spo2)+scoreTemp(t)+scoreSBP(sbp)+scoreHR(hr)+acvpu,
+sepsisTrigger=(total>=5||rr>=22||hr>=90||t>=38||t<=36||sbp<=100);
+document.getElementById('newsScore').innerText=total;
+document.getElementById('sepsisBox').style.display=sepsisTrigger?'block':'none';
+document.getElementById('riskText').innerHTML=sepsisTrigger?"<strong style='color:#c62828;'>Sepsis criteria met</strong>":"";}
 
-// Add Observation row
-function addObsRow(){let table=document.getElementById('obsTable');let newRow=table.insertRow();for(let i=0;i<table.rows[0].cells.length;i++){let cell=newRow.insertCell();let inp=document.createElement('input');if(i==0) inp.type='date'; else if(i==1) inp.type='time';cell.appendChild(inp);}}
-
-// Add Intervention row
-function addInterventionRow(){let table=document.getElementById('interventionsTable');let newRow=table.insertRow();for(let i=0;i<table.rows[0].cells.length;i++){let cell=newRow.insertCell();let inp=document.createElement('input');if(i==0) inp.type='time';cell.append
+// Add dynamic table rows
+function addObsRow(){let t=document.getElementById('obsTable'),r=t.insertRow();for(let i=0;i<t.rows[0].cells.length;i++){let c=r.insertCell();let inp=document.createElement('input');if(i==0) inp.type='date'; else if(i==1) inp.type='time';c.appendChild(inp);}}
+function addInterventionRow(){let t=document.getElementById('interventionsTable'),r=t.insertRow();for(let i=0;i<t.rows[0].cells.length;i++){let c=r.insertCell();let inp=document.createElement('input');if(i==0) inp.type='time';c.appendChild(inp);}}
+function addDrugRow(){let t=document.getElementById('drugsTable'),r=t.insertRow();for(let i=0;i<t.rows[0].cells.length;i++){let c
