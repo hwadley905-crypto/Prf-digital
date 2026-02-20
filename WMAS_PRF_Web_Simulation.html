@@ -1,36 +1,36 @@
 <script>
-// Function to automatically expand a textarea to fit its content
-function autoExpand(textarea) {
-    textarea.style.height = 'auto'; // Reset the height
-to set initial height to zero
-    textarea.style.height = (textarea.scrollHeight) + 'px';
+// Auto-expand textareas
+function autoExpandTextarea(textarea) {
+    textarea.style.height = 'auto'; // Reset height
+    textarea.style.height = textarea.scrollHeight + 'px'; // Set height based on content
 }
 
-// Apply autoExpand to all existing textareas
-const textareas = document.querySelectorAll('textarea');
-textareas.forEach(textarea => {
-    textarea.addEventListener('input', () => autoExpand(textarea));
-    autoExpand(textarea); // Initial expansion on load
-});
+// Initialize auto-expand for all existing textareas on page load
+document.addEventListener('DOMContentLoaded', function () {
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => {
+        autoExpandTextarea(textarea);
+        textarea.addEventListener('input', () => autoExpandTextarea(textarea));
+    });
 
-// Use MutationObserver to observe dynamically added textareas
-const observer = new MutationObserver((mutations) => {
-    mutations.forEach(mutation => {
-        mutation.addedNodes.forEach(node => {
-            if (node.nodeName === 'TEXTAREA') {
-                node.addEventListener('input', () => autoExpand(node));
-                autoExpand(node); // Initial expansion for new textarea
-            } else if (node.querySelectorAll) {
-                const newTextareas = node.querySelectorAll('textarea');
-                newTextareas.forEach(newTextarea => {
-                    newTextarea.addEventListener('input', () => autoExpand(newTextarea));
-                    autoExpand(newTextarea);
-                });
-            }
+    // Observe DOM changes for dynamically added textareas
+    const observer = new MutationObserver(mutations => {
+        mutations.forEach(mutation => {
+            mutation.addedNodes.forEach(node => {
+                if (node.nodeName === 'TEXTAREA') {
+                    autoExpandTextarea(node);
+                    node.addEventListener('input', () => autoExpandTextarea(node));
+                } else if (node.querySelectorAll) {
+                    const newTextareas = node.querySelectorAll('textarea');
+                    newTextareas.forEach(newTextarea => {
+                        autoExpandTextarea(newTextarea);
+                        newTextarea.addEventListener('input', () => autoExpandTextarea(newTextarea));
+                    });
+                }
+            });
         });
     });
-});
 
-// Start observing the document body for added nodes
-observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(document.body, { childList: true, subtree: true });
+});
 </script>
