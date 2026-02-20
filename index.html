@@ -47,30 +47,31 @@ th{background:var(--divider);}
   </div>
   <div style="display:flex;gap:8px;">
     <button onclick="window.print()">Print / Save PDF</button>
+    <button id="clearForm">Clear Form</button>
     <button id="modeToggle">Toggle Dark/Light</button>
   </div>
 </header>
 
 <!-- Clinician Details -->
 <section class="section"><h2>Clinician Details</h2>
-<div class="field"><textarea class="auto" placeholder="Clinician notes / team ID"></textarea></div>
+<div class="field"><textarea id="clinicianNotes" class="auto" placeholder="Clinician notes / team ID"></textarea></div>
 </section>
 
 <!-- Call History -->
 <section class="section"><h2>Call History / Incident Details</h2>
-<div class="field"><textarea class="auto"></textarea></div>
+<div class="field"><textarea id="callHistory" class="auto"></textarea></div>
 </section>
 
 <!-- Patient Details -->
 <section class="section"><h2>Patient Details</h2>
-<div class="field"><label>Date of Birth</label><input type="date"></div>
-<div class="field"><label>Allergies</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Next of Kin</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Capacity? RESPECT Form</label><textarea class="auto"></textarea></div>
-<div class="field"><label>DNAR Form</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Patient Medications</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Past Medical History</label><textarea class="auto"></textarea></div>
-<div class="field"><label>History of Presenting Complaint</label><textarea class="auto"></textarea></div>
+<div class="field"><label for="dob">Date of Birth</label><input type="date" id="dob"></div>
+<div class="field"><label for="allergies">Allergies</label><textarea id="allergies" class="auto"></textarea></div>
+<div class="field"><label for="nextOfKin">Next of Kin</label><textarea id="nextOfKin" class="auto"></textarea></div>
+<div class="field"><label for="capacity">Capacity? RESPECT Form</label><textarea id="capacity" class="auto"></textarea></div>
+<div class="field"><label for="dnar">DNAR Form</label><textarea id="dnar" class="auto"></textarea></div>
+<div class="field"><label for="medications">Patient Medications</label><textarea id="medications" class="auto"></textarea></div>
+<div class="field"><label for="pastHistory">Past Medical History</label><textarea id="pastHistory" class="auto"></textarea></div>
+<div class="field"><label for="hpc">History of Presenting Complaint</label><textarea id="hpc" class="auto"></textarea></div>
 <label>Add Medical History Image</label>
 <input type="file" accept="image/*" multiple onchange="previewImages(event,'historyPreview')">
 <div class="image-preview" id="historyPreview"></div>
@@ -78,32 +79,32 @@ th{background:var(--divider);}
 
 <!-- Primary Survey -->
 <section class="section"><h2>Primary Survey – DRCABCDE</h2>
-<div class="field"><label>(D) Danger & SMART Assessment</label><textarea class="auto"></textarea></div>
-<div class="field"><label>(R) Responsiveness</label><textarea class="auto"></textarea></div>
-<div class="field"><label>(C) Catastrophic Haemorrhage / C-Spine</label><textarea class="auto"></textarea></div>
-<div class="field"><label>(A) Airway</label><textarea class="auto"></textarea></div>
-<div class="field"><label>(B) Breathing</label><textarea class="auto"></textarea></div>
-<div class="field"><label>(C) Circulation</label><textarea class="auto"></textarea></div>
-<div class="field"><label>(D) Disability</label><textarea class="auto"></textarea></div>
-<div class="field"><label>(E) Exposure</label><textarea class="auto"></textarea></div>
+<div class="field"><label for="danger">(D) Danger &amp; SMART Assessment</label><textarea id="danger" class="auto"></textarea></div>
+<div class="field"><label for="responsiveness">(R) Responsiveness</label><textarea id="responsiveness" class="auto"></textarea></div>
+<div class="field"><label for="catHaem">(C) Catastrophic Haemorrhage / C-Spine</label><textarea id="catHaem" class="auto"></textarea></div>
+<div class="field"><label for="airway">(A) Airway</label><textarea id="airway" class="auto"></textarea></div>
+<div class="field"><label for="breathing">(B) Breathing</label><textarea id="breathing" class="auto"></textarea></div>
+<div class="field"><label for="circulation">(C) Circulation</label><textarea id="circulation" class="auto"></textarea></div>
+<div class="field"><label for="disability">(D) Disability</label><textarea id="disability" class="auto"></textarea></div>
+<div class="field"><label for="exposure">(E) Exposure</label><textarea id="exposure" class="auto"></textarea></div>
 </section>
 
 <!-- GCS -->
 <section class="section"><h2>GCS Calculator</h2>
-<label>Eye Response</label><select id="eye"><option value="4">4 – Spontaneous</option><option value="3">3 – To Voice</option><option value="2">2 – To Pain</option><option value="1">1 – None</option></select>
-<label>Verbal Response</label><select id="verbal"><option value="5">5 – Oriented</option><option value="4">4 – Confused</option><option value="3">3 – Inappropriate Words</option><option value="2">2 – Incomprehensible</option><option value="1">1 – None</option></select>
-<label>Motor Response</label><select id="motor"><option value="6">6 – Obeys Commands</option><option value="5">5 – Localises Pain</option><option value="4">4 – Withdraws</option><option value="3">3 – Flexion</option><option value="2">2 – Extension</option><option value="1">1 – None</option></select>
+<label for="eye">Eye Response</label><select id="eye"><option value="4">4 – Spontaneous</option><option value="3">3 – To Voice</option><option value="2">2 – To Pain</option><option value="1">1 – None</option></select>
+<label for="verbal">Verbal Response</label><select id="verbal"><option value="5">5 – Oriented</option><option value="4">4 – Confused</option><option value="3">3 – Inappropriate Words</option><option value="2">2 – Incomprehensible</option><option value="1">1 – None</option></select>
+<label for="motor">Motor Response</label><select id="motor"><option value="6">6 – Obeys Commands</option><option value="5">5 – Localises Pain</option><option value="4">4 – Withdraws</option><option value="3">3 – Flexion</option><option value="2">2 – Extension</option><option value="1">1 – None</option></select>
 <div class="result-box">Total GCS: <span id="gcsScore">15</span></div>
 </section>
 
 <!-- NEWS2 -->
-<section class="section"><h2>NEWS2 & Sepsis Monitoring</h2>
-<label>Respiratory Rate</label><input type="number" id="rr">
-<label>Oxygen Saturation (%)</label><input type="number" id="spo2">
-<label>Temperature (°C)</label><input type="number" step="0.1" id="temp">
-<label>Systolic BP (mmHg)</label><input type="number" id="sbp">
-<label>Heart Rate (bpm)</label><input type="number" id="hr">
-<label>Consciousness</label><select id="acvpu"><option value="0">Alert</option><option value="3">C/V/P/U</option></select>
+<section class="section"><h2>NEWS2 &amp; Sepsis Monitoring</h2>
+<label for="rr">Respiratory Rate</label><input type="number" id="rr">
+<label for="spo2">Oxygen Saturation (%)</label><input type="number" id="spo2">
+<label for="temp">Temperature (°C)</label><input type="number" step="0.1" id="temp">
+<label for="sbp">Systolic BP (mmHg)</label><input type="number" id="sbp">
+<label for="hr">Heart Rate (bpm)</label><input type="number" id="hr">
+<label for="acvpu">Consciousness</label><select id="acvpu"><option value="0">Alert</option><option value="3">C/V/P/U</option></select>
 <div class="result-box">NEWS2 Score: <span id="newsScore">0</span></div>
 <div id="riskText"></div>
 <div class="sepsis-box" id="sepsisBox"><h3>🚨 Sepsis Screening Tool</h3>
@@ -120,20 +121,20 @@ th{background:var(--divider);}
 
 <!-- Secondary Survey -->
 <section class="section"><h2>Secondary Survey</h2>
-<div class="field"><label>Neurological</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Respiratory</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Cardiology and ECGs</label><textarea class="auto"></textarea></div>
+<div class="field"><label for="neuro">Neurological</label><textarea id="neuro" class="auto"></textarea></div>
+<div class="field"><label for="respiratory">Respiratory</label><textarea id="respiratory" class="auto"></textarea></div>
+<div class="field"><label for="cardiology">Cardiology and ECGs</label><textarea id="cardiology" class="auto"></textarea></div>
 <label>Add ECG / Cardiology Image</label>
 <input type="file" accept="image/*" multiple onchange="previewImages(event,'ecgPreview')">
 <div class="image-preview" id="ecgPreview"></div>
-<div class="field"><label>Gastrointestinal</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Genitourinary</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Integumentary</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Musculo-skeletal</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Mental Health</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Trauma / Immobilisation</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Disease / Mechanism of Injury</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Working Diagnosis and Related Notes</label><textarea class="auto"></textarea></div>
+<div class="field"><label for="gastro">Gastrointestinal</label><textarea id="gastro" class="auto"></textarea></div>
+<div class="field"><label for="genito">Genitourinary</label><textarea id="genito" class="auto"></textarea></div>
+<div class="field"><label for="integument">Integumentary</label><textarea id="integument" class="auto"></textarea></div>
+<div class="field"><label for="musculo">Musculo-skeletal</label><textarea id="musculo" class="auto"></textarea></div>
+<div class="field"><label for="mentalHealth">Mental Health</label><textarea id="mentalHealth" class="auto"></textarea></div>
+<div class="field"><label for="trauma">Trauma / Immobilisation</label><textarea id="trauma" class="auto"></textarea></div>
+<div class="field"><label for="disease">Disease / Mechanism of Injury</label><textarea id="disease" class="auto"></textarea></div>
+<div class="field"><label for="workingDiagnosis">Working Diagnosis and Related Notes</label><textarea id="workingDiagnosis" class="auto"></textarea></div>
 </section>
 
 <!-- Patient Observations Table -->
@@ -169,7 +170,7 @@ th{background:var(--divider);}
 
 <!-- Body Map -->
 <section class="section"><h2>Body Map / Injury Documentation</h2>
-<textarea placeholder="Describe injury locations..." class="auto"></textarea>
+<textarea id="bodyMapNotes" placeholder="Describe injury locations..." class="auto"></textarea>
 <label>Upload Body Map Image</label>
 <input type="file" accept="image/*" multiple onchange="previewImages(event,'bodyPreview')">
 <div class="image-preview" id="bodyPreview"></div>
@@ -187,18 +188,20 @@ Treatment</textarea>
 
 <!-- Outcome of case -->
 <section class="section"><h2>Outcome of Case</h2>
-<textarea class="auto"></textarea>
+<textarea id="outcome" class="auto"></textarea>
 </section>
 
 <!-- Signature -->
 <section class="section"><h2>Sign Off</h2>
-<div class="field"><label>Clinician Name</label><input type="text"></div>
-<div class="field"><label>Role</label><input type="text"></div>
-<div class="field"><label>Professional PIN</label><input type="text"></div>
-<div class="field"><label>Date</label><input type="date"></div>
-<div class="field"><label>Time</label><input type="time"></div>
-<div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas></div>
+<div class="field"><label for="clinicianName">Clinician Name</label><input type="text" id="clinicianName"></div>
+<div class="field"><label for="clinicianRole">Role</label><input type="text" id="clinicianRole"></div>
+<div class="field"><label for="clinicianPin">Professional PIN</label><input type="text" id="clinicianPin"></div>
+<div class="field"><label for="signDate">Date</label><input type="date" id="signDate"></div>
+<div class="field"><label for="signTime">Time</label><input type="time" id="signTime"></div>
+<div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
 </section>
+
+</div><!-- end .container -->
 
 <script>
 // Auto-expand textareas
@@ -227,24 +230,29 @@ function scoreSpO2(s){return s<=91?3:s<=93?2:s<=95?1:0;}
 function scoreTemp(t){return t<=35?3:t<=36?1:t<=38?0:t<=39?1:2;}
 function scoreSBP(s){return s<=90?3:s<=100?2:s<=110?1:s<=219?0:3;}
 function scoreHR(h){return h<=40?3:h<=50?1:h<=90?0:h<=110?1:h<=130?2:3;}
-['rr','spo2','temp','sbp','hr','acvpu'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{
-  let rr=parseFloat(document.getElementById('rr').value)||0,
-      spo2=parseFloat(document.getElementById('spo2').value)||0,
-      t=parseFloat(document.getElementById('temp').value)||0,
-      sbp=parseFloat(document.getElementById('sbp').value)||0,
-      hr=parseFloat(document.getElementById('hr').value)||0,
+function calcNEWS2(){
+  let rrVal=document.getElementById('rr').value,
+      spo2Val=document.getElementById('spo2').value,
+      tVal=document.getElementById('temp').value,
+      sbpVal=document.getElementById('sbp').value,
+      hrVal=document.getElementById('hr').value,
+      rr=rrVal!==''?parseFloat(rrVal):null,
+      spo2=spo2Val!==''?parseFloat(spo2Val):null,
+      t=tVal!==''?parseFloat(tVal):null,
+      sbp=sbpVal!==''?parseFloat(sbpVal):null,
+      hr=hrVal!==''?parseFloat(hrVal):null,
       acvpu=parseInt(document.getElementById('acvpu').value)||0,
-      total=scoreRR(rr)+scoreSpO2(spo2)+scoreTemp(t)+scoreSBP(sbp)+scoreHR(hr)+acvpu,
-      sepsisTrigger=(total>=5||rr>=22||hr>=90||t>=38||t<=36||sbp<=100);
+      total=(rr!==null?scoreRR(rr):0)+(spo2!==null?scoreSpO2(spo2):0)+(t!==null?scoreTemp(t):0)+(sbp!==null?scoreSBP(sbp):0)+(hr!==null?scoreHR(hr):0)+acvpu,
+      sepsisTrigger=(total>=5||(rr!==null&&rr>=22)||(hr!==null&&hr>=90)||(t!==null&&t>=38)||(t!==null&&t<=36)||(sbp!==null&&sbp<=100));
   document.getElementById('newsScore').innerText=total;
   document.getElementById('sepsisBox').style.display=sepsisTrigger?'block':'none';
   document.getElementById('riskText').innerHTML=sepsisTrigger?"<strong style='color:#c62828;'>Sepsis criteria met</strong>":"";
-}));
+}
+['rr','spo2','temp','sbp','hr','acvpu'].forEach(id=>document.getElementById(id).addEventListener('input',calcNEWS2));
 
-// Image preview
+// Image preview – accumulates uploaded images (does not clear previous uploads)
 function previewImages(event,id){
   const preview=document.getElementById(id);
-  preview.innerHTML='';
   for(const file of event.target.files){
     const reader=new FileReader();
     reader.onload=function(e){
@@ -301,19 +309,66 @@ canvas.width=canvas.offsetWidth;
 canvas.height=canvas.offsetHeight;
 const ctx=canvas.getContext('2d');
 let drawing=false;
-canvas.addEventListener('mousedown',e=>{
-  drawing=true;
-  ctx.beginPath();
-  ctx.moveTo(e.offsetX,e.offsetY);
-});
-canvas.addEventListener('mousemove',e=>{
-  if(!drawing)return;
-  ctx.lineTo(e.offsetX,e.offsetY);
-  ctx.stroke();
-});
+
+// Mouse events
+canvas.addEventListener('mousedown',e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);});
+canvas.addEventListener('mousemove',e=>{if(!drawing)return;ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();});
 canvas.addEventListener('mouseup',()=>drawing=false);
 canvas.addEventListener('mouseleave',()=>drawing=false);
+
+// Touch events
+function getTouchPos(e){
+  const rect=canvas.getBoundingClientRect();
+  return{x:e.touches[0].clientX-rect.left,y:e.touches[0].clientY-rect.top};
+}
+canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=getTouchPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
+canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=getTouchPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();},{passive:false});
+canvas.addEventListener('touchend',e=>{e.preventDefault();drawing=false;},{passive:false});
+
+// Clear signature
+document.getElementById('clearSig').addEventListener('click',()=>ctx.clearRect(0,0,canvas.width,canvas.height));
+
+// Canvas resize – save and restore drawing data
+let resizeTimer;
+window.addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(()=>{
+    const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
+    canvas.width=canvas.offsetWidth;
+    canvas.height=canvas.offsetHeight;
+    ctx.putImageData(imgData,0,0);
+  },150);
+});
+
+// localStorage auto-save / restore
+function saveForm(){
+  document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{
+    localStorage.setItem('prf_'+el.id,el.value);
+  });
+}
+function restoreForm(){
+  document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{
+    const saved=localStorage.getItem('prf_'+el.id);
+    if(saved!==null){
+      el.value=saved;
+      if(el.tagName==='TEXTAREA'){el.style.height='auto';el.style.height=el.scrollHeight+'px';}
+    }
+  });
+}
+document.addEventListener('input',saveForm);
+document.addEventListener('change',saveForm);
+restoreForm();
+// Re-trigger GCS display after restore (handler reads all three fields at once)
+document.getElementById('eye').dispatchEvent(new Event('change'));
+calcNEWS2();
+
+// Clear Form button
+document.getElementById('clearForm').addEventListener('click',()=>{
+  if(confirm('Clear all saved form data and reset?')){
+    Object.keys(localStorage).filter(k=>k.startsWith('prf_')).forEach(k=>localStorage.removeItem(k));
+    location.reload();
+  }
+});
 </script>
-</div>
 </body>
 </html>
