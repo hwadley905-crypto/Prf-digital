@@ -177,7 +177,12 @@ th{background:var(--divider);}
 
 <!-- ATMIST -->
 <section class="section"><h2>ATMIST Pre-Alert</h2>
-<textarea id="atmistBox" class="auto">Age&#10;Time of incident/onset&#10;Mechanism / Complaint&#10;Injuries / Info&#10;Signs (vitals)&#10;Treatment</textarea>
+<textarea id="atmistBox" class="auto">Age
+Time of incident/onset
+Mechanism / Complaint
+Injuries / Info
+Signs (vitals)
+Treatment</textarea>
 </section>
 
 <!-- Outcome of case -->
@@ -243,4 +248,68 @@ function previewImages(event,id){
   const preview=document.getElementById(id);
   preview.innerHTML='';
   for(const file of event.target.files){
-   
+    const reader=new FileReader();
+    reader.onload=function(e){
+      const img=document.createElement('img');
+      img.src=e.target.result;
+      preview.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// Add observation row
+function addObsRow(){
+  const table=document.getElementById('obsTable');
+  const row=table.insertRow();
+  for(let i=0;i<13;i++){
+    const cell=row.insertCell();
+    const input=document.createElement('input');
+    if(i===0) input.type='date';
+    else if(i===1) input.type='time';
+    cell.appendChild(input);
+  }
+}
+
+// Add intervention row
+function addInterventionRow(){
+  const table=document.getElementById('interventionsTable');
+  const row=table.insertRow();
+  for(let i=0;i<6;i++){
+    const cell=row.insertCell();
+    const input=document.createElement('input');
+    if(i===0) input.type='time';
+    cell.appendChild(input);
+  }
+}
+
+// Add drug row
+function addDrugRow(){
+  const table=document.getElementById('drugsTable');
+  const row=table.insertRow();
+  for(let i=0;i<7;i++){
+    const cell=row.insertCell();
+    const input=document.createElement('input');
+    if(i===5) input.type='date';
+    cell.appendChild(input);
+  }
+}
+
+// Signature canvas setup
+const canvas=document.getElementById('signatureCanvas');
+const ctx=canvas.getContext('2d');
+let isDrawing=false;
+
+canvas.addEventListener('mousedown',()=>isDrawing=true);
+canvas.addEventListener('mouseup',()=>isDrawing=false);
+canvas.addEventListener('mousemove',(e)=>{
+  if(!isDrawing) return;
+  const rect=canvas.getBoundingClientRect();
+  const x=e.clientX-rect.left;
+  const y=e.clientY-rect.top;
+  ctx.lineTo(x,y);
+  ctx.stroke();
+});
+</script>
+</body>
+</html>
