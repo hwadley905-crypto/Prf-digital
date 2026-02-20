@@ -260,4 +260,60 @@ function previewImages(event,id){
 function addObsRow(){
   const table=document.getElementById('obsTable');
   const row=table.insertRow();
-  const cells=['date','time','rr','pulse','spo2','temp','bp','hr
+  const types=['date','time','text','text','text','text','text','text','text','text','text','text','text'];
+  types.forEach(t=>{
+    const cell=row.insertCell();
+    const input=document.createElement('input');
+    input.type=t;
+    cell.appendChild(input);
+  });
+}
+
+// Add intervention row
+function addInterventionRow(){
+  const table=document.getElementById('interventionsTable');
+  const row=table.insertRow();
+  const types=['time','text','text','text','text','text'];
+  types.forEach(t=>{
+    const cell=row.insertCell();
+    const input=document.createElement('input');
+    input.type=t;
+    cell.appendChild(input);
+  });
+}
+
+// Add drug row
+function addDrugRow(){
+  const table=document.getElementById('drugsTable');
+  const row=table.insertRow();
+  const types=['text','text','text','text','text','date','text'];
+  types.forEach(t=>{
+    const cell=row.insertCell();
+    const input=document.createElement('input');
+    input.type=t;
+    cell.appendChild(input);
+  });
+}
+
+// Signature pad
+const canvas=document.getElementById('signatureCanvas');
+canvas.width=canvas.offsetWidth;
+canvas.height=canvas.offsetHeight;
+const ctx=canvas.getContext('2d');
+let drawing=false;
+canvas.addEventListener('mousedown',e=>{
+  drawing=true;
+  ctx.beginPath();
+  ctx.moveTo(e.offsetX,e.offsetY);
+});
+canvas.addEventListener('mousemove',e=>{
+  if(!drawing)return;
+  ctx.lineTo(e.offsetX,e.offsetY);
+  ctx.stroke();
+});
+canvas.addEventListener('mouseup',()=>drawing=false);
+canvas.addEventListener('mouseleave',()=>drawing=false);
+</script>
+</div>
+</body>
+</html>
