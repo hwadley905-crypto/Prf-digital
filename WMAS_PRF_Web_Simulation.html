@@ -6,41 +6,51 @@
 <title>Advanced Practice PRF</title>
 <style>
 :root{
-  --nhs-blue:#005EB8;
-  --border:#cfddea;
-  --divider:#e6eef6;
+  /* Default Dark Mode */
+  --primary:#2979ff;
+  --bg:#121212;
+  --card-bg:#1E1E1E;
+  --text:#E0E0E0;
+  --border:#333;
+  --divider:#2A2A2A;
   --green:#2e7d32;
   --amber:#f9a825;
   --red:#c62828;
+  --highlight:#2979ff;
 }
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;color:#111;}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
 .container{max-width:1000px;margin:25px auto;padding:20px;}
 header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-.logo{background:var(--nhs-blue);color:white;padding:8px 14px;border-radius:4px;font-weight:700;font-size:14px;}
-h1{margin:0;font-size:18px;color:var(--nhs-blue);}
-button{background:var(--nhs-blue);color:white;border:none;padding:8px 14px;border-radius:4px;cursor:pointer;font-weight:600;}
-.section{background:white;padding:18px;margin-bottom:18px;border:1px solid var(--border);border-left:5px solid var(--nhs-blue);transition:0.3s ease;}
-.section h2{margin:0 0 12px 0;font-size:15px;color:var(--nhs-blue);padding-bottom:6px;border-bottom:1px solid var(--divider);}
+.logo{background:var(--primary);color:white;padding:8px 14px;border-radius:4px;font-weight:700;font-size:14px;}
+h1{margin:0;font-size:18px;color:var(--primary);}
+button{background:var(--primary);color:white;border:none;padding:8px 14px;border-radius:4px;cursor:pointer;font-weight:600;}
+.section{background:var(--card-bg);padding:18px;margin-bottom:18px;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:6px;transition:0.3s;}
+.section h2{margin:0 0 12px 0;font-size:15px;color:var(--primary);padding-bottom:6px;border-bottom:1px solid var(--divider);}
 .field{margin-bottom:14px;}
 label{font-size:13px;font-weight:600;display:block;margin-bottom:5px;}
-textarea{width:100%;min-height:55px;resize:none;overflow:hidden;padding:10px;border-radius:4px;border:1px solid var(--border);background:#fbfdff;font-size:14px;line-height:1.4;box-sizing:border-box;}
-input, select{width:100%;padding:6px;margin-bottom:8px;border-radius:4px;border:1px solid var(--border);box-sizing:border-box;font-size:14px;}
+textarea{width:100%;min-height:55px;resize:none;overflow:hidden;padding:10px;border-radius:4px;border:1px solid var(--border);background:var(--card-bg);color:var(--text);font-size:14px;line-height:1.4;box-sizing:border-box;}
+input, select{width:100%;padding:6px;margin-bottom:8px;border-radius:4px;border:1px solid var(--border);box-sizing:border-box;font-size:14px;background:var(--card-bg);color:var(--text);}
 .checkbox-group{display:flex;flex-wrap:wrap;gap:20px;margin-top:8px;}
 .checkbox-group label{font-weight:500;}
-.signature-box{height:70px;border:1px solid var(--border);border-radius:4px;background:#fff;}
-.small-note{font-size:12px;color:#555;margin-bottom:8px;}
+.signature-box{height:100px;border:1px solid var(--border);border-radius:4px;background:var(--card-bg);cursor:crosshair;}
+.small-note{font-size:12px;color:#aaa;margin-bottom:8px;}
 .result-box{font-weight:700;font-size:18px;margin-top:10px;}
 .low-risk{border-left-color:var(--green);}
 .medium-risk{border-left-color:var(--amber);}
 .high-risk{border-left-color:var(--red);}
-.sepsis-box{display:none;background:#fff5f5;border:1px solid var(--red);padding:15px;margin-top:15px;}
+.sepsis-box{display:none;background:#330000;border:1px solid var(--red);padding:15px;margin-top:15px;border-radius:6px;}
 .sepsis-box h3{margin-top:0;color:var(--red);}
 .image-preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
 .image-preview img{width:120px;border:1px solid var(--border);border-radius:4px;}
-table{width:100%;border-collapse:collapse;margin-bottom:10px;}
+table{width:100%;border-collapse:collapse;margin-bottom:10px;background:var(--card-bg);color:var(--text);}
 th,td{border:1px solid var(--border);padding:6px;text-align:center;font-size:13px;}
-th{background:#e6eef6;}
-.add-row-btn{margin-top:6px;background:#0072c6;}
+th{background:var(--divider);}
+.add-row-btn{margin-top:6px;background:var(--highlight);color:white;}
 @media print{button,input[type=file]{display:none;}.section{page-break-inside:avoid;}}
 </style>
 </head>
@@ -51,22 +61,25 @@ th{background:#e6eef6;}
     <div class="logo">PRF</div>
     <h1>Practice PRF</h1>
   </div>
-  <button onclick="window.print()">Print / Save PDF</button>
+  <div style="display:flex;gap:8px;">
+    <button onclick="window.print()">Print / Save PDF</button>
+    <button id="modeToggle" onclick="toggleMode()">Switch to Light Mode</button>
+  </div>
 </header>
 
-<!-- Clinician Details -->
+<!-- 1. Clinician Details -->
 <section class="section">
 <h2>Clinician Details</h2>
 <div class="field"><textarea class="auto" placeholder="Clinician notes / team ID"></textarea></div>
 </section>
 
-<!-- Call History -->
+<!-- 2. Call History -->
 <section class="section">
 <h2>Call History / Incident Details</h2>
 <div class="field"><textarea class="auto"></textarea></div>
 </section>
 
-<!-- Patient Details -->
+<!-- 3. Patient Details -->
 <section class="section">
 <h2>Patient Details</h2>
 <div class="field"><label>Date of Birth</label><input type="date"></div>
@@ -82,7 +95,7 @@ th{background:#e6eef6;}
 <div class="image-preview" id="historyPreview"></div>
 </section>
 
-<!-- Primary Survey -->
+<!-- 4. Primary Survey -->
 <section class="section">
 <h2>Primary Survey – DRCABCDE</h2>
 <div class="field"><label>(D) Danger and SMART Assessment</label><textarea class="auto"></textarea></div>
@@ -95,64 +108,9 @@ th{background:#e6eef6;}
 <div class="field"><label>(E) Exposure</label><textarea class="auto"></textarea></div>
 </section>
 
-<!-- Secondary Survey -->
+<!-- 5. GCS -->
 <section class="section">
-<h2>Secondary Survey</h2>
-<div class="field"><label>Neurological</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Respiratory</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Cardiology and ECGs</label><textarea class="auto"></textarea></div>
-<label>Add ECG / Cardiology Image</label>
-<input type="file" accept="image/*" multiple onchange="previewImages(event,'ecgPreview')">
-<div class="image-preview" id="ecgPreview"></div>
-<div class="field"><label>Gastrointestinal</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Genitourinary</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Integumentary</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Musculo-skeletal</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Mental Health</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Trauma / Immobilisation</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Disease / Mechanism of Injury</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Working Diagnosis and Related Notes</label><textarea class="auto"></textarea></div>
-</section>
-
-<!-- Body Map -->
-<section class="section">
-<h2>Body Map / Injury Documentation</h2>
-<textarea placeholder="Describe injury locations..."></textarea>
-<label>Upload Body Map Image</label>
-<input type="file" accept="image/*" multiple onchange="previewImages(event,'bodyPreview')">
-<div class="image-preview" id="bodyPreview"></div>
-</section>
-
-<!-- NEWS2 -->
-<section class="section" id="newsSection">
-<h2>NEWS2 & Sepsis Monitoring</h2>
-<label>Respiratory Rate</label><input type="number" id="rr" oninput="calculateNEWS2()">
-<label>Oxygen Saturation (%)</label><input type="number" id="spo2" oninput="calculateNEWS2()">
-<label>Temperature (°C)</label><input type="number" step="0.1" id="temp" oninput="calculateNEWS2()">
-<label>Systolic BP (mmHg)</label><input type="number" id="sbp" oninput="calculateNEWS2()">
-<label>Heart Rate (bpm)</label><input type="number" id="hr" oninput="calculateNEWS2()">
-<label>Consciousness</label>
-<select id="acvpu" onchange="calculateNEWS2()">
-<option value="0">Alert</option>
-<option value="3">C / V / P / U</option>
-</select>
-<div class="result-box">NEWS2 Score: <span id="newsScore">0</span></div>
-<div id="riskText"></div>
-<div class="sepsis-box" id="sepsisBox">
-<h3>🚨 Sepsis Screening Tool</h3>
-<label>Suspected Source of Infection</label><textarea placeholder="e.g. Chest / Urinary / Abdominal / Skin / Unknown"></textarea>
-<h4>Sepsis 6 Checklist</h4>
-<label><input type="checkbox"> High-flow Oxygen</label><br>
-<label><input type="checkbox"> Blood Cultures</label><br>
-<label><input type="checkbox"> IV Antibiotics</label><br>
-<label><input type="checkbox"> IV Fluids</label><br>
-<label><input type="checkbox"> Lactate Measurement</label><br>
-<label><input type="checkbox"> Monitor Urine Output</label><br>
-</div>
-
-<!-- GCS -->
-<section class="section">
-<h2>GCS</h2>
+<h2>GCS Calculator</h2>
 <label>Eye Response</label><select id="eye" onchange="calculateGCS()">
 <option value="4">4 – Spontaneous</option>
 <option value="3">3 – To Voice</option>
@@ -177,7 +135,54 @@ th{background:#e6eef6;}
 <div class="result-box">Total GCS: <span id="gcsScore">15</span></div>
 </section>
 
-<!-- OBSERVATIONS TABLE -->
+<!-- 6. NEWS2 -->
+<section class="section">
+<h2>NEWS2 & Sepsis Monitoring</h2>
+<label>Respiratory Rate</label><input type="number" id="rr" oninput="calculateNEWS2()">
+<label>Oxygen Saturation (%)</label><input type="number" id="spo2" oninput="calculateNEWS2()">
+<label>Temperature (°C)</label><input type="number" step="0.1" id="temp" oninput="calculateNEWS2()">
+<label>Systolic BP (mmHg)</label><input type="number" id="sbp" oninput="calculateNEWS2()">
+<label>Heart Rate (bpm)</label><input type="number" id="hr" oninput="calculateNEWS2()">
+<label>Consciousness</label>
+<select id="acvpu" onchange="calculateNEWS2()">
+<option value="0">Alert</option>
+<option value="3">C/V/P/U</option>
+</select>
+<div class="result-box">NEWS2 Score: <span id="newsScore">0</span></div>
+<div id="riskText"></div>
+<div class="sepsis-box" id="sepsisBox">
+<h3>🚨 Sepsis Screening Tool</h3>
+<textarea placeholder="Suspected source of infection" class="auto"></textarea>
+<h4>Sepsis 6 Checklist</h4>
+<label><input type="checkbox"> High-flow Oxygen</label><br>
+<label><input type="checkbox"> Blood Cultures</label><br>
+<label><input type="checkbox"> IV Antibiotics</label><br>
+<label><input type="checkbox"> IV Fluids</label><br>
+<label><input type="checkbox"> Lactate Measurement</label><br>
+<label><input type="checkbox"> Monitor Urine Output</label><br>
+</div>
+</section>
+
+<!-- 7. Secondary Survey -->
+<section class="section">
+<h2>Secondary Survey</h2>
+<div class="field"><label>Neurological</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Respiratory</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Cardiology and ECGs</label><textarea class="auto"></textarea></div>
+<label>Add ECG / Cardiology Image</label>
+<input type="file" accept="image/*" multiple onchange="previewImages(event,'ecgPreview')">
+<div class="image-preview" id="ecgPreview"></div>
+<div class="field"><label>Gastrointestinal</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Genitourinary</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Integumentary</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Musculo-skeletal</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Mental Health</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Trauma / Immobilisation</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Disease / Mechanism of Injury</label><textarea class="auto"></textarea></div>
+<div class="field"><label>Working Diagnosis and Related Notes</label><textarea class="auto"></textarea></div>
+</section>
+
+<!-- 8. Patient Observations Table -->
 <section class="section">
 <h2>Patient Observations</h2>
 <table id="obsTable">
@@ -191,7 +196,7 @@ th{background:#e6eef6;}
 <button class="add-row-btn" onclick="addObsRow()">Add Observation Row</button>
 </section>
 
-<!-- INTERVENTIONS TABLE -->
+<!-- 9. Interventions Table -->
 <section class="section">
 <h2>Interventions</h2>
 <table id="interventionsTable">
@@ -201,7 +206,7 @@ th{background:#e6eef6;}
 <button class="add-row-btn" onclick="addInterventionRow()">Add Intervention Row</button>
 </section>
 
-<!-- DRUGS LIST -->
+<!-- 10. Drugs Administered Table -->
 <section class="section">
 <h2>Drugs Administered</h2>
 <table id="drugsTable">
@@ -211,50 +216,56 @@ th{background:#e6eef6;}
 <button class="add-row-btn" onclick="addDrugRow()">Add Drug Row</button>
 </section>
 
-<!-- CARE PLAN -->
+<!-- 11. Body Map -->
 <section class="section">
-<h2>Care Plan</h2>
-<textarea class="auto"></textarea>
+<h2>Body Map / Injury Documentation</h2>
+<textarea placeholder="Describe injury locations..." class="auto"></textarea>
+<label>Upload Body Map Image</label>
+<input type="file" accept="image/*" multiple onchange="previewImages(event,'bodyPreview')">
+<div class="image-preview" id="bodyPreview"></div>
 </section>
 
-<!-- REFERRALS -->
+<!-- 12. ATMIST -->
 <section class="section">
-<h2>Any Referrals Made</h2>
-<textarea class="auto"></textarea>
+<h2>ATMIST Pre-Alert</h2>
+<textarea class="auto" rows="6">Age
+Time of incident/onset
+Mechanism / Complaint
+Injuries / Info
+Signs (vitals)
+Treatment</textarea>
 </section>
 
-<!-- ROLE -->
+<!-- 13. Signature -->
 <section class="section">
-<h2>ROLE Criteria</h2>
-<textarea class="auto"></textarea>
-</section>
-
-<!-- Call Outcome / ATMIST -->
-<section class="section">
-<h2>Call Outcome & Sign Off</h2>
-<div class="field"><label>Outcome / Clinical Summary</label><textarea class="auto"></textarea></div>
-<div class="field"><label>ATMIST Pre-Alert</label><textarea class="auto" placeholder="Age&#10;Time of incident/onset&#10;Mechanism / Complaint&#10;Injuries / Info&#10;Signs (vitals)&#10;Treatment"></textarea></div>
-<div class="field"><label>Capacity & Consent Declaration</label><textarea class="auto"></textarea></div>
-<div class="field"><label>Clinician Name</label><input type="text"></div>
-<div class="field"><label>Role</label><input type="text"></div>
-<div class="field"><label>Professional PIN</label><input type="text"></div>
-<div class="field"><label>Date</label><input type="date"></div>
-<div class="field"><label>Time</label><input type="time"></div>
-<div class="field"><label>Signature</label><div class="signature-box"></div></div>
+<h2>Signature</h2>
+<canvas id="signatureCanvas" class="signature-box"></canvas>
+<button onclick="clearSignature()">Clear Signature</button>
 </section>
 
 </div>
 
 <script>
-// Auto expanding textarea
-document.querySelectorAll("textarea.auto").forEach(t=>{t.addEventListener("input",()=>{t.style.height="auto";t.style.height=t.scrollHeight+"px";});});
+// Auto-expand textareas
+document.querySelectorAll("textarea").forEach(t=>t.addEventListener("input",()=>{t.style.height="auto";t.style.height=t.scrollHeight+"px";}));
 
-// NEWS2 & GCS calculations
-function scoreRR(rr){if(rr<=8)return 3;if(rr<=11)return 1;if(rr<=20)return 0;if(rr<=24)return 2;return 3;}
-function scoreSpO2(s){if(s<=91)return 3;if(s<=93)return 2;if(s<=95)return 1;return 0;}
-function scoreTemp(t){if(t<=35)return 3;if(t<=36)return 1;if(t<=38)return 0;if(t<=39)return 1;return 2;}
-function scoreSBP(s){if(s<=90)return 3;if(s<=100)return 2;if(s<=110)return 1;if(s<=219)return 0;return 3;}
-function scoreHR(h){if(h<=40)return 3;if(h<=50)return 1;if(h<=90)return 0;if(h<=110)return 1;if(h<=130)return 2;return 3;}
+// Image preview
+function previewImages(event,id){const preview=document.getElementById(id);preview.innerHTML="";Array.from(event.target.files).forEach(file=>{const img=document.createElement("img");img.src=URL.createObjectURL(file);preview.appendChild(img);});}
+
+// Signature canvas
+let canvas=document.getElementById("signatureCanvas"),ctx=canvas.getContext("2d"),drawing=false;
+canvas.width=canvas.offsetWidth; canvas.height=canvas.offsetHeight;
+canvas.addEventListener("mousedown",e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);});
+canvas.addEventListener("mousemove",e=>{if(drawing){ctx.lineTo(e.offsetX,e.offsetY);ctx.strokeStyle="white";ctx.lineWidth=2;ctx.stroke();}});
+canvas.addEventListener("mouseup",()=>{drawing=false;}); canvas.addEventListener("mouseout",()=>{drawing=false;});
+function clearSignature(){ctx.clearRect(0,0,canvas.width,canvas.height);}
+
+// NEWS2 calculator
+function scoreRR(rr){return rr<=8?3:rr<=11?1:rr<=20?0:rr<=24?2:3;}
+function scoreSpO2(s){return s<=91?3:s<=93?2:s<=95?1:0;}
+function scoreTemp(t){return t<=35?3:t<=36?1:t<=38?0:t<=39?1:2;}
+function scoreSBP(s){return s<=90?3:s<=100?2:s<=110?1:s<=219?0:3;}
+function scoreHR(h){return h<=40?3:h<=50?1:h<=90?0:h<=110?1:h<=130?2:3;}
 function calculateNEWS2(){
 let rr=parseFloat(document.getElementById("rr").value)||0;
 let spo2=parseFloat(document.getElementById("spo2").value)||0;
@@ -264,7 +275,11 @@ let hr=parseFloat(document.getElementById("hr").value)||0;
 let acvpu=parseInt(document.getElementById("acvpu").value)||0;
 let total=scoreRR(rr)+scoreSpO2(spo2)+scoreTemp(temp)+scoreSBP(sbp)+scoreHR(hr)+acvpu;
 document.getElementById("newsScore").innerText=total;
-let sepsisBox=document.getElementById("sepsisBox");
-let riskText=document.getElementById("riskText");
+let sepsisBox=document.getElementById("sepsisBox"),riskText=document.getElementById("riskText");
 let sepsisTrigger=(total>=5||rr>=22||hr>=90||temp>=38||temp<=36||sbp<=100);
-if(sepsisTrigger){sepsisBox.style.display="block";riskText.innerHTML="<strong style='color:#c62828;'>Sepsis criteria met –
+if(sepsisTrigger){sepsisBox.style.display="block";riskText.innerHTML="<strong style='color:#c62828;'>Sepsis criteria met</strong>";} else {sepsisBox.style.display="none";riskText.innerHTML="";}
+}
+
+// GCS calculator
+function calculateGCS(){
+let eye=parseInt(document.getElementById("
