@@ -243,7 +243,7 @@ function calcNEWS2(){
       hr=hrVal!==''?parseFloat(hrVal):null,
       acvpu=parseInt(document.getElementById('acvpu').value)||0,
       total=(rr!==null?scoreRR(rr):0)+(spo2!==null?scoreSpO2(spo2):0)+(t!==null?scoreTemp(t):0)+(sbp!==null?scoreSBP(sbp):0)+(hr!==null?scoreHR(hr):0)+acvpu,
-      sepsisTrigger=(total>=5||(rr!==null&&rr>=22)||(hr!==null&&hr>=90)||(t!==null&&t>=38)||(t!==null&&t<=36)||(sbp!==null&&sbp<=100));
+      sepsisTrigger=(total>=5);
   document.getElementById('newsScore').innerText=total;
   document.getElementById('sepsisBox').style.display=sepsisTrigger?'block':'none';
   document.getElementById('riskText').innerHTML=sepsisTrigger?"<strong style='color:#c62828;'>Sepsis criteria met</strong>":"";
