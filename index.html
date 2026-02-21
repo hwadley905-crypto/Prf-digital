@@ -6,19 +6,19 @@
 <title>WMAS Practice PRF</title>
 <style>
 :root{
-  --bg:#0d1117;
-  --card-bg:#161b22;
-  --text:#f0f6fc;
-  --text-secondary:#8b949e;
+  --bg:#050508;
+  --card-bg:#0c0f14;
+  --text:#ffffff;
+  --text-secondary:#b0b8c4;
   --primary:#58a6ff;
   --accent:#58a6ff;
-  --border:#21262d;
-  --divider:#21262d;
-  --input-bg:#0d1117;
+  --border:#1a1f28;
+  --divider:#1a1f28;
+  --input-bg:#050508;
   --green:#3fb950;
   --amber:#d29922;
   --red:#f85149;
-  --sidebar-bg:#0d1117;
+  --sidebar-bg:#050508;
   --sidebar-width:210px;
 }
 body.light{
@@ -37,9 +37,9 @@ body.light{
   --sidebar-bg:#f6f8fa;
 }
 *{box-sizing:border-box;}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background-color:var(--bg);background-image:linear-gradient(135deg,rgba(255,255,255,0.015) 0%,transparent 60%);color:var(--text);}
 /* HEADER */
-header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--card-bg);position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,0.3);}
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--card-bg) 0%,#0c0f14 100%);position:sticky;top:0;z-index:100;box-shadow:0 1px 8px rgba(0,0,0,0.5);}
 .logo{background:var(--primary);color:white;padding:8px 14px;border-radius:5px;font-weight:700;font-size:15px;letter-spacing:1px;}
 h1{margin:0;font-size:18px;color:var(--accent);font-weight:700;}
 .header-left{display:flex;align-items:center;gap:12px;}
@@ -48,9 +48,9 @@ h1{margin:0;font-size:18px;color:var(--accent);font-weight:700;}
 .layout{display:flex;min-height:calc(100vh - 53px);}
 /* SIDEBAR */
 .sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);border-right:1px solid var(--border);padding:10px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;flex-shrink:0;}
-.tab-btn{display:flex;align-items:center;width:100%;background:transparent;border:none;border-left:4px solid transparent;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-secondary);text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s;line-height:1.35;}
-.tab-btn:hover{background:rgba(88,166,255,0.08);color:var(--text);}
-body.light .tab-btn:hover{background:rgba(37,99,235,0.06);}
+.tab-btn{display:flex;align-items:center;width:calc(100% - 12px);margin:2px 6px;background:var(--tc);border:none;border-radius:6px;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:700;color:#fff;text-align:left;transition:filter 0.15s,transform 0.1s,box-shadow 0.15s;line-height:1.35;}
+.tab-btn:hover{filter:brightness(1.2);}
+body.light .tab-btn:hover{filter:brightness(0.9);}
 /* Per-tab accent colors */
 .tab-btn[data-section="sec-clinician"]{--tc:#3b82f6;}
 .tab-btn[data-section="sec-callhistory"]{--tc:#6366f1;}
@@ -65,11 +65,10 @@ body.light .tab-btn:hover{background:rgba(37,99,235,0.06);}
 .tab-btn[data-section="sec-atmist"]{--tc:#06b6d4;}
 .tab-btn[data-section="sec-outcome"]{--tc:#0ea5e9;}
 .tab-btn[data-section="sec-signoff"]{--tc:#94a3b8;}
-.tab-btn:hover{border-left-color:var(--tc);}
-.tab-btn.active{background:var(--tc);border-left-color:var(--tc);color:#fff;font-weight:700;}
+.tab-btn.active{filter:brightness(1.35);box-shadow:0 0 12px rgba(255,255,255,0.25);transform:scale(1.03);}
 /* CONTENT */
-.content{flex:1;padding:24px;overflow-y:auto;min-width:0;}
-.section{background:var(--card-bg);padding:22px;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.18);display:none;}
+.content{flex:1;padding:24px;overflow-y:auto;min-width:0;background-image:linear-gradient(135deg,rgba(255,255,255,0.015) 0%,transparent 60%);}
+.section{background:linear-gradient(160deg,var(--card-bg) 0%,#050508 100%);padding:22px;border:1px solid var(--border);border-top:1px solid rgba(255,255,255,0.06);border-left:5px solid var(--primary);border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,0.35);display:none;}
 .section.active-section{display:block;}
 /* Section border-left accent colours */
 #sec-clinician{border-left-color:#3b82f6;}
@@ -133,7 +132,7 @@ body:not(.light) .news2-table td.score0{background:#21262d;color:var(--text);}
 body:not(.light) .news2-table td.score1{background:#3d3020;color:var(--text);}
 body:not(.light) .news2-table td.score2{background:#4d3a1a;color:var(--text);}
 body:not(.light) .news2-table td.score3{background:#4d2020;color:var(--text);}
-body:not(.light) .news2-table td.empty{background:#161b22;color:#555;}
+body:not(.light) .news2-table td.empty{background:#0c0f14;color:#555;}
 .news2-param{text-align:left;font-weight:600;font-size:12px;background:var(--card-bg);}
 #news2Modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1000;}
 #news2ModalBackdrop{position:absolute;inset:0;background:rgba(0,0,0,0.7);cursor:pointer;}
