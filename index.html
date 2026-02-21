@@ -6,42 +6,91 @@
 <title>WMAS Practice PRF</title>
 <style>
 :root{
-  --primary:#005EB8; --bg:#f4f7fb; --card-bg:#fff; --text:#111; --border:#cfddea; --divider:#e6eef6;
-  --green:#2e7d32; --amber:#f9a825; --red:#c62828;
+  --bg:#171B22;
+  --card-bg:#1E2530;
+  --text:#F7F7F8;
+  --text-secondary:#B0B6BE;
+  --primary:#0072CE;
+  --accent:#FFD100;
+  --border:#2A3444;
+  --divider:#2A3444;
+  --input-bg:#232B35;
+  --green:#4CAF50;
+  --amber:#FF9800;
+  --red:#FF4B4B;
 }
-body.dark{
-  --bg:#1e1e1e; --card-bg:#2a2a2a; --text:#e0e0e0; --border:#555; --divider:#444;
+body.light{
+  --bg:#f0f2f5;
+  --card-bg:#ffffff;
+  --text:#1a1a2e;
+  --text-secondary:#555;
+  --primary:#0072CE;
+  --accent:#005EB8;
+  --border:#d0d7de;
+  --divider:#e6eef6;
+  --input-bg:#ffffff;
+  --green:#2e7d32;
+  --amber:#e65100;
+  --red:#c62828;
 }
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}
 .container{max-width:1000px;margin:25px auto;padding:20px;}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
-.logo{background:var(--primary);color:white;padding:8px 14px;border-radius:4px;font-weight:700;font-size:14px;}
-h1{margin:0;font-size:18px;color:var(--primary);}
-button{background:var(--primary);color:white;border:none;padding:8px 14px;border-radius:4px;cursor:pointer;font-weight:600;}
-.section{background:var(--card-bg);padding:18px;margin-bottom:18px;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:6px;transition:0.3s;}
-.section h2{margin:0 0 12px 0;font-size:15px;color:var(--primary);padding-bottom:6px;border-bottom:1px solid var(--divider);}
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid var(--border);}
+.logo{background:var(--primary);color:white;padding:10px 18px;border-radius:5px;font-weight:700;font-size:16px;letter-spacing:1px;}
+h1{margin:0;font-size:20px;color:var(--accent);font-weight:700;}
+button{background:var(--primary);color:white;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;font-weight:600;transition:filter 0.2s;}
+button:hover{filter:brightness(1.15);}
+#clearForm{background:transparent;border:2px solid var(--primary);color:var(--primary);}
+.section{background:var(--card-bg);padding:22px;margin-bottom:22px;border:1px solid var(--border);border-left:6px solid var(--primary);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.18);transition:0.3s;}
+.section h2{margin:0 0 14px 0;font-size:16px;color:var(--accent);padding-bottom:7px;border-bottom:1px solid var(--divider);}
 .field{margin-bottom:14px;}
-label{font-size:13px;font-weight:600;display:block;margin-bottom:5px;}
-textarea,input,select{width:100%;padding:6px;margin-bottom:8px;border-radius:4px;border:1px solid var(--border);box-sizing:border-box;font-size:14px;background:var(--card-bg);color:var(--text);}
+label{font-size:14px;font-weight:600;display:block;margin-bottom:5px;color:var(--text-secondary);}
+textarea,input,select{width:100%;padding:10px;margin-bottom:8px;border-radius:4px;border:1px solid var(--border);box-sizing:border-box;font-size:15px;background:var(--input-bg);color:var(--text);transition:box-shadow 0.2s,border-color 0.2s;}
+textarea:focus,input:focus,select:focus{outline:none;box-shadow:0 0 0 3px rgba(0,114,206,0.3);border-color:var(--primary);}
 textarea{resize:none;overflow:hidden;min-height:50px;}
-.signature-box{height:120px;border:1px solid var(--border);border-radius:4px;background:var(--card-bg);cursor:crosshair;}
+.signature-box{height:120px;border:1px solid var(--border);border-radius:4px;background:var(--input-bg);cursor:crosshair;}
 .result-box{font-weight:700;font-size:18px;margin-top:10px;}
-.sepsis-box{display:none;background:#330000;border:1px solid var(--red);padding:15px;margin-top:15px;border-radius:6px;}
+.sepsis-box{display:none;background:#330000;border:2px solid var(--red);padding:15px;margin-top:15px;border-radius:6px;}
 .sepsis-box h3{margin-top:0;color:var(--red);}
+.amber-box{display:none;background:#332200;border:2px solid var(--amber);padding:15px;margin-top:15px;border-radius:6px;}
+.amber-box h3{margin-top:0;color:var(--amber);}
 .image-preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
 .image-preview img{width:120px;border:1px solid var(--border);border-radius:4px;}
 table{width:100%;border-collapse:collapse;margin-bottom:10px;background:var(--card-bg);color:var(--text);}
-th,td{border:1px solid var(--border);padding:6px;text-align:center;font-size:13px;}
-th{background:var(--divider);}
+th,td{border:1px solid var(--border);padding:10px;text-align:center;font-size:13px;}
+th{background:var(--primary);color:#fff;}
+tr:nth-child(even) td{background:rgba(0,0,0,0.08);}
 .add-row-btn{margin-top:6px;background:var(--primary);color:white;}
-@media print{button,input[type=file]{display:none;}.section{page-break-inside:avoid;}}
+/* NEWS2 grid table */
+.news2-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
+.news2-table th{background:var(--primary);color:#fff;padding:8px 6px;font-size:13px;}
+.news2-table td{border:1px solid var(--border);padding:8px 5px;text-align:center;font-size:12px;cursor:default;}
+.news2-table td.clickable{cursor:pointer;}
+.news2-table td.clickable:hover{filter:brightness(1.12);}
+.news2-table td.selected{outline:3px solid var(--accent);outline-offset:-2px;font-weight:700;}
+.news2-table td.score0{background:#ffffff;color:#111;}
+.news2-table td.score1{background:#FFF3E0;color:#111;}
+.news2-table td.score2{background:#FFE0B2;color:#111;}
+.news2-table td.score3{background:#FFCDD2;color:#111;}
+.news2-table td.empty{background:#f5f5f5;color:#aaa;}
+body:not(.light) .news2-table td.score0{background:#2a3444;color:var(--text);}
+body:not(.light) .news2-table td.score1{background:#3d3020;color:var(--text);}
+body:not(.light) .news2-table td.score2{background:#4d3a1a;color:var(--text);}
+body:not(.light) .news2-table td.score3{background:#4d2020;color:var(--text);}
+body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
+.news2-param{text-align:left;font-weight:600;font-size:12px;background:var(--card-bg);}
+@media print{
+  button,input[type=file]{display:none;}
+  body{background:#fff;color:#111;}
+  .section{background:#fff;box-shadow:none;page-break-inside:avoid;}
+}
 </style>
 </head>
 <body>
 <div class="container">
 
 <header>
-  <div style="display:flex;align-items:center;gap:12px;">
+  <div style="display:flex;align-items:center;gap:14px;">
     <div class="logo">PRF</div>
     <h1>Practice PRF</h1>
   </div>
@@ -99,15 +148,108 @@ th{background:var(--divider);}
 
 <!-- NEWS2 -->
 <section class="section"><h2>NEWS2 &amp; Sepsis Monitoring</h2>
-<label for="rr">Respiratory Rate</label><input type="number" id="rr">
-<label for="spo2">Oxygen Saturation (%)</label><input type="number" id="spo2">
-<label for="temp">Temperature (°C)</label><input type="number" step="0.1" id="temp">
-<label for="sbp">Systolic BP (mmHg)</label><input type="number" id="sbp">
-<label for="hr">Heart Rate (bpm)</label><input type="number" id="hr">
-<label for="acvpu">Consciousness</label><select id="acvpu"><option value="0">Alert</option><option value="3">C/V/P/U</option></select>
+<table class="news2-table" id="news2Grid">
+<thead>
+<tr>
+  <th style="text-align:left;">Parameter</th>
+  <th>3</th><th>2</th><th>1</th><th>0</th><th>1</th><th>2</th><th>3</th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 0: Respiration Rate -->
+<tr>
+  <td class="news2-param">Respiration Rate</td>
+  <td class="clickable score3" data-row="0" data-score="3">≤8</td>
+  <td class="empty">—</td>
+  <td class="clickable score1" data-row="0" data-score="1">9–11</td>
+  <td class="clickable score0" data-row="0" data-score="0">12–20</td>
+  <td class="empty">—</td>
+  <td class="clickable score2" data-row="0" data-score="2">21–24</td>
+  <td class="clickable score3" data-row="0" data-score="3">≥25</td>
+</tr>
+<!-- Row 1: SpO2 Scale 1 -->
+<tr>
+  <td class="news2-param">SpO₂ Scale 1</td>
+  <td class="clickable score3" data-row="1" data-score="3">≤91</td>
+  <td class="clickable score2" data-row="1" data-score="2">92–93</td>
+  <td class="clickable score1" data-row="1" data-score="1">94–95</td>
+  <td class="clickable score0" data-row="1" data-score="0">≥96</td>
+  <td class="empty">—</td>
+  <td class="empty">—</td>
+  <td class="empty">—</td>
+</tr>
+<!-- Row 2: SpO2 Scale 2 -->
+<tr>
+  <td class="news2-param">SpO₂ Scale 2</td>
+  <td class="clickable score3" data-row="2" data-score="3">≤83</td>
+  <td class="clickable score2" data-row="2" data-score="2">84–85</td>
+  <td class="clickable score1" data-row="2" data-score="1">86–87</td>
+  <td class="clickable score0" data-row="2" data-score="0">88–92 ✦air</td>
+  <td class="clickable score1" data-row="2" data-score="1">93–94 ✦O₂</td>
+  <td class="clickable score2" data-row="2" data-score="2">95–96 ✦O₂</td>
+  <td class="clickable score3" data-row="2" data-score="3">≥97 ✦O₂</td>
+</tr>
+<!-- Row 3: Air or Oxygen -->
+<tr>
+  <td class="news2-param">Air or Oxygen</td>
+  <td class="empty">—</td>
+  <td class="empty">—</td>
+  <td class="empty">—</td>
+  <td class="clickable score0" data-row="3" data-score="0">Air</td>
+  <td class="empty">—</td>
+  <td class="clickable score2" data-row="3" data-score="2">Oxygen</td>
+  <td class="empty">—</td>
+</tr>
+<!-- Row 4: Systolic BP -->
+<tr>
+  <td class="news2-param">Systolic BP</td>
+  <td class="clickable score3" data-row="4" data-score="3">≤90</td>
+  <td class="clickable score2" data-row="4" data-score="2">91–100</td>
+  <td class="clickable score1" data-row="4" data-score="1">101–110</td>
+  <td class="clickable score0" data-row="4" data-score="0">111–219</td>
+  <td class="empty">—</td>
+  <td class="empty">—</td>
+  <td class="clickable score3" data-row="4" data-score="3">≥220</td>
+</tr>
+<!-- Row 5: Heart Rate -->
+<tr>
+  <td class="news2-param">Heart Rate</td>
+  <td class="clickable score3" data-row="5" data-score="3">≤40</td>
+  <td class="empty">—</td>
+  <td class="clickable score1" data-row="5" data-score="1">41–50</td>
+  <td class="clickable score0" data-row="5" data-score="0">51–90</td>
+  <td class="clickable score1" data-row="5" data-score="1">91–110</td>
+  <td class="clickable score2" data-row="5" data-score="2">111–130</td>
+  <td class="clickable score3" data-row="5" data-score="3">≥131</td>
+</tr>
+<!-- Row 6: Temperature -->
+<tr>
+  <td class="news2-param">Temperature</td>
+  <td class="clickable score3" data-row="6" data-score="3">≤35.0</td>
+  <td class="empty">—</td>
+  <td class="clickable score1" data-row="6" data-score="1">35.1–36.0</td>
+  <td class="clickable score0" data-row="6" data-score="0">36.1–38.0</td>
+  <td class="clickable score1" data-row="6" data-score="1">38.1–39.0</td>
+  <td class="clickable score2" data-row="6" data-score="2">≥39.1</td>
+  <td class="empty">—</td>
+</tr>
+<!-- Row 7: Consciousness -->
+<tr>
+  <td class="news2-param">Consciousness</td>
+  <td class="empty">—</td>
+  <td class="empty">—</td>
+  <td class="empty">—</td>
+  <td class="clickable score0" data-row="7" data-score="0">Alert</td>
+  <td class="empty">—</td>
+  <td class="empty">—</td>
+  <td class="clickable score3" data-row="7" data-score="3">CVPU</td>
+</tr>
+</tbody>
+</table>
 <div class="result-box">NEWS2 Score: <span id="newsScore">0</span></div>
-<div id="riskText"></div>
-<div class="sepsis-box" id="sepsisBox"><h3>🚨 Sepsis Screening Tool</h3>
+<div id="riskText" style="margin-top:8px;font-weight:600;"></div>
+<div class="amber-box" id="amberBox"><h3>⚠️ Medium Clinical Risk – Consider Escalation</h3></div>
+<div class="sepsis-box" id="sepsisBox"><h3>🚨 HIGH Clinical Risk – Sepsis Screening Required</h3>
 <textarea class="auto" placeholder="Suspected source of infection"></textarea>
 <h4>Sepsis 6 Checklist</h4>
 <label><input type="checkbox"> High-flow Oxygen</label><br>
@@ -215,8 +357,8 @@ document.querySelectorAll('textarea').forEach(t=>{
 let atmist=document.getElementById('atmistBox');
 atmist.addEventListener('focus',()=>{if(atmist.value.includes('Age')) atmist.value='';});
 
-// Dark/light toggle
-document.getElementById('modeToggle').addEventListener('click',()=>{document.body.classList.toggle('dark');});
+// Dark/light toggle — dark is default, body.light applies light theme
+document.getElementById('modeToggle').addEventListener('click',()=>{document.body.classList.toggle('light');updateSigStyle();});
 
 // GCS calculator
 ['eye','verbal','motor'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{
@@ -224,31 +366,47 @@ document.getElementById('modeToggle').addEventListener('click',()=>{document.bod
   document.getElementById('gcsScore').innerText=g;
 }));
 
-// NEWS2 calculator
-function scoreRR(r){return r<=8?3:r<=11?1:r<=20?0:r<=24?2:3;}
-function scoreSpO2(s){return s<=91?3:s<=93?2:s<=95?1:0;}
-function scoreTemp(t){return t<=35?3:t<=36?1:t<=38?0:t<=39?1:2;}
-function scoreSBP(s){return s<=90?3:s<=100?2:s<=110?1:s<=219?0:3;}
-function scoreHR(h){return h<=40?3:h<=50?1:h<=90?0:h<=110?1:h<=130?2:3;}
+// NEWS2 interactive grid
+const news2Selections={};
 function calcNEWS2(){
-  let rrVal=document.getElementById('rr').value,
-      spo2Val=document.getElementById('spo2').value,
-      tVal=document.getElementById('temp').value,
-      sbpVal=document.getElementById('sbp').value,
-      hrVal=document.getElementById('hr').value,
-      rr=rrVal!==''?parseFloat(rrVal):null,
-      spo2=spo2Val!==''?parseFloat(spo2Val):null,
-      t=tVal!==''?parseFloat(tVal):null,
-      sbp=sbpVal!==''?parseFloat(sbpVal):null,
-      hr=hrVal!==''?parseFloat(hrVal):null,
-      acvpu=parseInt(document.getElementById('acvpu').value)||0,
-      total=(rr!==null?scoreRR(rr):0)+(spo2!==null?scoreSpO2(spo2):0)+(t!==null?scoreTemp(t):0)+(sbp!==null?scoreSBP(sbp):0)+(hr!==null?scoreHR(hr):0)+acvpu,
-      sepsisTrigger=(total>=5);
+  let total=0;
+  Object.values(news2Selections).forEach(v=>{total+=parseInt(v);});
   document.getElementById('newsScore').innerText=total;
-  document.getElementById('sepsisBox').style.display=sepsisTrigger?'block':'none';
-  document.getElementById('riskText').innerHTML=sepsisTrigger?"<strong style='color:#c62828;'>Sepsis criteria met</strong>":"";
+  const riskText=document.getElementById('riskText');
+  const sepsisBox=document.getElementById('sepsisBox');
+  const amberBox=document.getElementById('amberBox');
+  if(total>=7){
+    riskText.innerHTML='';
+    amberBox.style.display='none';
+    sepsisBox.style.display='block';
+  } else if(total>=5){
+    riskText.innerHTML='';
+    sepsisBox.style.display='none';
+    amberBox.style.display='block';
+  } else {
+    sepsisBox.style.display='none';
+    amberBox.style.display='none';
+    riskText.innerHTML=total>0?"<span style='color:var(--green)'>Low / Medium clinical risk</span>":"";
+  }
+  saveForm();
 }
-['rr','spo2','temp','sbp','hr','acvpu'].forEach(id=>document.getElementById(id).addEventListener('input',calcNEWS2));
+
+document.querySelectorAll('#news2Grid td.clickable').forEach(cell=>{
+  cell.addEventListener('click',()=>{
+    const row=cell.dataset.row;
+    const score=cell.dataset.score;
+    const wasSelected=cell.classList.contains('selected');
+    // Remove all selections in this row
+    document.querySelectorAll('#news2Grid td.clickable[data-row="'+row+'"]').forEach(c=>c.classList.remove('selected'));
+    delete news2Selections[row];
+    // If cell wasn't selected, select it now (toggle off if already selected)
+    if(!wasSelected){
+      news2Selections[row]=score;
+      cell.classList.add('selected');
+    }
+    calcNEWS2();
+  });
+});
 
 // Image preview – accumulates uploaded images (does not clear previous uploads)
 function previewImages(event,id){
@@ -305,10 +463,22 @@ function addDrugRow(){
 
 // Signature pad
 const canvas=document.getElementById('signatureCanvas');
-canvas.width=canvas.offsetWidth;
-canvas.height=canvas.offsetHeight;
 const ctx=canvas.getContext('2d');
 let drawing=false;
+
+function updateSigStyle(){
+  const isLight=document.body.classList.contains('light');
+  ctx.strokeStyle=isLight?'#111':'#F7F7F8';
+  ctx.lineWidth=2;
+  ctx.lineCap='round';
+}
+
+// Defer canvas sizing so dimensions are correct on load
+requestAnimationFrame(()=>{
+  canvas.width=canvas.offsetWidth;
+  canvas.height=canvas.offsetHeight;
+  updateSigStyle();
+});
 
 // Mouse events
 canvas.addEventListener('mousedown',e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);});
@@ -336,6 +506,7 @@ window.addEventListener('resize',()=>{
     const imgData=ctx.getImageData(0,0,canvas.width,canvas.height);
     canvas.width=canvas.offsetWidth;
     canvas.height=canvas.offsetHeight;
+    updateSigStyle();
     ctx.putImageData(imgData,0,0);
   },150);
 });
@@ -345,6 +516,7 @@ function saveForm(){
   document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{
     localStorage.setItem('prf_'+el.id,el.value);
   });
+  localStorage.setItem('prf_news2sel',JSON.stringify(news2Selections));
 }
 function restoreForm(){
   document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{
@@ -354,11 +526,22 @@ function restoreForm(){
       if(el.tagName==='TEXTAREA'){el.style.height='auto';el.style.height=el.scrollHeight+'px';}
     }
   });
+  const savedSel=localStorage.getItem('prf_news2sel');
+  if(savedSel){
+    try{
+      const sel=JSON.parse(savedSel);
+      Object.entries(sel).forEach(([row,score])=>{
+        news2Selections[row]=score;
+        const cell=document.querySelector('#news2Grid td.clickable[data-row="'+row+'"][data-score="'+score+'"]');
+        if(cell) cell.classList.add('selected');
+      });
+    }catch(e){console.error('Failed to restore NEWS2 selections:',e);}
+  }
 }
 document.addEventListener('input',saveForm);
 document.addEventListener('change',saveForm);
 restoreForm();
-// Re-trigger GCS display after restore (handler reads all three fields at once)
+// Re-trigger GCS display after restore
 document.getElementById('eye').dispatchEvent(new Event('change'));
 calcNEWS2();
 
