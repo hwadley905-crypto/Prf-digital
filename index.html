@@ -79,8 +79,21 @@ body:not(.light) .news2-table td.score2{background:#4d3a1a;color:var(--text);}
 body:not(.light) .news2-table td.score3{background:#4d2020;color:var(--text);}
 body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 .news2-param{text-align:left;font-weight:600;font-size:12px;background:var(--card-bg);}
+#news2Modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1000;}
+#news2ModalBackdrop{position:absolute;inset:0;background:rgba(0,0,0,0.7);cursor:pointer;}
+#news2ModalContent{position:relative;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:20px;max-width:95vw;max-height:90vh;overflow-y:auto;width:700px;z-index:1;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+#news2ModalContent h3{margin:0 0 12px 0;color:var(--accent);}
+.news2-cell-btn{background:var(--input-bg);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:6px 10px;cursor:pointer;font-weight:700;min-width:40px;font-size:14px;transition:filter 0.2s;}
+.news2-cell-btn:hover{filter:brightness(1.15);}
+.news2-risk-green{background:var(--green)!important;}
+.news2-risk-green .news2-cell-btn{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important;}
+.news2-risk-amber{background:var(--amber)!important;}
+.news2-risk-amber .news2-cell-btn{background:var(--amber)!important;color:#fff!important;border-color:var(--amber)!important;}
+.news2-risk-red{background:var(--red)!important;}
+.news2-risk-red .news2-cell-btn{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important;}
 @media print{
   button,input[type=file]{display:none;}
+  .news2-cell-btn{display:inline!important;background:none!important;border:none!important;color:#111!important;padding:0!important;font-size:13px!important;cursor:default!important;}
   body{background:#fff;color:#111;}
   .section{background:#fff;box-shadow:none;page-break-inside:avoid;}
 }
@@ -146,121 +159,6 @@ body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 <div class="result-box">Total GCS: <span id="gcsScore">15</span></div>
 </section>
 
-<!-- NEWS2 -->
-<section class="section"><h2>NEWS2 &amp; Sepsis Monitoring</h2>
-<table class="news2-table" id="news2Grid">
-<thead>
-<tr>
-  <th style="text-align:left;">Parameter</th>
-  <th>3</th><th>2</th><th>1</th><th>0</th><th>1</th><th>2</th><th>3</th>
-</tr>
-</thead>
-<tbody>
-<!-- Row 0: Respiration Rate -->
-<tr>
-  <td class="news2-param">Respiration Rate</td>
-  <td class="clickable score3" data-row="0" data-score="3">≤8</td>
-  <td class="empty">—</td>
-  <td class="clickable score1" data-row="0" data-score="1">9–11</td>
-  <td class="clickable score0" data-row="0" data-score="0">12–20</td>
-  <td class="empty">—</td>
-  <td class="clickable score2" data-row="0" data-score="2">21–24</td>
-  <td class="clickable score3" data-row="0" data-score="3">≥25</td>
-</tr>
-<!-- Row 1: SpO2 Scale 1 -->
-<tr>
-  <td class="news2-param">SpO₂ Scale 1</td>
-  <td class="clickable score3" data-row="1" data-score="3">≤91</td>
-  <td class="clickable score2" data-row="1" data-score="2">92–93</td>
-  <td class="clickable score1" data-row="1" data-score="1">94–95</td>
-  <td class="clickable score0" data-row="1" data-score="0">≥96</td>
-  <td class="empty">—</td>
-  <td class="empty">—</td>
-  <td class="empty">—</td>
-</tr>
-<!-- Row 2: SpO2 Scale 2 -->
-<tr>
-  <td class="news2-param">SpO₂ Scale 2</td>
-  <td class="clickable score3" data-row="2" data-score="3">≤83</td>
-  <td class="clickable score2" data-row="2" data-score="2">84–85</td>
-  <td class="clickable score1" data-row="2" data-score="1">86–87</td>
-  <td class="clickable score0" data-row="2" data-score="0">88–92 ✦air</td>
-  <td class="clickable score1" data-row="2" data-score="1">93–94 ✦O₂</td>
-  <td class="clickable score2" data-row="2" data-score="2">95–96 ✦O₂</td>
-  <td class="clickable score3" data-row="2" data-score="3">≥97 ✦O₂</td>
-</tr>
-<!-- Row 3: Air or Oxygen -->
-<tr>
-  <td class="news2-param">Air or Oxygen</td>
-  <td class="empty">—</td>
-  <td class="empty">—</td>
-  <td class="empty">—</td>
-  <td class="clickable score0" data-row="3" data-score="0">Air</td>
-  <td class="empty">—</td>
-  <td class="clickable score2" data-row="3" data-score="2">Oxygen</td>
-  <td class="empty">—</td>
-</tr>
-<!-- Row 4: Systolic BP -->
-<tr>
-  <td class="news2-param">Systolic BP</td>
-  <td class="clickable score3" data-row="4" data-score="3">≤90</td>
-  <td class="clickable score2" data-row="4" data-score="2">91–100</td>
-  <td class="clickable score1" data-row="4" data-score="1">101–110</td>
-  <td class="clickable score0" data-row="4" data-score="0">111–219</td>
-  <td class="empty">—</td>
-  <td class="empty">—</td>
-  <td class="clickable score3" data-row="4" data-score="3">≥220</td>
-</tr>
-<!-- Row 5: Heart Rate -->
-<tr>
-  <td class="news2-param">Heart Rate</td>
-  <td class="clickable score3" data-row="5" data-score="3">≤40</td>
-  <td class="empty">—</td>
-  <td class="clickable score1" data-row="5" data-score="1">41–50</td>
-  <td class="clickable score0" data-row="5" data-score="0">51–90</td>
-  <td class="clickable score1" data-row="5" data-score="1">91–110</td>
-  <td class="clickable score2" data-row="5" data-score="2">111–130</td>
-  <td class="clickable score3" data-row="5" data-score="3">≥131</td>
-</tr>
-<!-- Row 6: Temperature -->
-<tr>
-  <td class="news2-param">Temperature</td>
-  <td class="clickable score3" data-row="6" data-score="3">≤35.0</td>
-  <td class="empty">—</td>
-  <td class="clickable score1" data-row="6" data-score="1">35.1–36.0</td>
-  <td class="clickable score0" data-row="6" data-score="0">36.1–38.0</td>
-  <td class="clickable score1" data-row="6" data-score="1">38.1–39.0</td>
-  <td class="clickable score2" data-row="6" data-score="2">≥39.1</td>
-  <td class="empty">—</td>
-</tr>
-<!-- Row 7: Consciousness -->
-<tr>
-  <td class="news2-param">Consciousness</td>
-  <td class="empty">—</td>
-  <td class="empty">—</td>
-  <td class="empty">—</td>
-  <td class="clickable score0" data-row="7" data-score="0">Alert</td>
-  <td class="empty">—</td>
-  <td class="empty">—</td>
-  <td class="clickable score3" data-row="7" data-score="3">CVPU</td>
-</tr>
-</tbody>
-</table>
-<div class="result-box">NEWS2 Score: <span id="newsScore">0</span></div>
-<div id="riskText" style="margin-top:8px;font-weight:600;"></div>
-<div class="amber-box" id="amberBox"><h3>⚠️ Medium Clinical Risk – Consider Escalation</h3></div>
-<div class="sepsis-box" id="sepsisBox"><h3>🚨 HIGH Clinical Risk – Sepsis Screening Required</h3>
-<textarea class="auto" placeholder="Suspected source of infection"></textarea>
-<h4>Sepsis 6 Checklist</h4>
-<label><input type="checkbox"> High-flow Oxygen</label><br>
-<label><input type="checkbox"> Blood Cultures</label><br>
-<label><input type="checkbox"> IV Antibiotics</label><br>
-<label><input type="checkbox"> IV Fluids</label><br>
-<label><input type="checkbox"> Lactate Measurement</label><br>
-<label><input type="checkbox"> Monitor Urine Output</label><br>
-</div>
-</section>
-
 <!-- Secondary Survey -->
 <section class="section"><h2>Secondary Survey</h2>
 <div class="field"><label for="neuro">Neurological</label><textarea id="neuro" class="auto"></textarea></div>
@@ -286,10 +184,11 @@ body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 <th>Date</th><th>Time</th><th>Resp Rate</th><th>Pulse</th><th>SpO2</th><th>Temp</th><th>BP</th><th>HR</th><th>ETCO2</th><th>ACVPU</th><th>GCS</th><th>Pupils</th><th>NEWS2</th>
 </tr>
 <tr>
-<td><input type="date"></td><td><input type="time"></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td>
+<td><input type="date"></td><td><input type="time"></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td data-news2row="0"><button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">—</button></td>
 </tr>
 </table>
 <button class="add-row-btn" onclick="addObsRow()">Add Observation Row</button>
+<div id="news2AlertArea" style="margin-top:10px;"></div>
 </section>
 
 <!-- Interventions Table -->
@@ -345,6 +244,100 @@ Treatment</textarea>
 
 </div><!-- end .container -->
 
+<!-- NEWS2 Modal -->
+<div id="news2Modal" style="display:none;">
+  <div id="news2ModalBackdrop"></div>
+  <div id="news2ModalContent">
+    <h3>NEWS2 Score Entry</h3>
+    <table class="news2-table" id="news2ModalGrid">
+    <thead><tr>
+      <th style="text-align:left;">Parameter</th>
+      <th>3</th><th>2</th><th>1</th><th>0</th><th>1</th><th>2</th><th>3</th>
+    </tr></thead>
+    <tbody>
+    <tr>
+      <td class="news2-param">Respiration Rate</td>
+      <td class="clickable score3" data-row="0" data-score="3">≤8</td>
+      <td class="empty">—</td>
+      <td class="clickable score1" data-row="0" data-score="1">9–11</td>
+      <td class="clickable score0" data-row="0" data-score="0">12–20</td>
+      <td class="empty">—</td>
+      <td class="clickable score2" data-row="0" data-score="2">21–24</td>
+      <td class="clickable score3" data-row="0" data-score="3">≥25</td>
+    </tr>
+    <tr>
+      <td class="news2-param">SpO₂ Scale 1</td>
+      <td class="clickable score3" data-row="1" data-score="3">≤91</td>
+      <td class="clickable score2" data-row="1" data-score="2">92–93</td>
+      <td class="clickable score1" data-row="1" data-score="1">94–95</td>
+      <td class="clickable score0" data-row="1" data-score="0">≥96</td>
+      <td class="empty">—</td><td class="empty">—</td><td class="empty">—</td>
+    </tr>
+    <tr>
+      <td class="news2-param">SpO₂ Scale 2</td>
+      <td class="clickable score3" data-row="2" data-score="3">≤83</td>
+      <td class="clickable score2" data-row="2" data-score="2">84–85</td>
+      <td class="clickable score1" data-row="2" data-score="1">86–87</td>
+      <td class="clickable score0" data-row="2" data-score="0">88–92 ✦air</td>
+      <td class="clickable score1" data-row="2" data-score="1">93–94 ✦O₂</td>
+      <td class="clickable score2" data-row="2" data-score="2">95–96 ✦O₂</td>
+      <td class="clickable score3" data-row="2" data-score="3">≥97 ✦O₂</td>
+    </tr>
+    <tr>
+      <td class="news2-param">Air or Oxygen</td>
+      <td class="empty">—</td><td class="empty">—</td><td class="empty">—</td>
+      <td class="clickable score0" data-row="3" data-score="0">Air</td>
+      <td class="empty">—</td>
+      <td class="clickable score2" data-row="3" data-score="2">Oxygen</td>
+      <td class="empty">—</td>
+    </tr>
+    <tr>
+      <td class="news2-param">Systolic BP</td>
+      <td class="clickable score3" data-row="4" data-score="3">≤90</td>
+      <td class="clickable score2" data-row="4" data-score="2">91–100</td>
+      <td class="clickable score1" data-row="4" data-score="1">101–110</td>
+      <td class="clickable score0" data-row="4" data-score="0">111–219</td>
+      <td class="empty">—</td><td class="empty">—</td>
+      <td class="clickable score3" data-row="4" data-score="3">≥220</td>
+    </tr>
+    <tr>
+      <td class="news2-param">Heart Rate</td>
+      <td class="clickable score3" data-row="5" data-score="3">≤40</td>
+      <td class="empty">—</td>
+      <td class="clickable score1" data-row="5" data-score="1">41–50</td>
+      <td class="clickable score0" data-row="5" data-score="0">51–90</td>
+      <td class="clickable score1" data-row="5" data-score="1">91–110</td>
+      <td class="clickable score2" data-row="5" data-score="2">111–130</td>
+      <td class="clickable score3" data-row="5" data-score="3">≥131</td>
+    </tr>
+    <tr>
+      <td class="news2-param">Temperature</td>
+      <td class="clickable score3" data-row="6" data-score="3">≤35.0</td>
+      <td class="empty">—</td>
+      <td class="clickable score1" data-row="6" data-score="1">35.1–36.0</td>
+      <td class="clickable score0" data-row="6" data-score="0">36.1–38.0</td>
+      <td class="clickable score1" data-row="6" data-score="1">38.1–39.0</td>
+      <td class="clickable score2" data-row="6" data-score="2">≥39.1</td>
+      <td class="empty">—</td>
+    </tr>
+    <tr>
+      <td class="news2-param">Consciousness</td>
+      <td class="empty">—</td><td class="empty">—</td><td class="empty">—</td>
+      <td class="clickable score0" data-row="7" data-score="0">Alert</td>
+      <td class="empty">—</td><td class="empty">—</td>
+      <td class="clickable score3" data-row="7" data-score="3">CVPU</td>
+    </tr>
+    </tbody>
+    </table>
+    <div class="result-box">NEWS2 Score: <span id="news2ModalScore">0</span></div>
+    <div id="news2ModalRisk" style="margin-top:8px;font-weight:600;"></div>
+    <div style="margin-top:14px;display:flex;gap:8px;">
+      <button type="button" id="news2DoneBtn">Done</button>
+      <button type="button" id="news2CancelBtn" style="background:transparent;border:2px solid var(--primary);color:var(--primary);">Cancel</button>
+    </div>
+  </div>
+</div>
+
 <script>
 // Auto-expand textareas
 document.querySelectorAll('textarea').forEach(t=>{
@@ -366,46 +359,97 @@ document.getElementById('modeToggle').addEventListener('click',()=>{document.bod
   document.getElementById('gcsScore').innerText=g;
 }));
 
-// NEWS2 interactive grid
-const news2Selections={};
-function calcNEWS2(){
+// NEWS2 per-row popup modal
+let news2RowCounter=1; // 0 is reserved for the initial HTML row
+const news2RowSelections={}; // { rowId: { paramRow: score, ... } }
+let activeNews2RowId=null;
+let currentModalSel={};
+
+function openNews2Modal(rowId){
+  activeNews2RowId=rowId;
+  currentModalSel={...(news2RowSelections[rowId]||{})};
+  refreshModalGrid();
+  document.getElementById('news2Modal').style.display='flex';
+}
+function refreshModalGrid(){
+  document.querySelectorAll('#news2ModalGrid td.clickable').forEach(cell=>{
+    cell.classList.toggle('selected',currentModalSel[cell.dataset.row]===cell.dataset.score);
+  });
+  updateModalScore();
+}
+function updateModalScore(){
   let total=0;
-  Object.values(news2Selections).forEach(v=>{total+=parseInt(v);});
-  document.getElementById('newsScore').innerText=total;
-  const riskText=document.getElementById('riskText');
-  const sepsisBox=document.getElementById('sepsisBox');
-  const amberBox=document.getElementById('amberBox');
-  if(total>=7){
-    riskText.innerHTML='';
-    amberBox.style.display='none';
-    sepsisBox.style.display='block';
-  } else if(total>=5){
-    riskText.innerHTML='';
-    sepsisBox.style.display='none';
-    amberBox.style.display='block';
-  } else {
-    sepsisBox.style.display='none';
-    amberBox.style.display='none';
-    riskText.innerHTML=total>0?"<span style='color:var(--green)'>Low / Medium clinical risk</span>":"";
+  Object.values(currentModalSel).forEach(v=>{total+=parseInt(v);});
+  document.getElementById('news2ModalScore').textContent=total;
+  const riskEl=document.getElementById('news2ModalRisk');
+  if(total>=7) riskEl.innerHTML="<span style='color:var(--red)'>High Clinical Risk</span>";
+  else if(total>=5) riskEl.innerHTML="<span style='color:var(--amber)'>Medium Clinical Risk</span>";
+  else riskEl.innerHTML=total>0?"<span style='color:var(--green)'>Low Clinical Risk</span>":'';
+}
+function closeNews2Modal(save){
+  if(save&&activeNews2RowId!==null){
+    news2RowSelections[activeNews2RowId]={...currentModalSel};
+    let total=0;
+    Object.values(currentModalSel).forEach(v=>{total+=parseInt(v);});
+    const td=document.querySelector('[data-news2row="'+activeNews2RowId+'"]');
+    if(td){
+      const btn=td.querySelector('.news2-cell-btn');
+      btn.textContent=String(total);
+      td.classList.remove('news2-risk-green','news2-risk-amber','news2-risk-red');
+      if(total>=7) td.classList.add('news2-risk-red');
+      else if(total>=5) td.classList.add('news2-risk-amber');
+      else td.classList.add('news2-risk-green');
+    }
+    updateRiskAlerts(total);
+    saveForm();
   }
-  saveForm();
+  document.getElementById('news2Modal').style.display='none';
+  activeNews2RowId=null;
+}
+function updateRiskAlerts(score){
+  const area=document.getElementById('news2AlertArea');
+  if(score>=7){
+    area.innerHTML='<div class="sepsis-box" style="display:block"><h3>🚨 HIGH Clinical Risk – Sepsis Screening Required</h3>'
+      +'<textarea class="auto" placeholder="Suspected source of infection" style="min-height:50px;resize:none;overflow:hidden;" oninput="this.style.height=\'auto\';this.style.height=this.scrollHeight+\'px\'"></textarea>'
+      +'<h4>Sepsis 6 Checklist</h4>'
+      +'<label><input type="checkbox"> High-flow Oxygen</label><br>'
+      +'<label><input type="checkbox"> Blood Cultures</label><br>'
+      +'<label><input type="checkbox"> IV Antibiotics</label><br>'
+      +'<label><input type="checkbox"> IV Fluids</label><br>'
+      +'<label><input type="checkbox"> Lactate Measurement</label><br>'
+      +'<label><input type="checkbox"> Monitor Urine Output</label><br>'
+      +'</div>';
+  } else if(score>=5){
+    area.innerHTML='<div class="amber-box" style="display:block"><h3>⚠️ Medium Clinical Risk – Consider Escalation</h3></div>';
+  } else {
+    area.innerHTML='';
+  }
 }
 
-document.querySelectorAll('#news2Grid td.clickable').forEach(cell=>{
-  cell.addEventListener('click',()=>{
-    const row=cell.dataset.row;
-    const score=cell.dataset.score;
-    const wasSelected=cell.classList.contains('selected');
-    // Remove all selections in this row
-    document.querySelectorAll('#news2Grid td.clickable[data-row="'+row+'"]').forEach(c=>c.classList.remove('selected'));
-    delete news2Selections[row];
-    // If cell wasn't selected, select it now (toggle off if already selected)
-    if(!wasSelected){
-      news2Selections[row]=score;
-      cell.classList.add('selected');
-    }
-    calcNEWS2();
-  });
+// Modal grid click handler
+document.getElementById('news2ModalGrid').addEventListener('click',e=>{
+  const cell=e.target.closest('td.clickable');
+  if(!cell) return;
+  const row=cell.dataset.row;
+  const score=cell.dataset.score;
+  const wasSelected=cell.classList.contains('selected');
+  document.querySelectorAll('#news2ModalGrid td.clickable[data-row="'+row+'"]').forEach(c=>c.classList.remove('selected'));
+  delete currentModalSel[row];
+  if(!wasSelected){currentModalSel[row]=score;cell.classList.add('selected');}
+  updateModalScore();
+});
+
+// Modal buttons
+document.getElementById('news2DoneBtn').addEventListener('click',()=>closeNews2Modal(true));
+document.getElementById('news2CancelBtn').addEventListener('click',()=>closeNews2Modal(false));
+document.getElementById('news2ModalBackdrop').addEventListener('click',()=>closeNews2Modal(false));
+
+// Obs table: open modal on news2-cell-btn click (event delegation)
+document.getElementById('obsTable').addEventListener('click',e=>{
+  const btn=e.target.closest('.news2-cell-btn');
+  if(!btn) return;
+  const td=btn.closest('[data-news2row]');
+  if(td) openNews2Modal(td.dataset.news2row);
 });
 
 // Image preview – accumulates uploaded images (does not clear previous uploads)
@@ -426,13 +470,23 @@ function previewImages(event,id){
 function addObsRow(){
   const table=document.getElementById('obsTable');
   const row=table.insertRow();
-  const types=['date','time','text','text','text','text','text','text','text','text','text','text','text'];
+  const types=['date','time','text','text','text','text','text','text','text','text','text','text'];
   types.forEach(t=>{
     const cell=row.insertCell();
     const input=document.createElement('input');
     input.type=t;
     cell.appendChild(input);
   });
+  // NEWS2 cell
+  const rowId=String(news2RowCounter++);
+  const td=row.insertCell();
+  td.dataset.news2row=rowId;
+  const btn=document.createElement('button');
+  btn.type='button';
+  btn.className='news2-cell-btn';
+  btn.textContent='—';
+  btn.setAttribute('aria-label','Open NEWS2 scoring modal');
+  td.appendChild(btn);
 }
 
 // Add intervention row
@@ -516,7 +570,7 @@ function saveForm(){
   document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{
     localStorage.setItem('prf_'+el.id,el.value);
   });
-  localStorage.setItem('prf_news2sel',JSON.stringify(news2Selections));
+  localStorage.setItem('prf_news2rows',JSON.stringify(news2RowSelections));
 }
 function restoreForm(){
   document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{
@@ -526,16 +580,24 @@ function restoreForm(){
       if(el.tagName==='TEXTAREA'){el.style.height='auto';el.style.height=el.scrollHeight+'px';}
     }
   });
-  const savedSel=localStorage.getItem('prf_news2sel');
-  if(savedSel){
+  const savedRows=localStorage.getItem('prf_news2rows');
+  if(savedRows){
     try{
-      const sel=JSON.parse(savedSel);
-      Object.entries(sel).forEach(([row,score])=>{
-        news2Selections[row]=score;
-        const cell=document.querySelector('#news2Grid td.clickable[data-row="'+row+'"][data-score="'+score+'"]');
-        if(cell) cell.classList.add('selected');
+      const data=JSON.parse(savedRows);
+      Object.entries(data).forEach(([rowId,sel])=>{
+        news2RowSelections[rowId]=sel;
+        const td=document.querySelector('[data-news2row="'+rowId+'"]');
+        if(!td) return;
+        let total=0;
+        Object.values(sel).forEach(v=>{total+=parseInt(v);});
+        const btn=td.querySelector('.news2-cell-btn');
+        if(btn) btn.textContent=String(total);
+        td.classList.remove('news2-risk-green','news2-risk-amber','news2-risk-red');
+        if(total>=7) td.classList.add('news2-risk-red');
+        else if(total>=5) td.classList.add('news2-risk-amber');
+        else if(total>0) td.classList.add('news2-risk-green');
       });
-    }catch(e){console.error('Failed to restore NEWS2 selections:',e);}
+    }catch(e){console.error('Failed to restore NEWS2 rows:',e);}
   }
 }
 document.addEventListener('input',saveForm);
@@ -543,7 +605,6 @@ document.addEventListener('change',saveForm);
 restoreForm();
 // Re-trigger GCS display after restore
 document.getElementById('eye').dispatchEvent(new Event('change'));
-calcNEWS2();
 
 // Clear Form button
 document.getElementById('clearForm').addEventListener('click',()=>{
