@@ -6,62 +6,118 @@
 <title>WMAS Practice PRF</title>
 <style>
 :root{
-  --bg:#171B22;
-  --card-bg:#1E2530;
-  --text:#F7F7F8;
-  --text-secondary:#B0B6BE;
-  --primary:#0072CE;
-  --accent:#FFD100;
-  --border:#2A3444;
-  --divider:#2A3444;
-  --input-bg:#232B35;
-  --green:#4CAF50;
-  --amber:#FF9800;
-  --red:#FF4B4B;
+  --bg:#0d1117;
+  --card-bg:#161b22;
+  --text:#f0f6fc;
+  --text-secondary:#8b949e;
+  --primary:#58a6ff;
+  --accent:#58a6ff;
+  --border:#21262d;
+  --divider:#21262d;
+  --input-bg:#0d1117;
+  --green:#3fb950;
+  --amber:#d29922;
+  --red:#f85149;
+  --sidebar-bg:#0d1117;
+  --sidebar-width:210px;
 }
 body.light{
-  --bg:#f0f2f5;
+  --bg:#f6f8fa;
   --card-bg:#ffffff;
-  --text:#1a1a2e;
-  --text-secondary:#555;
-  --primary:#0072CE;
-  --accent:#005EB8;
+  --text:#1f2937;
+  --text-secondary:#6b7280;
+  --primary:#2563eb;
+  --accent:#0969da;
   --border:#d0d7de;
-  --divider:#e6eef6;
+  --divider:#d0d7de;
   --input-bg:#ffffff;
-  --green:#2e7d32;
-  --amber:#e65100;
-  --red:#c62828;
+  --green:#1a7f37;
+  --amber:#9a6700;
+  --red:#cf222e;
+  --sidebar-bg:#f6f8fa;
 }
+*{box-sizing:border-box;}
 body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text);}
-.container{max-width:1000px;margin:25px auto;padding:20px;}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid var(--border);}
-.logo{background:var(--primary);color:white;padding:10px 18px;border-radius:5px;font-weight:700;font-size:16px;letter-spacing:1px;}
-h1{margin:0;font-size:20px;color:var(--accent);font-weight:700;}
-button{background:var(--primary);color:white;border:none;padding:10px 18px;border-radius:6px;cursor:pointer;font-weight:600;transition:filter 0.2s;}
-button:hover{filter:brightness(1.15);}
-#clearForm{background:transparent;border:2px solid var(--primary);color:var(--primary);}
-.section{background:var(--card-bg);padding:22px;margin-bottom:22px;border:1px solid var(--border);border-left:6px solid var(--primary);border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,0.18);transition:0.3s;}
-.section h2{margin:0 0 14px 0;font-size:16px;color:var(--accent);padding-bottom:7px;border-bottom:1px solid var(--divider);}
+/* HEADER */
+header{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border);background:var(--card-bg);position:sticky;top:0;z-index:100;box-shadow:0 1px 6px rgba(0,0,0,0.3);}
+.logo{background:var(--primary);color:white;padding:8px 14px;border-radius:5px;font-weight:700;font-size:15px;letter-spacing:1px;}
+h1{margin:0;font-size:18px;color:var(--accent);font-weight:700;}
+.header-left{display:flex;align-items:center;gap:12px;}
+.header-right{display:flex;gap:8px;align-items:center;}
+/* LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 53px);}
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);border-right:1px solid var(--border);padding:10px 0;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;flex-shrink:0;}
+.tab-btn{display:flex;align-items:center;width:100%;background:transparent;border:none;border-left:4px solid transparent;padding:10px 14px;cursor:pointer;font-size:13px;font-weight:500;color:var(--text-secondary);text-align:left;transition:background 0.15s,border-color 0.15s,color 0.15s;line-height:1.35;}
+.tab-btn:hover{background:rgba(88,166,255,0.08);color:var(--text);}
+body.light .tab-btn:hover{background:rgba(37,99,235,0.06);}
+/* Per-tab accent colors */
+.tab-btn[data-section="sec-clinician"]{--tc:#3b82f6;}
+.tab-btn[data-section="sec-callhistory"]{--tc:#6366f1;}
+.tab-btn[data-section="sec-patient"]{--tc:#8b5cf6;}
+.tab-btn[data-section="sec-primary"]{--tc:#ec4899;}
+.tab-btn[data-section="sec-gcs"]{--tc:#f43f5e;}
+.tab-btn[data-section="sec-secondary"]{--tc:#f97316;}
+.tab-btn[data-section="sec-obs"]{--tc:#eab308;}
+.tab-btn[data-section="sec-interventions"]{--tc:#84cc16;}
+.tab-btn[data-section="sec-drugs"]{--tc:#22c55e;}
+.tab-btn[data-section="sec-bodymap"]{--tc:#14b8a6;}
+.tab-btn[data-section="sec-atmist"]{--tc:#06b6d4;}
+.tab-btn[data-section="sec-outcome"]{--tc:#0ea5e9;}
+.tab-btn[data-section="sec-signoff"]{--tc:#94a3b8;}
+.tab-btn:hover{border-left-color:var(--tc);}
+.tab-btn.active{background:var(--tc);border-left-color:var(--tc);color:#fff;font-weight:700;}
+/* CONTENT */
+.content{flex:1;padding:24px;overflow-y:auto;min-width:0;}
+.section{background:var(--card-bg);padding:22px;border:1px solid var(--border);border-left:5px solid var(--primary);border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,0.18);display:none;}
+.section.active-section{display:block;}
+/* Section border-left accent colours */
+#sec-clinician{border-left-color:#3b82f6;}
+#sec-callhistory{border-left-color:#6366f1;}
+#sec-patient{border-left-color:#8b5cf6;}
+#sec-primary{border-left-color:#ec4899;}
+#sec-gcs{border-left-color:#f43f5e;}
+#sec-secondary{border-left-color:#f97316;}
+#sec-obs{border-left-color:#eab308;}
+#sec-interventions{border-left-color:#84cc16;}
+#sec-drugs{border-left-color:#22c55e;}
+#sec-bodymap{border-left-color:#14b8a6;}
+#sec-atmist{border-left-color:#06b6d4;}
+#sec-outcome{border-left-color:#0ea5e9;}
+#sec-signoff{border-left-color:#94a3b8;}
+.section h2{margin:0 0 16px 0;font-size:16px;color:var(--text);padding-bottom:8px;border-bottom:1px solid var(--divider);}
 .field{margin-bottom:14px;}
-label{font-size:14px;font-weight:600;display:block;margin-bottom:5px;color:var(--text-secondary);}
-textarea,input,select{width:100%;padding:10px;margin-bottom:8px;border-radius:4px;border:1px solid var(--border);box-sizing:border-box;font-size:15px;background:var(--input-bg);color:var(--text);transition:box-shadow 0.2s,border-color 0.2s;}
-textarea:focus,input:focus,select:focus{outline:none;box-shadow:0 0 0 3px rgba(0,114,206,0.3);border-color:var(--primary);}
+label{font-size:13px;font-weight:600;display:block;margin-bottom:4px;color:var(--text-secondary);}
+textarea,input,select{width:100%;padding:9px 12px;margin-bottom:8px;border-radius:6px;border:1px solid var(--border);font-size:14px;background:var(--input-bg);color:var(--text);transition:box-shadow 0.2s,border-color 0.2s;}
+textarea:focus,input:focus,select:focus{outline:none;box-shadow:0 0 0 3px rgba(88,166,255,0.22);border-color:var(--primary);}
+body.light textarea:focus,body.light input:focus,body.light select:focus{box-shadow:0 0 0 3px rgba(37,99,235,0.18);}
 textarea{resize:none;overflow:hidden;min-height:50px;}
-.signature-box{height:120px;border:1px solid var(--border);border-radius:4px;background:var(--input-bg);cursor:crosshair;}
-.result-box{font-weight:700;font-size:18px;margin-top:10px;}
-.sepsis-box{display:none;background:#330000;border:2px solid var(--red);padding:15px;margin-top:15px;border-radius:6px;}
+.result-box{font-weight:700;font-size:17px;margin-top:10px;}
+.sepsis-box{display:none;background:rgba(248,81,73,0.1);border:2px solid var(--red);padding:15px;margin-top:15px;border-radius:8px;}
 .sepsis-box h3{margin-top:0;color:var(--red);}
-.amber-box{display:none;background:#332200;border:2px solid var(--amber);padding:15px;margin-top:15px;border-radius:6px;}
+.amber-box{display:none;background:rgba(210,153,34,0.1);border:2px solid var(--amber);padding:15px;margin-top:15px;border-radius:8px;}
 .amber-box h3{margin-top:0;color:var(--amber);}
 .image-preview{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;}
-.image-preview img{width:120px;border:1px solid var(--border);border-radius:4px;}
+.image-preview img{width:120px;border:1px solid var(--border);border-radius:6px;}
+/* TABLES */
 table{width:100%;border-collapse:collapse;margin-bottom:10px;background:var(--card-bg);color:var(--text);}
-th,td{border:1px solid var(--border);padding:10px;text-align:center;font-size:13px;}
+th,td{border:1px solid var(--border);padding:8px 10px;text-align:center;font-size:13px;}
 th{background:var(--primary);color:#fff;}
-tr:nth-child(even) td{background:rgba(0,0,0,0.08);}
-.add-row-btn{margin-top:6px;background:var(--primary);color:white;}
-/* NEWS2 grid table */
+tr:nth-child(even) td{background:rgba(0,0,0,0.05);}
+body.light tr:nth-child(even) td{background:rgba(0,0,0,0.03);}
+.add-row-btn{margin-top:8px;background:var(--primary);color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;transition:filter 0.2s;}
+.add-row-btn:hover{filter:brightness(1.15);}
+/* CLEAR ROW BUTTON */
+.clear-row-btn{background:none;border:none;color:var(--red);cursor:pointer;font-size:17px;padding:2px 5px;border-radius:4px;line-height:1;transition:background 0.15s;}
+.clear-row-btn:hover{background:rgba(248,81,73,0.15);}
+/* BUTTONS */
+button{background:var(--primary);color:white;border:none;padding:9px 16px;border-radius:6px;cursor:pointer;font-weight:600;font-size:14px;transition:filter 0.2s;}
+button:hover{filter:brightness(1.15);}
+#clearForm{background:transparent;border:2px solid var(--primary);color:var(--primary);}
+#clearForm:hover{background:rgba(88,166,255,0.1);filter:none;}
+body.light #clearForm:hover{background:rgba(37,99,235,0.08);filter:none;}
+.signature-box{height:120px;border:1px solid var(--border);border-radius:6px;background:var(--input-bg);cursor:crosshair;display:block;}
+/* NEWS2 */
 .news2-table{width:100%;border-collapse:collapse;margin-bottom:14px;}
 .news2-table th{background:var(--primary);color:#fff;padding:8px 6px;font-size:13px;}
 .news2-table td{border:1px solid var(--border);padding:8px 5px;text-align:center;font-size:12px;cursor:default;}
@@ -73,59 +129,95 @@ tr:nth-child(even) td{background:rgba(0,0,0,0.08);}
 .news2-table td.score2{background:#FFE0B2;color:#111;}
 .news2-table td.score3{background:#FFCDD2;color:#111;}
 .news2-table td.empty{background:#f5f5f5;color:#aaa;}
-body:not(.light) .news2-table td.score0{background:#2a3444;color:var(--text);}
+body:not(.light) .news2-table td.score0{background:#21262d;color:var(--text);}
 body:not(.light) .news2-table td.score1{background:#3d3020;color:var(--text);}
 body:not(.light) .news2-table td.score2{background:#4d3a1a;color:var(--text);}
 body:not(.light) .news2-table td.score3{background:#4d2020;color:var(--text);}
-body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
+body:not(.light) .news2-table td.empty{background:#161b22;color:#555;}
 .news2-param{text-align:left;font-weight:600;font-size:12px;background:var(--card-bg);}
 #news2Modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1000;}
 #news2ModalBackdrop{position:absolute;inset:0;background:rgba(0,0,0,0.7);cursor:pointer;}
-#news2ModalContent{position:relative;background:var(--card-bg);border:1px solid var(--border);border-radius:8px;padding:20px;max-width:95vw;max-height:90vh;overflow-y:auto;width:700px;z-index:1;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
+#news2ModalContent{position:relative;background:var(--card-bg);border:1px solid var(--border);border-radius:10px;padding:20px;max-width:95vw;max-height:90vh;overflow-y:auto;width:700px;z-index:1;box-shadow:0 8px 32px rgba(0,0,0,0.5);}
 #news2ModalContent h3{margin:0 0 12px 0;color:var(--accent);}
-.news2-cell-btn{background:var(--input-bg);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:6px 10px;cursor:pointer;font-weight:700;min-width:40px;font-size:14px;transition:filter 0.2s;}
+.news2-cell-btn{background:var(--input-bg);color:var(--text);border:1px solid var(--border);border-radius:4px;padding:5px 8px;cursor:pointer;font-weight:700;min-width:36px;font-size:13px;transition:filter 0.2s;}
 .news2-cell-btn:hover{filter:brightness(1.15);}
-.news2-risk-green{background:var(--green)!important;}
+.news2-risk-green{background:rgba(63,185,80,0.15)!important;}
 .news2-risk-green .news2-cell-btn{background:var(--green)!important;color:#fff!important;border-color:var(--green)!important;}
-.news2-risk-amber{background:var(--amber)!important;}
+.news2-risk-amber{background:rgba(210,153,34,0.15)!important;}
 .news2-risk-amber .news2-cell-btn{background:var(--amber)!important;color:#fff!important;border-color:var(--amber)!important;}
-.news2-risk-red{background:var(--red)!important;}
+.news2-risk-red{background:rgba(248,81,73,0.15)!important;}
 .news2-risk-red .news2-cell-btn{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important;}
+/* HAMBURGER / MOBILE */
+.hamburger{display:none;background:none;border:1px solid var(--border);color:var(--text);padding:5px 9px;border-radius:6px;cursor:pointer;font-size:18px;}
+.hamburger:hover{background:rgba(88,166,255,0.08);filter:none;}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;}
+@media(max-width:768px){
+  .hamburger{display:inline-flex;}
+  .sidebar{position:fixed;left:-220px;top:0;height:100vh;z-index:200;transition:left 0.25s;background:var(--card-bg);border-right:1px solid var(--border);}
+  .sidebar.open{left:0;}
+  .sidebar-overlay.open{display:block;}
+  .content{padding:16px;}
+  .layout{display:block;}
+}
 @media print{
-  button,input[type=file]{display:none;}
+  button,input[type=file],.hamburger,.sidebar,.sidebar-overlay{display:none!important;}
+  .layout{display:block;}
+  .content{padding:0;}
+  .section{display:block!important;background:#fff;box-shadow:none;page-break-inside:avoid;margin-bottom:20px;border:1px solid #ccc;border-left:4px solid #999;}
   .news2-cell-btn{display:inline!important;background:none!important;border:none!important;color:#111!important;padding:0!important;font-size:13px!important;cursor:default!important;}
   body{background:#fff;color:#111;}
-  .section{background:#fff;box-shadow:none;page-break-inside:avoid;}
+  header{position:static;box-shadow:none;}
 }
 </style>
 </head>
 <body>
-<div class="container">
 
 <header>
-  <div style="display:flex;align-items:center;gap:14px;">
+  <div class="header-left">
+    <button class="hamburger" id="hamburger">☰</button>
     <div class="logo">PRF</div>
     <h1>Practice PRF</h1>
   </div>
-  <div style="display:flex;gap:8px;">
+  <div class="header-right">
     <button onclick="window.print()">Print / Save PDF</button>
     <button id="clearForm">Clear Form</button>
     <button id="modeToggle">Toggle Dark/Light</button>
   </div>
 </header>
 
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="layout">
+<nav class="sidebar" id="sidebar">
+  <button class="tab-btn active" data-section="sec-clinician">Clinician Details</button>
+  <button class="tab-btn" data-section="sec-callhistory">Call History / Incident Details</button>
+  <button class="tab-btn" data-section="sec-patient">Patient Details</button>
+  <button class="tab-btn" data-section="sec-primary">Primary Survey – DRCABCDE</button>
+  <button class="tab-btn" data-section="sec-gcs">GCS Calculator</button>
+  <button class="tab-btn" data-section="sec-secondary">Secondary Survey</button>
+  <button class="tab-btn" data-section="sec-obs">Patient Observations</button>
+  <button class="tab-btn" data-section="sec-interventions">Interventions</button>
+  <button class="tab-btn" data-section="sec-drugs">Drugs Administered</button>
+  <button class="tab-btn" data-section="sec-bodymap">Body Map / Injury Documentation</button>
+  <button class="tab-btn" data-section="sec-atmist">ATMIST Pre-Alert</button>
+  <button class="tab-btn" data-section="sec-outcome">Outcome of Case</button>
+  <button class="tab-btn" data-section="sec-signoff">Sign Off</button>
+</nav>
+
+<main class="content">
+
 <!-- Clinician Details -->
-<section class="section"><h2>Clinician Details</h2>
+<section class="section active-section" id="sec-clinician"><h2>Clinician Details</h2>
 <div class="field"><textarea id="clinicianNotes" class="auto" placeholder="Clinician notes / team ID"></textarea></div>
 </section>
 
 <!-- Call History -->
-<section class="section"><h2>Call History / Incident Details</h2>
+<section class="section" id="sec-callhistory"><h2>Call History / Incident Details</h2>
 <div class="field"><textarea id="callHistory" class="auto"></textarea></div>
 </section>
 
 <!-- Patient Details -->
-<section class="section"><h2>Patient Details</h2>
+<section class="section" id="sec-patient"><h2>Patient Details</h2>
 <div class="field"><label for="dob">Date of Birth</label><input type="date" id="dob"></div>
 <div class="field"><label for="allergies">Allergies</label><textarea id="allergies" class="auto"></textarea></div>
 <div class="field"><label for="nextOfKin">Next of Kin</label><textarea id="nextOfKin" class="auto"></textarea></div>
@@ -140,7 +232,7 @@ body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 </section>
 
 <!-- Primary Survey -->
-<section class="section"><h2>Primary Survey – DRCABCDE</h2>
+<section class="section" id="sec-primary"><h2>Primary Survey – DRCABCDE</h2>
 <div class="field"><label for="danger">(D) Danger &amp; SMART Assessment</label><textarea id="danger" class="auto"></textarea></div>
 <div class="field"><label for="responsiveness">(R) Responsiveness</label><textarea id="responsiveness" class="auto"></textarea></div>
 <div class="field"><label for="catHaem">(C) Catastrophic Haemorrhage / C-Spine</label><textarea id="catHaem" class="auto"></textarea></div>
@@ -152,7 +244,7 @@ body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 </section>
 
 <!-- GCS -->
-<section class="section"><h2>GCS Calculator</h2>
+<section class="section" id="sec-gcs"><h2>GCS Calculator</h2>
 <label for="eye">Eye Response</label><select id="eye"><option value="4">4 – Spontaneous</option><option value="3">3 – To Voice</option><option value="2">2 – To Pain</option><option value="1">1 – None</option></select>
 <label for="verbal">Verbal Response</label><select id="verbal"><option value="5">5 – Oriented</option><option value="4">4 – Confused</option><option value="3">3 – Inappropriate Words</option><option value="2">2 – Incomprehensible</option><option value="1">1 – None</option></select>
 <label for="motor">Motor Response</label><select id="motor"><option value="6">6 – Obeys Commands</option><option value="5">5 – Localises Pain</option><option value="4">4 – Withdraws</option><option value="3">3 – Flexion</option><option value="2">2 – Extension</option><option value="1">1 – None</option></select>
@@ -160,7 +252,7 @@ body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 </section>
 
 <!-- Secondary Survey -->
-<section class="section"><h2>Secondary Survey</h2>
+<section class="section" id="sec-secondary"><h2>Secondary Survey</h2>
 <div class="field"><label for="neuro">Neurological</label><textarea id="neuro" class="auto"></textarea></div>
 <div class="field"><label for="respiratory">Respiratory</label><textarea id="respiratory" class="auto"></textarea></div>
 <div class="field"><label for="cardiology">Cardiology and ECGs</label><textarea id="cardiology" class="auto"></textarea></div>
@@ -178,13 +270,13 @@ body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 </section>
 
 <!-- Patient Observations Table -->
-<section class="section"><h2>Patient Observations</h2>
+<section class="section" id="sec-obs"><h2>Patient Observations</h2>
 <table id="obsTable">
 <tr>
-<th>Date</th><th>Time</th><th>Resp Rate</th><th>Pulse</th><th>SpO2</th><th>Temp</th><th>BP</th><th>HR</th><th>ETCO2</th><th>ACVPU</th><th>GCS</th><th>Pupils</th><th>NEWS2</th>
+<th>Date</th><th>Time</th><th>Resp Rate</th><th>Pulse</th><th>SpO2</th><th>Temp</th><th>BP</th><th>HR</th><th>ETCO2</th><th>ACVPU</th><th>GCS</th><th>Pupils</th><th>NEWS2</th><th aria-label="Actions"></th>
 </tr>
 <tr>
-<td><input type="date"></td><td><input type="time"></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td data-news2row="0"><button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">—</button></td>
+<td><input type="date"></td><td><input type="time"></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td data-news2row="0"><button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">—</button></td><td><button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">✕</button></td>
 </tr>
 </table>
 <button class="add-row-btn" onclick="addObsRow()">Add Observation Row</button>
@@ -192,25 +284,25 @@ body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 </section>
 
 <!-- Interventions Table -->
-<section class="section"><h2>Interventions</h2>
+<section class="section" id="sec-interventions"><h2>Interventions</h2>
 <table id="interventionsTable">
-<tr><th>Time</th><th>Type</th><th>Location</th><th>Outcome</th><th>Clinician</th><th>Reason</th></tr>
-<tr><td><input type="time"></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td></tr>
+<tr><th>Time</th><th>Type</th><th>Location</th><th>Outcome</th><th>Clinician</th><th>Reason</th><th aria-label="Actions"></th></tr>
+<tr><td><input type="time"></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">✕</button></td></tr>
 </table>
 <button class="add-row-btn" onclick="addInterventionRow()">Add Intervention Row</button>
 </section>
 
 <!-- Drugs Table -->
-<section class="section"><h2>Drugs Administered</h2>
+<section class="section" id="sec-drugs"><h2>Drugs Administered</h2>
 <table id="drugsTable">
-<tr><th>Name</th><th>Type</th><th>Location</th><th>Outcome</th><th>Reactions</th><th>Expiry</th><th>Batch Code</th></tr>
-<tr><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input type="date"></td><td><input></td></tr>
+<tr><th>Name</th><th>Type</th><th>Location</th><th>Outcome</th><th>Reactions</th><th>Expiry</th><th>Batch Code</th><th aria-label="Actions"></th></tr>
+<tr><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input type="date"></td><td><input></td><td><button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">✕</button></td></tr>
 </table>
 <button class="add-row-btn" onclick="addDrugRow()">Add Drug Row</button>
 </section>
 
 <!-- Body Map -->
-<section class="section"><h2>Body Map / Injury Documentation</h2>
+<section class="section" id="sec-bodymap"><h2>Body Map / Injury Documentation</h2>
 <textarea id="bodyMapNotes" placeholder="Describe injury locations..." class="auto"></textarea>
 <label>Upload Body Map Image</label>
 <input type="file" accept="image/*" multiple onchange="previewImages(event,'bodyPreview')">
@@ -218,7 +310,7 @@ body:not(.light) .news2-table td.empty{background:#1a1f28;color:#555;}
 </section>
 
 <!-- ATMIST -->
-<section class="section"><h2>ATMIST Pre-Alert</h2>
+<section class="section" id="sec-atmist"><h2>ATMIST Pre-Alert</h2>
 <textarea id="atmistBox" class="auto">Age
 Time of incident/onset
 Mechanism / Complaint
@@ -228,12 +320,12 @@ Treatment</textarea>
 </section>
 
 <!-- Outcome of case -->
-<section class="section"><h2>Outcome of Case</h2>
+<section class="section" id="sec-outcome"><h2>Outcome of Case</h2>
 <textarea id="outcome" class="auto"></textarea>
 </section>
 
 <!-- Signature -->
-<section class="section"><h2>Sign Off</h2>
+<section class="section" id="sec-signoff"><h2>Sign Off</h2>
 <div class="field"><label for="clinicianName">Clinician Name</label><input type="text" id="clinicianName"></div>
 <div class="field"><label for="clinicianRole">Role</label><input type="text" id="clinicianRole"></div>
 <div class="field"><label for="clinicianPin">Professional PIN</label><input type="text" id="clinicianPin"></div>
@@ -242,7 +334,8 @@ Treatment</textarea>
 <div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
 </section>
 
-</div><!-- end .container -->
+</main>
+</div><!-- end .layout -->
 
 <!-- NEWS2 Modal -->
 <div id="news2Modal" style="display:none;">
@@ -351,7 +444,7 @@ let atmist=document.getElementById('atmistBox');
 atmist.addEventListener('focus',()=>{if(atmist.value.includes('Age')) atmist.value='';});
 
 // Dark/light toggle — dark is default, body.light applies light theme
-document.getElementById('modeToggle').addEventListener('click',()=>{document.body.classList.toggle('light');updateSigStyle();});
+document.getElementById('modeToggle').addEventListener('click',()=>{document.body.classList.toggle('light');updateSigStyle();localStorage.setItem('prf_mode',document.body.classList.contains('light')?'light':'dark');});
 
 // GCS calculator
 ['eye','verbal','motor'].forEach(id=>document.getElementById(id).addEventListener('change',()=>{
@@ -359,9 +452,61 @@ document.getElementById('modeToggle').addEventListener('click',()=>{document.bod
   document.getElementById('gcsScore').innerText=g;
 }));
 
-// NEWS2 per-row popup modal
-let news2RowCounter=1; // 0 is reserved for the initial HTML row
-const news2RowSelections={}; // { rowId: { paramRow: score, ... } }
+// ── TAB / SIDEBAR ──────────────────────────────────────────────────
+function showTab(sectionId){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active-section'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  const sec=document.getElementById(sectionId);
+  if(sec) sec.classList.add('active-section');
+  const btn=document.querySelector('.tab-btn[data-section="'+sectionId+'"]');
+  if(btn) btn.classList.add('active');
+  localStorage.setItem('prf_activeTab',sectionId);
+  // close mobile sidebar
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>showTab(btn.dataset.section));
+});
+
+// Hamburger
+document.getElementById('hamburger').addEventListener('click',()=>{
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('open');
+});
+document.getElementById('sidebarOverlay').addEventListener('click',()=>{
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('open');
+});
+
+// ── CLEAR ROW ──────────────────────────────────────────────────────
+function clearRow(btn){
+  const row=btn.closest('tr');
+  const table=row.closest('table');
+  // Count data rows (rows.length - 1 for header)
+  const dataRowCount=table.rows.length-1;
+  if(dataRowCount<=1){
+    // Clear inputs but keep the row
+    row.querySelectorAll('input').forEach(i=>i.value='');
+    // Reset NEWS2 cell if present
+    const news2td=row.querySelector('[data-news2row]');
+    if(news2td){
+      const rowId=news2td.dataset.news2row;
+      delete news2RowSelections[rowId];
+      const nb=news2td.querySelector('.news2-cell-btn');
+      if(nb) nb.textContent='—';
+      news2td.classList.remove('news2-risk-green','news2-risk-amber','news2-risk-red');
+    }
+  } else {
+    row.remove();
+  }
+  saveForm();
+}
+
+// ── NEWS2 ──────────────────────────────────────────────────────────
+let news2RowCounter=1;
+const news2RowSelections={};
 let activeNews2RowId=null;
 let currentModalSel={};
 
@@ -452,7 +597,7 @@ document.getElementById('obsTable').addEventListener('click',e=>{
   if(td) openNews2Modal(td.dataset.news2row);
 });
 
-// Image preview – accumulates uploaded images (does not clear previous uploads)
+// Image preview
 function previewImages(event,id){
   const preview=document.getElementById(id);
   for(const file of event.target.files){
@@ -487,6 +632,15 @@ function addObsRow(){
   btn.textContent='—';
   btn.setAttribute('aria-label','Open NEWS2 scoring modal');
   td.appendChild(btn);
+  // Clear row cell
+  const clearTd=row.insertCell();
+  const clearBtn=document.createElement('button');
+  clearBtn.type='button';
+  clearBtn.className='clear-row-btn';
+  clearBtn.textContent='✕';
+  clearBtn.title='Clear row';
+  clearBtn.addEventListener('click',()=>clearRow(clearBtn));
+  clearTd.appendChild(clearBtn);
 }
 
 // Add intervention row
@@ -500,6 +654,14 @@ function addInterventionRow(){
     input.type=t;
     cell.appendChild(input);
   });
+  const clearTd=row.insertCell();
+  const clearBtn=document.createElement('button');
+  clearBtn.type='button';
+  clearBtn.className='clear-row-btn';
+  clearBtn.textContent='✕';
+  clearBtn.title='Clear row';
+  clearBtn.addEventListener('click',()=>clearRow(clearBtn));
+  clearTd.appendChild(clearBtn);
 }
 
 // Add drug row
@@ -513,6 +675,14 @@ function addDrugRow(){
     input.type=t;
     cell.appendChild(input);
   });
+  const clearTd=row.insertCell();
+  const clearBtn=document.createElement('button');
+  clearBtn.type='button';
+  clearBtn.className='clear-row-btn';
+  clearBtn.textContent='✕';
+  clearBtn.title='Clear row';
+  clearBtn.addEventListener('click',()=>clearRow(clearBtn));
+  clearTd.appendChild(clearBtn);
 }
 
 // Signature pad
@@ -522,25 +692,22 @@ let drawing=false;
 
 function updateSigStyle(){
   const isLight=document.body.classList.contains('light');
-  ctx.strokeStyle=isLight?'#111':'#F7F7F8';
+  ctx.strokeStyle=isLight?'#111':'#f0f6fc';
   ctx.lineWidth=2;
   ctx.lineCap='round';
 }
 
-// Defer canvas sizing so dimensions are correct on load
 requestAnimationFrame(()=>{
   canvas.width=canvas.offsetWidth;
   canvas.height=canvas.offsetHeight;
   updateSigStyle();
 });
 
-// Mouse events
 canvas.addEventListener('mousedown',e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);});
 canvas.addEventListener('mousemove',e=>{if(!drawing)return;ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();});
 canvas.addEventListener('mouseup',()=>drawing=false);
 canvas.addEventListener('mouseleave',()=>drawing=false);
 
-// Touch events
 function getTouchPos(e){
   const rect=canvas.getBoundingClientRect();
   return{x:e.touches[0].clientX-rect.left,y:e.touches[0].clientY-rect.top};
@@ -549,10 +716,8 @@ canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p
 canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=getTouchPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();},{passive:false});
 canvas.addEventListener('touchend',e=>{e.preventDefault();drawing=false;},{passive:false});
 
-// Clear signature
 document.getElementById('clearSig').addEventListener('click',()=>ctx.clearRect(0,0,canvas.width,canvas.height));
 
-// Canvas resize – save and restore drawing data
 let resizeTimer;
 window.addEventListener('resize',()=>{
   clearTimeout(resizeTimer);
@@ -573,6 +738,13 @@ function saveForm(){
   localStorage.setItem('prf_news2rows',JSON.stringify(news2RowSelections));
 }
 function restoreForm(){
+  // Restore mode
+  const savedMode=localStorage.getItem('prf_mode');
+  if(savedMode==='light') document.body.classList.add('light');
+  // Restore active tab
+  const savedTab=localStorage.getItem('prf_activeTab');
+  if(savedTab&&document.getElementById(savedTab)) showTab(savedTab);
+  // Restore field values
   document.querySelectorAll('input[id],textarea[id],select[id]').forEach(el=>{
     const saved=localStorage.getItem('prf_'+el.id);
     if(saved!==null){
