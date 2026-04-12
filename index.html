@@ -68,8 +68,9 @@ body.light .content{background-image:none;background-color:#ffffff;}
 body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);border:1px solid #90c8f5;border-left:5px solid #90c8f5;}
 .section.active-section{display:block;}
 #sec-clinician{border-left-color:#3b82f6;}
-#sec-callhistory{border-left-color:#6366f1;}
-#sec-patient{border-left-color:#8b5cf6;}
+#sec-signoff{border-left-color:#94a3b8;}
+#sec-opencase{border-left-color:#10b981;}
+body.light .tab-btn[data-section="sec-opencase"]{color:#000000 !important;}
 #sec-als{border-left-color:#ff6b6b;}
 body.light .tab-btn[data-section="sec-als"]{color:#000000 !important;}
 #sec-primary{border-left-color:#ec4899;}
@@ -258,6 +259,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <button class="tab-btn" data-section="sec-conveyance">Conveyance</button>
   <button class="tab-btn" data-section="sec-outcome">Outcome</button>
   <button class="tab-btn" data-section="sec-signoff">Sign Off</button>
+  <button class="tab-btn" data-section="sec-opencase">Open Case</button>
 </nav>
 
 <main class="content">
@@ -468,12 +470,18 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="clinicianName">Clinician Name</label><input type="text" id="clinicianName"></div>
 <div class="field"><label for="clinicianRole">Role</label><input type="text" id="clinicianRole"></div>
 <div class="field"><label for="clinicianPin">Professional PIN</label><input type="text" id="clinicianPin"></div>
+<div class="field"><label for="signDate">Date</label><input type="date" id="signDate"></div>
+<div class="field"><label for="signTime">Time</label><input type="time" id="signTime"></div>
+<div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
+</section>
+
+<section class="section" id="sec-opencase"><h2>Open Case</h2>
 <div class="field">
-  <label for="openCase">Open Case</label>
+  <label for="openCase">Select Saved Case</label>
   <select id="openCase" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px; background:var(--input-bg); color:var(--text);">
     <option value="">Select a case to reopen...</option>
   </select>
-  <button type="button" onclick="reopenCase()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Reopen & Edit</button>
+  <button type="button" onclick="reopenAndEditCase()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Reopen & Edit</button>
 </div>
 
 <div class="field">
@@ -491,9 +499,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   </select>
   <button type="button" onclick="browseCloudStorage()" style="background:var(--amber); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Browse Cloud</button>
 </div>
-<div class="field"><label for="signDate">Date</label><input type="date" id="signDate"></div>
-<div class="field"><label for="signTime">Time</label><input type="time" id="signTime"></div>
-<div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
 </section>
 
 </main>
@@ -1282,6 +1287,22 @@ function loadCaseFile(){
   }
 }
 
+function reopenAndEditCase(){
+  const fileInput = document.getElementById('uploadCase');
+  const file = fileInput.files[0];
+  
+  if(file){
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const content = e.target.result;
+      parseAndLoadCase(content);
+    };
+    reader.readAsText(file);
+  } else {
+    alert('Please select a case file first.');
+  }
+}
+
 function parseCaseFile(content){
   try {
     // Simple parsing logic - in real implementation, this would be more sophisticated
@@ -1304,7 +1325,39 @@ function parseCaseFile(content){
     if(caseData.dob) document.getElementById('dob').value = caseData.dob;
     if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
     
-    alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}`);
+    alert(`Case file uploaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}`);
+    
+    // Add to local storage for later use
+    localStorage.setItem(`prf_case_${Date.now()}`, JSON.stringify(caseData));
+    
+  } catch(error) {
+    alert('Error parsing case file: ' + error.message);
+  }
+}
+
+function parseAndLoadCase(content){
+  try {
+    // Simple parsing logic - in real implementation, this would be more sophisticated
+    const lines = content.split('\n');
+    const caseData = {};
+    
+    lines.forEach(line => {
+      if(line.includes('Patient Name:')) {
+        caseData.patientName = line.split(':')[1].trim();
+      } else if(line.includes('Date of Birth:')) {
+        caseData.dob = line.split(':')[1].trim();
+      } else if(line.includes('Allergies:')) {
+        caseData.allergies = line.split(':')[1].trim();
+      }
+      // Add more parsing logic as needed
+    });
+    
+    // Populate form fields with parsed data
+    if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
+    if(caseData.dob) document.getElementById('dob').value = caseData.dob;
+    if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
+    
+    alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\n\nYou can now edit this case and save changes.`);
     
     // Add to local storage for later use
     localStorage.setItem(`prf_case_${Date.now()}`, JSON.stringify(caseData));
