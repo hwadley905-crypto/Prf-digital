@@ -170,6 +170,13 @@ body:not(.light) .news2-table td.empty{background:#0c0f14;color:#555;}
 .gcs-risk-amber .news2-cell-btn{background:var(--amber)!important;color:#fff!important;border-color:var(--amber)!important;}
 .gcs-risk-red{background:rgba(248,81,73,0.15)!important;}
 .gcs-risk-red .news2-cell-btn{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important;}
+.gcs-alert{position:absolute;top:100%;left:0;right:0;background:var(--card-bg);border:2px solid var(--red);border-radius:8px;padding:15px;margin-top:5px;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3);max-width:300px;}
+.gcs-alert.amber{border-color:var(--amber);}
+.gcs-alert h4{margin:0 0 10px 0;color:var(--red);font-size:14px;}
+.gcs-alert.amber h4{color:var(--amber);}
+.gcs-alert p{margin:5px 0;font-size:12px;color:var(--text);}
+.gcs-alert-close{position:absolute;top:5px;right:5px;background:none;border:none;color:var(--text);cursor:pointer;font-size:16px;padding:2px;}
+.gcs-alert-close:hover{color:var(--red);}
 .hamburger{display:none;background:none;border:1px solid var(--border);color:var(--text);padding:5px 9px;border-radius:6px;cursor:pointer;font-size:18px;}
 .hamburger:hover{background:rgba(88,166,255,0.08);filter:none;}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;}
@@ -295,7 +302,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 <section class="section" id="sec-traumatools"><h2>Silver Trauma Tool</h2>
 
-<h3>Silver Trauma</h3>
 <div class="trauma-flow">
   <div class="trauma-box">
     <h4>Is the patient above 65 years of age and has a history of falls from standing height?</h4>
@@ -628,11 +634,47 @@ function closeGcsModal(save){
       if(total<=8) gcsTd.classList.add('gcs-risk-red');
       else if(total<=12) gcsTd.classList.add('gcs-risk-amber');
       else gcsTd.classList.add('gcs-risk-green');
+      
+      // Show alert pop-up for amber or red scores
+      if(total<=12){
+        showGcsAlert(gcsTd, total);
+      }
+      
       saveForm();
     }
   }
   document.getElementById('gcsModal').classList.remove('open');
   activeGcsRowId=null;
+}
+
+function showGcsAlert(cell, score){
+  // Remove existing alerts
+  const existingAlert = cell.querySelector('.gcs-alert');
+  if(existingAlert) existingAlert.remove();
+  
+  // Create alert element
+  const alert = document.createElement('div');
+  alert.className = score <= 8 ? 'gcs-alert' : 'gcs-alert amber';
+  
+  const alertContent = score <= 8 
+    ? `<h4>RED ALERT - GCS ${score}</h4>
+       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="GCS Red Alert Protocol" style="width:100%; max-width:250px; height:auto; border-radius:4px; margin:5px 0;">`
+    : `<h4>AMBER ALERT - GCS ${score}</h4>
+       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="GCS Amber Alert Protocol" style="width:100%; max-width:250px; height:auto; border-radius:4px; margin:5px 0;">`;
+  
+  alert.innerHTML = `
+    ${alertContent}
+    <button class="gcs-alert-close" onclick="this.parentElement.remove()">×</button>
+  `;
+  
+  // Position alert below the cell
+  cell.style.position = 'relative';
+  cell.appendChild(alert);
+  
+  // Auto-hide after 10 seconds
+  setTimeout(() => {
+    if(alert.parentElement) alert.remove();
+  }, 10000);
 }
 
 document.getElementById('gcsModal').addEventListener('click',e=>{
