@@ -1289,17 +1289,28 @@ function loadCaseFile(){
 }
 
 function uploadAndLoadCase(){
+  console.log('uploadAndLoadCase called');
   const fileInput = document.getElementById('uploadCase');
   const file = fileInput.files[0];
   
+  console.log('Selected file:', file);
+  
   if(file){
+    console.log('File found, reading content...');
     const reader = new FileReader();
     reader.onload = function(e) {
+      console.log('File loaded, content length:', e.target.result.length);
       const content = e.target.result;
+      console.log('First 100 chars:', content.substring(0, 100));
       parseAndLoadCase(content);
+    };
+    reader.onerror = function(e) {
+      console.error('FileReader error:', e);
+      alert('Error reading file: ' + e);
     };
     reader.readAsText(file);
   } else {
+    console.log('No file selected');
     alert('Please select a case file first.');
   }
 }
@@ -1428,6 +1439,8 @@ function reopenSavedCase(){
 }
 
 function parseAndLoadCase(content){
+  console.log('parseAndLoadCase called with content length:', content.length);
+  
   try {
     // Enhanced parsing logic for tick boxes and observations
     const lines = content.split('\n');
@@ -1435,16 +1448,21 @@ function parseAndLoadCase(content){
     const checkboxes = {};
     const observations = [];
     
+    console.log('Parsing', lines.length, 'lines');
+    
     lines.forEach(line => {
       line = line.trim();
       
       // Parse basic patient data
       if(line.includes('Patient Name:')) {
         caseData.patientName = line.split(':')[1].trim();
+        console.log('Found patient name:', caseData.patientName);
       } else if(line.includes('Date of Birth:')) {
         caseData.dob = line.split(':')[1].trim();
+        console.log('Found DOB:', caseData.dob);
       } else if(line.includes('Allergies:')) {
         caseData.allergies = line.split(':')[1].trim();
+        console.log('Found allergies:', caseData.allergies);
       } else if(line.includes('Next of Kin:')) {
         caseData.nextOfKin = line.split(':')[1].trim();
       } else if(line.includes('Capacity:')) {
@@ -1492,21 +1510,76 @@ function parseAndLoadCase(content){
       }
     });
     
+    console.log('Parsed data:', caseData);
+    console.log('Found checkboxes:', Object.keys(checkboxes).length);
+    console.log('Found observations:', observations.length);
+    
     // Clear current form data and replace with loaded case data
+    console.log('Clearing current form...');
     clearCurrentForm();
     
     // Repopulate form with loaded case data
     setTimeout(() => {
+      console.log('Starting form population...');
+      
       // Populate basic fields
-      if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
-      if(caseData.dob) document.getElementById('dob').value = caseData.dob;
-      if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
-      if(caseData.nextOfKin) document.getElementById('nextOfKin').value = caseData.nextOfKin;
-      if(caseData.capacity) document.getElementById('capacity').value = caseData.capacity;
-      if(caseData.dnar) document.getElementById('dnar').value = caseData.dnar;
-      if(caseData.medications) document.getElementById('medications').value = caseData.medications;
-      if(caseData.pastHistory) document.getElementById('pastHistory').value = caseData.pastHistory;
-      if(caseData.hpc) document.getElementById('hpc').value = caseData.hpc;
+      if(caseData.patientName) {
+        const patientField = document.getElementById('patientName');
+        if(patientField) {
+          patientField.value = caseData.patientName;
+          console.log('Set patient name:', caseData.patientName);
+        }
+      }
+      if(caseData.dob) {
+        const dobField = document.getElementById('dob');
+        if(dobField) {
+          dobField.value = caseData.dob;
+          console.log('Set DOB:', caseData.dob);
+        }
+      }
+      if(caseData.allergies) {
+        const allergiesField = document.getElementById('allergies');
+        if(allergiesField) {
+          allergiesField.value = caseData.allergies;
+          console.log('Set allergies:', caseData.allergies);
+        }
+      }
+      if(caseData.nextOfKin) {
+        const nextOfKinField = document.getElementById('nextOfKin');
+        if(nextOfKinField) {
+          nextOfKinField.value = caseData.nextOfKin;
+        }
+      }
+      if(caseData.capacity) {
+        const capacityField = document.getElementById('capacity');
+        if(capacityField) {
+          capacityField.value = caseData.capacity;
+        }
+      }
+      if(caseData.dnar) {
+        const dnarField = document.getElementById('dnar');
+        if(dnarField) {
+          dnarField.value = caseData.dnar;
+        }
+      }
+      if(caseData.medications) {
+        const medicationsField = document.getElementById('medications');
+        if(medicationsField) {
+          medicationsField.value = caseData.medications;
+        }
+      }
+      if(caseData.pastHistory) {
+        const pastHistoryField = document.getElementById('pastHistory');
+        if(pastHistoryField) {
+          pastHistoryField.value = caseData.pastHistory;
+        }
+      }
+      if(caseData.hpc) {
+        const hpcField = document.getElementById('hpc');
+        if(hpcField) {
+          hpcField.value = caseData.hpc;
+        }
+      }
       
       // Populate checkboxes
       Object.keys(checkboxes).forEach(checkboxName => {
@@ -1519,56 +1592,59 @@ function parseAndLoadCase(content){
       // Populate observations table
       if(observations.length > 0) {
         const table = document.getElementById('obsTable');
-        // Clear existing rows except header and first empty row
-        while(table.rows.length > 2) {
-          table.deleteRow(2);
-        }
-        
-        // Add observation data
-        observations.forEach((obs, index) => {
-          if(index === 0) {
-            // Populate first row
-            const firstRow = table.rows[1];
-            const cells = firstRow.cells;
-            if(cells[0]) cells[0].querySelector('input').value = obs.date;
-            if(cells[1]) cells[1].querySelector('input').value = obs.time;
-            if(cells[2]) cells[2].querySelector('input').value = obs.resp;
-            if(cells[3]) cells[3].querySelector('input').value = obs.spo2;
-            if(cells[4]) cells[4].querySelector('input').value = obs.temp;
-            if(cells[5]) cells[5].querySelector('input').value = obs.bpSys;
-            if(cells[6]) cells[6].querySelector('input').value = obs.bpDia;
-            if(cells[7]) cells[7].querySelector('input').value = obs.hr;
-            if(cells[8]) cells[8].querySelector('input').value = obs.etco2;
-            if(cells[9]) cells[9].querySelector('input').value = obs.acvpu;
-            if(cells[10]) cells[10].querySelector('button').textContent = obs.gcs;
-            if(cells[11]) cells[11].querySelector('input').value = obs.pupils;
-            if(cells[12]) cells[12].querySelector('button').textContent = obs.news2;
-            if(cells[13]) cells[13].querySelector('input').value = obs.bgm;
-            if(cells[14]) cells[14].querySelector('input').value = obs.ketone;
-          } else {
-            // Add new rows for additional observations
-            addObsRow();
-            const newRow = table.rows[table.rows.length - 1];
-            const cells = newRow.cells;
-            if(cells[0]) cells[0].querySelector('input').value = obs.date;
-            if(cells[1]) cells[1].querySelector('input').value = obs.time;
-            if(cells[2]) cells[2].querySelector('input').value = obs.resp;
-            if(cells[3]) cells[3].querySelector('input').value = obs.spo2;
-            if(cells[4]) cells[4].querySelector('input').value = obs.temp;
-            if(cells[5]) cells[5].querySelector('input').value = obs.bpSys;
-            if(cells[6]) cells[6].querySelector('input').value = obs.bpDia;
-            if(cells[7]) cells[7].querySelector('input').value = obs.hr;
-            if(cells[8]) cells[8].querySelector('input').value = obs.etco2;
-            if(cells[9]) cells[9].querySelector('input').value = obs.acvpu;
-            if(cells[10]) cells[10].querySelector('button').textContent = obs.gcs;
-            if(cells[11]) cells[11].querySelector('input').value = obs.pupils;
-            if(cells[12]) cells[12].querySelector('button').textContent = obs.news2;
-            if(cells[13]) cells[13].querySelector('input').value = obs.bgm;
-            if(cells[14]) cells[14].querySelector('input').value = obs.ketone;
+        if(table) {
+          // Clear existing rows except header and first empty row
+          while(table.rows.length > 2) {
+            table.deleteRow(2);
           }
-        });
+          
+          // Add observation data
+          observations.forEach((obs, index) => {
+            if(index === 0) {
+              // Populate first row
+              const firstRow = table.rows[1];
+              const cells = firstRow.cells;
+              if(cells[0]) cells[0].querySelector('input').value = obs.date;
+              if(cells[1]) cells[1].querySelector('input').value = obs.time;
+              if(cells[2]) cells[2].querySelector('input').value = obs.resp;
+              if(cells[3]) cells[3].querySelector('input').value = obs.spo2;
+              if(cells[4]) cells[4].querySelector('input').value = obs.temp;
+              if(cells[5]) cells[5].querySelector('input').value = obs.bpSys;
+              if(cells[6]) cells[6].querySelector('input').value = obs.bpDia;
+              if(cells[7]) cells[7].querySelector('input').value = obs.hr;
+              if(cells[8]) cells[8].querySelector('input').value = obs.etco2;
+              if(cells[9]) cells[9].querySelector('input').value = obs.acvpu;
+              if(cells[10]) cells[10].querySelector('button').textContent = obs.gcs;
+              if(cells[11]) cells[11].querySelector('input').value = obs.pupils;
+              if(cells[12]) cells[12].querySelector('button').textContent = obs.news2;
+              if(cells[13]) cells[13].querySelector('input').value = obs.bgm;
+              if(cells[14]) cells[14].querySelector('input').value = obs.ketone;
+            } else {
+              // Add new rows for additional observations
+              addObsRow();
+              const newRow = table.rows[table.rows.length - 1];
+              const cells = newRow.cells;
+              if(cells[0]) cells[0].querySelector('input').value = obs.date;
+              if(cells[1]) cells[1].querySelector('input').value = obs.time;
+              if(cells[2]) cells[2].querySelector('input').value = obs.resp;
+              if(cells[3]) cells[3].querySelector('input').value = obs.spo2;
+              if(cells[4]) cells[4].querySelector('input').value = obs.temp;
+              if(cells[5]) cells[5].querySelector('input').value = obs.bpSys;
+              if(cells[6]) cells[6].querySelector('input').value = obs.bpDia;
+              if(cells[7]) cells[7].querySelector('input').value = obs.hr;
+              if(cells[8]) cells[8].querySelector('input').value = obs.etco2;
+              if(cells[9]) cells[9].querySelector('input').value = obs.acvpu;
+              if(cells[10]) cells[10].querySelector('button').textContent = obs.gcs;
+              if(cells[11]) cells[11].querySelector('input').value = obs.pupils;
+              if(cells[12]) cells[12].querySelector('button').textContent = obs.news2;
+              if(cells[13]) cells[13].querySelector('input').value = obs.bgm;
+              if(cells[14]) cells[14].querySelector('input').value = obs.ketone;
+            }
+          });
+        }
       }
       
+      console.log('Form population completed');
       alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\nCheckboxes: ${Object.keys(checkboxes).length}\nObservations: ${observations.length}\n\nForm has been cleared and repopulated with case data.`);
     }, 500);
     
@@ -1581,28 +1657,25 @@ function parseAndLoadCase(content){
     localStorage.setItem(`prf_case_${Date.now()}`, JSON.stringify(completeCaseData));
     
   } catch(error) {
+    console.error('Error in parseAndLoadCase:', error);
     alert('Error parsing case file: ' + error.message);
   }
 }
 
 function clearCurrentForm(){
-  // Clear all form fields
-  document.getElementById('patientName').value = '';
-  document.getElementById('dob').value = '';
-  document.getElementById('allergies').value = '';
-  document.getElementById('nextOfKin').value = '';
-  document.getElementById('capacity').value = '';
-  document.getElementById('dnar').value = '';
-  document.getElementById('medications').value = '';
-  document.getElementById('pastHistory').value = '';
-  document.getElementById('hpc').value = '';
+  // Clear all form fields with error handling
+  const fields = [
+    'patientName', 'dob', 'allergies', 'nextOfKin', 'capacity', 'dnar', 
+    'medications', 'pastHistory', 'hpc', 'clinicianName', 'clinicianRole', 
+    'clinicianPin', 'signDate', 'signTime'
+  ];
   
-  // Clear other sections
-  document.getElementById('clinicianName').value = '';
-  document.getElementById('clinicianRole').value = '';
-  document.getElementById('clinicianPin').value = '';
-  document.getElementById('signDate').value = '';
-  document.getElementById('signTime').value = '';
+  fields.forEach(fieldId => {
+    const element = document.getElementById(fieldId);
+    if(element) {
+      element.value = '';
+    }
+  });
   
   // Clear signature
   const canvas = document.getElementById('signatureCanvas');
