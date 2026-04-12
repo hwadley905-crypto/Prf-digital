@@ -73,6 +73,7 @@ body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);b
 #sec-primary{border-left-color:#ec4899;}
 #sec-secondary{border-left-color:#f97316;}
 #sec-traumatools{border-left-color:#f59e0b;}
+#sec-injuryassessment{border-left-color:#8b5cf6;}
 #sec-obs{border-left-color:#eab308;}
 #sec-interventions{border-left-color:#84cc16;}
 #sec-drugs{border-left-color:#22c55e;}
@@ -180,8 +181,9 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 .trauma-arrow::before{content:"";display:block;width:2px;height:20px;background:var(--border);margin:0 auto;}
 .trauma-arrow::after{content:"";display:block;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:8px solid var(--border);margin:0 auto;}
 .trauma-bullet-list{margin:10px 0;padding-left:20px;list-style:none;}
-.trauma-bullet-item{display:flex;align-items:center;margin:8px 0;font-size:13px;color:var(--text);}
-.trauma-bullet-item input[type="checkbox"]{margin-right:10px;transform:scale(1.2);}
+.trauma-bullet-item{display:block;margin:8px 0;font-size:13px;color:var(--text);position:relative;}
+.trauma-bullet-item input[type="checkbox"]{position:absolute;left:80px;top:2px;transform:scale(1.2);}
+.trauma-bullet-item label{margin-left:100px;display:inline-block;}
 @media(max-width:768px){
   .hamburger{display:inline-flex;}
   .sidebar{position:fixed;left:-130px;top:0;height:100vh;z-index:200;transition:left 0.25s;background:var(--card-bg);border-right:1px solid var(--border);}
@@ -209,7 +211,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <header>
   <div class="header-left">
     <button class="hamburger" id="hamburger">MENU</button>
-    <div class="logo">PRF</div>
     <h1>Practice PRF</h1>
   </div>
   <div class="header-right">
@@ -228,7 +229,8 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <button class="tab-btn" data-section="sec-patient">Patient</button>
   <button class="tab-btn" data-section="sec-primary">Primary</button>
   <button class="tab-btn" data-section="sec-secondary">Secondary</button>
-  <button class="tab-btn" data-section="sec-traumatools">Trauma Tools</button>
+  <button class="tab-btn" data-section="sec-traumatools">Silver Trauma Tool</button>
+  <button class="tab-btn" data-section="sec-injuryassessment">Injury Assessment Tool</button>
   <button class="tab-btn" data-section="sec-obs">Observations</button>
   <button class="tab-btn" data-section="sec-interventions">Interventions</button>
   <button class="tab-btn" data-section="sec-drugs">Drugs</button>
@@ -291,7 +293,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="workingDiagnosis">Working Diagnosis and Related Notes</label><textarea id="workingDiagnosis" class="auto"></textarea></div>
 </section>
 
-<section class="section" id="sec-traumatools"><h2>Trauma Tools</h2>
+<section class="section" id="sec-traumatools"><h2>Silver Trauma Tool</h2>
 
 <h3>Silver Trauma</h3>
 <div class="trauma-flow">
@@ -329,6 +331,10 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <textarea id="silverTraumaDetails" class="auto" placeholder="Add details about Silver Trauma assessment..."></textarea>
 </div>
 
+</section>
+
+<section class="section" id="sec-injuryassessment"><h2>Injury Assessment Tool</h2>
+
 <h3>Injury Assessment Tool</h3>
 <div class="trauma-flow">
   <div class="trauma-box">
@@ -359,7 +365,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
     <h4>Step 3 - Assess other circumstances</h4>
     <ul class="trauma-bullet-list">
       <li class="trauma-bullet-item"><input type="checkbox" id="injury13"><label for="injury13">Significant Clinical Concern (supported by Senior Clinician)</label></li>
-      <li class="trauma-bullet-item"><input type="checkbox" id="injury14"><label for="injury14">If Yes to ANY of the above, then transport with pre-alert to ED and contact Trauma Desk</label></li>
+      <li class="trauma-bullet-item">If Yes to ANY of the above, then transport with pre-alert to ED and contact Trauma Desk</li>
     </ul>
   </div>
 </div>
