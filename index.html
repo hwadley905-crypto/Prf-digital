@@ -469,13 +469,18 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="clinicianName">Clinician Name</label><input type="text" id="clinicianName"></div>
 <div class="field"><label for="clinicianRole">Role</label><input type="text" id="clinicianRole"></div>
 <div class="field"><label for="clinicianPin">Professional PIN</label><input type="text" id="clinicianPin"></div>
+<div class="field"><label for="signDate">Date</label><input type="date" id="signDate"></div>
+<div class="field"><label for="signTime">Time</label><input type="time" id="signTime"></div>
+<div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
+</section>
+
 <section class="section" id="sec-opencase"><h2>Open Case</h2>
 <div class="field">
   <label for="openCase">Select Saved Case</label>
   <select id="openCase" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px; background:var(--input-bg); color:var(--text);">
     <option value="">Select a case to reopen...</option>
   </select>
-  <button type="button" onclick="reopenAndEditCase()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Reopen & Edit</button>
+  <button type="button" onclick="reopenSavedCase()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Reopen & Edit</button>
 </div>
 
 <div class="field">
@@ -922,24 +927,33 @@ function previewImages(event,id){
 function addObsRow(){
   const table=document.getElementById('obsTable');
   const row=table.insertRow();
-  const types=['date','time','text','text','text','text','text','text','text','text','text','text'];
+  const types=['date','time','text','text','text','text','text','text','text','text','text','text','text','text','text'];
   types.forEach((t,i)=>{
     const cell=row.insertCell();
-    if(i===10){ // NEWS2 button
+    if(i===10){ // GCS button
+      cell.setAttribute('data-gcsrow', news2RowCounter);
+      cell.innerHTML=`<button type="button" class="news2-cell-btn" onclick="openGcsModal('${news2RowCounter}')" aria-label="Open GCS scoring modal">-</button>`;
+    }else if(i===11){ // Pupils
+      const input=document.createElement('input');
+      input.type='text';
+      input.className='vital-input';
+      input.style.width='50px';
+      cell.appendChild(input);
+    }else if(i===12){ // NEWS2 button
       cell.setAttribute('data-news2row', news2RowCounter);
       cell.innerHTML=`<button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">-</button>`;
-    }else if(i===12){ // BGM
+    }else if(i===13){ // BGM
       const input=document.createElement('input');
       input.type='text';
       input.className='vital-input';
       input.style.width='40px';
       cell.appendChild(input);
-    }else if(i===13){ // Ketone
+    }else if(i===14){ // Ketone
       const input=document.createElement('input');
       input.type='text';
       input.className='vital-input';
       cell.appendChild(input);
-    }else if(i===14){ // Clear button
+    }else if(i===15){ // Clear button
       cell.innerHTML=`<button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">X</button>`;
     }else{
       const input=document.createElement('input');
@@ -1286,7 +1300,30 @@ function reopenAndEditCase(){
     };
     reader.readAsText(file);
   } else {
-    alert('Please select a case file first.');
+    // Check if there are saved cases in localStorage
+    const savedCases = [];
+    for(let i = 0; i < localStorage.length; i++){
+      const key = localStorage.key(i);
+      if(key && key.startsWith('prf_case_')){
+        const caseData = JSON.parse(localStorage.getItem(key));
+        savedCases.push({id: key, data: caseData});
+      }
+    }
+    
+    if(savedCases.length > 0){
+      // Populate dropdown with saved cases
+      const select = document.getElementById('openCase');
+      select.innerHTML = '<option value="">Select a case to reopen...</option>';
+      savedCases.forEach((caseItem, index) => {
+        const option = document.createElement('option');
+        option.value = caseItem.id;
+        option.textContent = `Case ${index + 1} - ${caseItem.data.patientName || 'Unknown'}`;
+        select.appendChild(option);
+      });
+      alert('Found saved cases. Please select one from the dropdown.');
+    } else {
+      alert('No saved cases found. Please upload a case file first.');
+    }
   }
 }
 
@@ -1319,6 +1356,40 @@ function parseCaseFile(content){
     
   } catch(error) {
     alert('Error parsing case file: ' + error.message);
+  }
+}
+
+function reopenSavedCase(){
+  const select = document.getElementById('openCase');
+  const caseId = select.value;
+  
+  if(caseId){
+    const savedCase = localStorage.getItem(caseId);
+    if(savedCase) {
+      const caseData = JSON.parse(savedCase);
+      
+      // Clear current form data and replace with loaded case data
+      clearCurrentForm();
+      
+      // Repopulate form with loaded case data
+      setTimeout(() => {
+        if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
+        if(caseData.dob) document.getElementById('dob').value = caseData.dob;
+        if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
+        if(caseData.nextOfKin) document.getElementById('nextOfKin').value = caseData.nextOfKin;
+        if(caseData.capacity) document.getElementById('capacity').value = caseData.capacity;
+        if(caseData.dnar) document.getElementById('dnar').value = caseData.dnar;
+        if(caseData.medications) document.getElementById('medications').value = caseData.medications;
+        if(caseData.pastHistory) document.getElementById('pastHistory').value = caseData.pastHistory;
+        if(caseData.hpc) document.getElementById('hpc').value = caseData.hpc;
+        
+        alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\n\nForm has been cleared and repopulated with case data.`);
+      }, 500);
+    } else {
+      alert('Case not found or invalid case ID.');
+    }
+  } else {
+    alert('Please select a case from the dropdown first.');
   }
 }
 
@@ -1454,9 +1525,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Clear Form button
 document.getElementById('clearForm').addEventListener('click',()=>{
-  if(confirm('Clear all saved form data and reset?')){
+  if(confirm('Are you sure you want to clear all data?')){
+    // Clear all form fields
+    clearCurrentForm();
+    
+    // Clear all saved data from localStorage
     Object.keys(localStorage).filter(k=>k.startsWith('prf_')).forEach(k=>localStorage.removeItem(k));
-    location.reload();
+    
+    // Clear observations table (keep only header and one empty row)
+    const table = document.getElementById('obsTable');
+    if(table) {
+      // Keep only the header row and one empty data row
+      while(table.rows.length > 2) {
+        table.deleteRow(2);
+      }
+      // Clear the remaining data row
+      const dataRow = table.rows[1];
+      if(dataRow) {
+        const cells = dataRow.cells;
+        for(let i = 0; i < cells.length; i++) {
+          const input = cells[i].querySelector('input');
+          if(input) {
+            input.value = '';
+          }
+          const button = cells[i].querySelector('button');
+          if(button && button.textContent !== 'X') {
+            button.textContent = '-';
+          }
+        }
+      }
+    }
+    
+    // Clear signature canvas
+    const canvas = document.getElementById('signatureCanvas');
+    if(canvas) {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+    
+    // Clear all textareas
+    const textareas = document.querySelectorAll('textarea');
+    textareas.forEach(textarea => textarea.value = '');
+    
+    alert('All form data has been cleared successfully.');
   }
 });
 </script>
