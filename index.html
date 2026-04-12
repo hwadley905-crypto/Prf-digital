@@ -81,6 +81,12 @@ body.light .tab-btn[data-section="sec-injuryassessment"]{color:#000000 !importan
 #sec-bodymap{border-left-color:#14b8a6;}
 #sec-conveyance{border-left-color:#06b6d4;}
 #sec-outcome{border-left-color:#0ea5e9;}
+#sec-wallpaper{border-left-color:#ec4899;}
+body.light .tab-btn[data-section="sec-wallpaper"]{color:#000000 !important;}
+#sec-paedsals{border-left-color:#10b981;}
+body.light .tab-btn[data-section="sec-paedsals"]{color:#000000 !important;}
+#sec-resus{border-left-color:#f59e0b;}
+body.light .tab-btn[data-section="sec-resus"]{color:#000000 !important;}
 #sec-signoff{border-left-color:#94a3b8;}
 .section h2{margin:0 0 16px 0;font-size:16px;color:var(--text);padding-bottom:8px;border-bottom:1px solid var(--divider);}
 .section h3{margin:12px 0 8px 0;font-size:18px;color:var(--text);border-bottom:2px solid var(--divider);padding-bottom:4px;font-weight:700;text-decoration:underline;}
@@ -253,6 +259,9 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <button class="tab-btn" data-section="sec-bodymap">Body Map</button>
   <button class="tab-btn" data-section="sec-conveyance">Conveyance</button>
   <button class="tab-btn" data-section="sec-outcome">Outcome</button>
+  <button class="tab-btn" data-section="sec-wallpaper">Wallpaper</button>
+  <button class="tab-btn" data-section="sec-paedsals">Paeds ALS</button>
+  <button class="tab-btn" data-section="sec-resus">RESUS</button>
   <button class="tab-btn" data-section="sec-signoff">Sign Off</button>
 </nav>
 
@@ -467,6 +476,72 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="signDate">Date</label><input type="date" id="signDate"></div>
 <div class="field"><label for="signTime">Time</label><input type="time" id="signTime"></div>
 <div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
+</section>
+
+<section class="section" id="sec-wallpaper" style="background-image: url('https://i.postimg.cc/ZWQSxxpJ/Adult-ALS.png'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative;">
+<div style="background: rgba(0,0,0,0.7); padding: 20px; border-radius: 8px; backdrop-filter: blur(5px);">
+<h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Adult ALS</h2>
+<div class="field">
+  <p style="color: white; font-size: 14px; line-height: 1.6;">This section contains a persistent wallpaper that remains the same for every new PRF form. The background image is set in the code and cannot be changed by users.</p>
+</div>
+<div class="field">
+  <p style="color: white; font-size: 12px; opacity: 0.8;">To change the wallpaper, modify the background-image URL in the sec-wallpaper section CSS.</p>
+</div>
+</div>
+</section>
+
+<section class="section" id="sec-paedsals" style="background-image: url('https://i.postimg.cc/2S47g5qk/Paeds-ALS.png'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative;">
+<div style="background: rgba(0,0,0,0.7); padding: 20px; border-radius: 8px; backdrop-filter: blur(5px);">
+<h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Paeds ALS</h2>
+<div class="field">
+  <p style="color: white; font-size: 14px; line-height: 1.6;">This section contains a persistent wallpaper that remains the same for every new PRF form. The background image is set in the code and cannot be changed by users.</p>
+</div>
+<div class="field">
+  <p style="color: white; font-size: 12px; opacity: 0.8;">To change the wallpaper, modify the background-image URL in the sec-paedsals section CSS.</p>
+</div>
+</div>
+</section>
+
+<section class="section" id="sec-resus"><h2>RESUS</h2>
+<h3>Intervention</h3>
+<div class="field">
+<table id="resusTable" class="obs-table">
+<thead>
+<tr>
+<th>Date</th>
+<th>Time</th>
+<th>shock(J)</th>
+<th>Drug</th>
+<th>Dosage</th>
+<th>Rhythm</th>
+<th>Adjunct</th>
+<th>O2</th>
+<th>Pupils</th>
+<th>ROLE</th>
+</tr>
+</thead>
+<tbody id="resusTableBody">
+<tr>
+<td><input type="date" class="vital-input"></td>
+<td><input type="time" class="vital-input"></td>
+<td><input type="text" class="vital-input" style="width: 15ch;"></td>
+<td><input type="text" class="vital-input" style="width: 15ch;"></td>
+<td><input type="text" class="vital-input" style="width: 15ch;"></td>
+<td><input type="text" class="vital-input" style="width: 15ch;"></td>
+<td><input type="text" class="vital-input"></td>
+<td><input type="text" class="vital-input"></td>
+<td><input type="text" class="vital-input"></td>
+<td><input type="text" class="vital-input"></td>
+<td><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button></td>
+</tr>
+</tbody>
+</table>
+<button type="button" id="addResusRow" class="add-row-btn" onclick="addResusRow()">+ Add Row</button>
+</div>
+<div class="field">
+<label for="resusNotes">Notes</label>
+<textarea id="resusNotes" class="auto" placeholder="Enter any additional resus notes here..."></textarea>
+</div>
 </section>
 
 
@@ -965,6 +1040,35 @@ function addInterventionRow(){
   clearBtn.title='Clear row';
   clearBtn.addEventListener('click',()=>clearRow(clearBtn));
   clearTd.appendChild(clearBtn);
+}
+
+// Add RESUS row
+function addResusRow(){
+  const table=document.getElementById('resusTable');
+  const row=table.insertRow();
+  const types=['date','time','text','text','text','text','text','text','text','text','clear'];
+  types.forEach((t,i)=>{
+    const cell=row.insertCell();
+    if(i===10){ // Clear button
+      cell.innerHTML=`<button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button>`;
+    }else{
+      const input=document.createElement('input');
+      input.type=t;
+      input.className='vital-input';
+      // Set width for first 6 columns to 15 characters
+      if(i>=2 && i<=6){
+        input.style.width='15ch';
+      }
+      cell.appendChild(input);
+    }
+  });
+}
+
+// Clear RESUS row
+function clearResusRow(btn){
+  const row=btn.closest('tr');
+  const inputs=row.querySelectorAll('input');
+  inputs.forEach(input=>input.value='');
 }
 
 // Add drug row
