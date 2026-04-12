@@ -1037,11 +1037,22 @@ function updateSigStyle(){
 
 // Set canvas size for better touch support
 function setupCanvas(){
-  const rect=canvas.getBoundingClientRect();
+  const canvas = document.getElementById('signatureCanvas');
+  if (!canvas) {
+    console.log('Signature canvas not found');
+    return;
+  }
+  
+  const rect = canvas.getBoundingClientRect();
   // Set actual canvas size in pixels with proper scaling
   canvas.width = rect.width * window.devicePixelRatio;
   canvas.height = rect.height * window.devicePixelRatio;
   // Scale drawing context for sharp lines
+  const ctx = canvas.getContext('2d');
+  if (!ctx) {
+    console.log('Canvas context not available');
+    return;
+  }
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
   // Set canvas CSS size
   canvas.style.width = rect.width + 'px';
@@ -1051,6 +1062,8 @@ function setupCanvas(){
   ctx.lineWidth = 3; // Thicker lines for better visibility
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
+  
+  console.log('Signature canvas initialized');
 }
 
 window.addEventListener('load', setupCanvas);
@@ -1167,20 +1180,6 @@ function initBodyMapCanvas(canvasId) {
   let drawing = false;
   let lastX = 0;
   let lastY = 0;
-
-  // Set canvas size for better touch support
-  function setupCanvas() {
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * window.devicePixelRatio;
-    canvas.height = rect.height * window.devicePixelRatio;
-    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-    ctx.strokeStyle = '#000000';
-    ctx.lineWidth = 2;
-    ctx.lineCap = 'round';
-  }
-
-  setupCanvas();
-  window.addEventListener('resize', setupCanvas);
 
   // Mouse events
   canvas.addEventListener('mousedown', e => {
@@ -1316,10 +1315,13 @@ function uploadAndLoadCase(){
 }
 
 function reopenAndEditCase(){
+  console.log('reopenAndEditCase called');
   const select = document.getElementById('openCase');
   const selectedCaseId = select.value;
   
-  if(selectedCaseId){
+  console.log('Selected case ID:', selectedCaseId);
+  
+  if(selectedCaseId && selectedCaseId !== ''){
     // Load the selected saved case
     const savedCase = localStorage.getItem(selectedCaseId);
     if(savedCase) {
