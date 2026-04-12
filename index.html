@@ -69,10 +69,6 @@ body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);b
 .section.active-section{display:block;}
 #sec-clinician{border-left-color:#3b82f6;}
 #sec-signoff{border-left-color:#94a3b8;}
-#sec-opencase{border-left-color:#10b981;}
-body.light .tab-btn[data-section="sec-opencase"]{color:#000000 !important;}
-#sec-als{border-left-color:#ff6b6b;}
-body.light .tab-btn[data-section="sec-als"]{color:#000000 !important;}
 #sec-primary{border-left-color:#ec4899;}
 #sec-secondary{border-left-color:#f97316;}
 #sec-traumatools{border-left-color:#f59e0b;}
@@ -258,7 +254,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <button class="tab-btn" data-section="sec-conveyance">Conveyance</button>
   <button class="tab-btn" data-section="sec-outcome">Outcome</button>
   <button class="tab-btn" data-section="sec-signoff">Sign Off</button>
-  <button class="tab-btn" data-section="sec-opencase">Open Case</button>
 </nav>
 
 <main class="content">
@@ -474,31 +469,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
 </section>
 
-<section class="section" id="sec-opencase"><h2>Open Case</h2>
-<div class="field">
-  <label for="openCase">Select Saved Case</label>
-  <select id="openCase" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px; background:var(--input-bg); color:var(--text);">
-    <option value="">Select a case to reopen...</option>
-  </select>
-  <button type="button" onclick="reopenAndEditCase()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Reopen & Edit</button>
-</div>
-
-<div class="field">
-  <label for="uploadCase">Upload Case File</label>
-  <input type="file" id="uploadCase" accept=".pdf,.doc,.docx,.txt" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px; background:var(--input-bg); color:var(--text);">
-  <button type="button" onclick="uploadAndLoadCase()" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Load Case File</button>
-</div>
-
-<div class="field">
-  <label for="cloudSource">Cloud Storage</label>
-  <select id="cloudSource" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px; background:var(--input-bg); color:var(--text);" onchange="connectCloudStorage()">
-    <option value="">Select cloud storage...</option>
-    <option value="onedrive">OneDrive</option>
-    <option value="googledrive">Google Drive</option>
-  </select>
-  <button type="button" onclick="browseCloudStorage()" style="background:var(--amber); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Browse Cloud</button>
-</div>
-</section>
 
 </main>
 </div>
@@ -1314,66 +1284,6 @@ function uploadAndLoadCase(){
   }
 }
 
-function reopenAndEditCase(){
-  console.log('reopenAndEditCase called');
-  const select = document.getElementById('openCase');
-  const selectedCaseId = select.value;
-  
-  console.log('Selected case ID:', selectedCaseId);
-  
-  if(selectedCaseId && selectedCaseId !== ''){
-    // Load the selected saved case
-    const savedCase = localStorage.getItem(selectedCaseId);
-    if(savedCase) {
-      const caseData = JSON.parse(savedCase);
-      
-      // Clear current form data and replace with loaded case data
-      clearCurrentForm();
-      
-      // Repopulate form with loaded case data
-      setTimeout(() => {
-        if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
-        if(caseData.dob) document.getElementById('dob').value = caseData.dob;
-        if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
-        if(caseData.nextOfKin) document.getElementById('nextOfKin').value = caseData.nextOfKin;
-        if(caseData.capacity) document.getElementById('capacity').value = caseData.capacity;
-        if(caseData.dnar) document.getElementById('dnar').value = caseData.dnar;
-        if(caseData.medications) document.getElementById('medications').value = caseData.medications;
-        if(caseData.pastHistory) document.getElementById('pastHistory').value = caseData.pastHistory;
-        if(caseData.hpc) document.getElementById('hpc').value = caseData.hpc;
-        
-        alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\n\nForm has been cleared and repopulated with case data.`);
-      }, 500);
-    } else {
-      alert('Case not found or invalid case ID.');
-    }
-  } else {
-    // Check if there are saved cases in localStorage and populate dropdown
-    const savedCases = [];
-    for(let i = 0; i < localStorage.length; i++){
-      const key = localStorage.key(i);
-      if(key && key.startsWith('prf_case_')){
-        const caseData = JSON.parse(localStorage.getItem(key));
-        savedCases.push({id: key, data: caseData});
-      }
-    }
-    
-    if(savedCases.length > 0){
-      // Populate dropdown with saved cases
-      select.innerHTML = '<option value="">Select a case to reopen...</option>';
-      savedCases.forEach((caseItem, index) => {
-        const option = document.createElement('option');
-        option.value = caseItem.id;
-        option.textContent = `Case ${index + 1} - ${caseItem.data.patientName || 'Unknown'}`;
-        select.appendChild(option);
-      });
-      alert('Found saved cases. Please select one from the dropdown and click "Reopen & Edit" again.');
-    } else {
-      alert('No saved cases found. Please upload a case file first using the "Load Case File" button.');
-    }
-  }
-}
-
 function parseCaseFile(content){
   try {
     // Simple parsing logic - in real implementation, this would be more sophisticated
@@ -1403,40 +1313,6 @@ function parseCaseFile(content){
     
   } catch(error) {
     alert('Error parsing case file: ' + error.message);
-  }
-}
-
-function reopenSavedCase(){
-  const select = document.getElementById('openCase');
-  const caseId = select.value;
-  
-  if(caseId){
-    const savedCase = localStorage.getItem(caseId);
-    if(savedCase) {
-      const caseData = JSON.parse(savedCase);
-      
-      // Clear current form data and replace with loaded case data
-      clearCurrentForm();
-      
-      // Repopulate form with loaded case data
-      setTimeout(() => {
-        if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
-        if(caseData.dob) document.getElementById('dob').value = caseData.dob;
-        if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
-        if(caseData.nextOfKin) document.getElementById('nextOfKin').value = caseData.nextOfKin;
-        if(caseData.capacity) document.getElementById('capacity').value = caseData.capacity;
-        if(caseData.dnar) document.getElementById('dnar').value = caseData.dnar;
-        if(caseData.medications) document.getElementById('medications').value = caseData.medications;
-        if(caseData.pastHistory) document.getElementById('pastHistory').value = caseData.pastHistory;
-        if(caseData.hpc) document.getElementById('hpc').value = caseData.hpc;
-        
-        alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\n\nForm has been cleared and repopulated with case data.`);
-      }, 500);
-    } else {
-      alert('Case not found or invalid case ID.');
-    }
-  } else {
-    alert('Please select a case from the dropdown first.');
   }
 }
 
