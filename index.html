@@ -45,7 +45,7 @@ h1{margin:0;font-size:18px;color:var(--accent);font-weight:700;}
 .header-right{display:flex;gap:8px;align-items:center;}
 .layout{display:flex;min-height:calc(100vh - 53px);}
 .sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);border-right:1px solid var(--border);padding:6px 4px;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;flex-shrink:0;}
-.tab-btn{display:flex;align-items:center;justify-content:center;width:calc(100% - 4px);margin:2px 2px;background:var(--tc);border:none;border-radius:8px;padding:8px 8px;cursor:pointer;font-size:11px;font-weight:600;text-wrap:balance;color:white;transition:filter 0.2s,transform 0.2s;}
+.tab-btn{display:flex;align-items:center;justify-content:center;width:calc(100% - 4px);height:50px;margin:2px 2px;background:var(--tc);border:none;border-radius:8px;padding:4px 4px;cursor:pointer;font-size:11px;font-weight:600;text-wrap:balance;color:white;transition:filter 0.2s,transform 0.2s;}
 .tab-btn:hover{filter:brightness(1.2);}
 body.light .tab-btn:hover{filter:brightness(0.9);}
 .tab-btn[data-section="sec-clinician"]{--tc:#3b82f6;}
@@ -81,7 +81,7 @@ body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);b
 #sec-outcome{border-left-color:#0ea5e9;}
 #sec-signoff{border-left-color:#94a3b8;}
 .section h2{margin:0 0 16px 0;font-size:16px;color:var(--text);padding-bottom:8px;border-bottom:1px solid var(--divider);}
-.section h3{margin:12px 0 8px 0;font-size:16px;color:var(--text);border-bottom:1px solid var(--divider);padding-bottom:4px;font-weight:700;}
+.section h3{margin:12px 0 8px 0;font-size:18px;color:var(--text);border-bottom:2px solid var(--divider);padding-bottom:4px;font-weight:700;text-decoration:underline;}
 .field{margin-bottom:14px;}
 label{font-size:13px;font-weight:600;display:block;margin-bottom:4px;color:var(--text-secondary);}
 textarea,input,select{width:100%;padding:9px 12px;margin-bottom:8px;border-radius:6px;border:1px solid var(--border);font-size:14px;background:var(--input-bg);color:var(--text);transition:box-shadow 0.2s;}
@@ -191,13 +191,16 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   .layout{display:block;}
 }
 @media print{
+  body{background:#ffffff !important;color:#111111 !important;}
+  *{color:#111111 !important;background:#ffffff !important;border-color:#cccccc !important;}
   button,input[type=file],.hamburger,.sidebar,.sidebar-overlay{display:none!important;}
   .layout{display:block;}
   .content{padding:0;}
-  .section{display:block!important;background:#fff;box-shadow:none;page-break-inside:avoid;margin-bottom:20px;border:1px solid #ccc;border-left:4px solid #999;}
+  .section{display:block!important;background:#fff !important;box-shadow:none;page-break-inside:avoid;margin-bottom:20px;border:1px solid #ccc !important;border-left:4px solid #999 !important;}
   .news2-cell-btn{display:inline!important;background:none!important;border:none!important;color:#111!important;padding:0!important;font-size:13px!important;cursor:default!important;}
-  body{background:#fff;color:#111;}
   header{position:static;box-shadow:none;}
+  .trauma-box{background:#ffffff !important;border:1px solid #cccccc !important;border-left:4px solid #999999 !important;}
+  .signature-box{border:2px solid #cccccc !important;background:#ffffff !important;}
 }
 </style>
 </head>
