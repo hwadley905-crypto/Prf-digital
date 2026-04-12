@@ -401,10 +401,10 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <section class="section" id="sec-obs"><h2>Patient Observations</h2>
 <table id="obsTable">
 <tr>
-<th>Date</th><th>Time</th><th>Resp</th><th>SpO2</th><th>Temp</th><th>BP Sys</th><th>BP Dia</th><th>HR</th><th>ETCO2</th><th>ACVPU</th><th>GCS</th><th>Pupils</th><th>NEWS2</th><th>BGM</th><th>Ketone</th><th></th>
+<th>Date</th><th>Time</th><th>Resp</th><th>SpO2</th><th>Temp</th><th>BP Sys</th><th>BP Dia</th><th>HR</th><th>ETCO2</th><th>ACVPU</th><th>GCS</th><th>Pupils</th><th>BGM</th><th>NEWS2</th><th>Ketone</th><th></th>
 </tr>
 <tr>
-<td><input type="date"></td><td><input type="time"></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><input class="vital-input" style="width:50px;"></td><td><button type="button" class="news2-cell-btn" onclick="openGcsModal('0')" aria-label="Open GCS scoring modal">-</button></td><td><input class="vital-input" style="width:40px;"></td><td data-news2row="1"><button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">-</button></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">X</button></td>
+<td><input type="date"></td><td><input type="time"></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><button type="button" class="news2-cell-btn" onclick="openGcsModal('0')" aria-label="Open GCS scoring modal">-</button></td><td><input class="vital-input" style="width:50px;"></td><td data-news2row="1"><button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">-</button></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">X</button></td>
 </tr>
 </table>
 <button class="add-row-btn" onclick="addObsRow()">Add Observation Row</button>
@@ -894,7 +894,9 @@ function addObsRow(){
   const types=['date','time','text','text','text','text','text','text','text','text','text','text','text'];
   types.forEach((t,i)=>{
     const cell=row.insertCell();
-    if(i===10){ // GCS button
+    if(i===9){ // GCS button
+      cell.innerHTML=`<button type="button" class="news2-cell-btn" onclick="openGcsModal('${news2RowCounter}')" aria-label="Open GCS scoring modal">-</button>`;
+    }else if(i===10){ // Pupils
       cell.innerHTML=`<button type="button" class="news2-cell-btn" onclick="openGcsModal('${news2RowCounter}')" aria-label="Open GCS scoring modal">-</button>`;
     }else if(i===11){ // NEWS2 button
       cell.setAttribute('data-news2row', news2RowCounter);
@@ -915,8 +917,8 @@ function addObsRow(){
     }else{
       const input=document.createElement('input');
       input.type=t;
-      if(i>=2 && i<=9) input.className='vital-input';
-      if((i===5)||(i===6)||(i===7)||(i===8)) input.className='vital-input-wide';
+      if(i>=2 && i<=8) input.className='vital-input';
+      if((i===5)||(i===6)||(i===7)) input.className='vital-input-wide';
       cell.appendChild(input);
     }
   });
