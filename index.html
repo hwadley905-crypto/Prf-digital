@@ -3,75 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patient Observations</title>
+    <title>Patient Record Form</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
 </head>
 <body>
     <div id="sidebar" style="width: 120px;">
-        <div class="tab" style="font-size: 11px;">Tab 1</div>
-        <div class="tab" style="font-size: 11px;">Tab 2</div>
-        <div class="tab" style="font-size: 11px;">Tab 3</div>
-        <div class="tab" style="font-size: 11px;">Tab 4</div>
+        <ul>
+            <li style="font-size: 11px;"><a href="#clinicianDetails">Clinician Details</a></li>
+            <li style="font-size: 11px;"><a href="#callHistory">Call History</a></li>
+            <li style="font-size: 11px;"><a href="#patientDetails">Patient Details</a></li>
+            <li style="font-size: 11px;"><a href="#primarySurvey">Primary Survey</a></li>
+            <li style="font-size: 11px;"><a href="#secondarySurvey">Secondary Survey</a></li>
+            <li style="font-size: 11px;"><a href="#patientObservations">Patient Observations</a></li>
+            <li style="font-size: 11px;"><a href="#interventions">Interventions</a></li>
+            <li style="font-size: 11px;"><a href="#drugs">Drugs</a></li>
+            <li style="font-size: 11px;"><a href="#bodyMap">Body Map</a></li>
+            <li style="font-size: 11px;"><a href="#atmIt">ATMIST</a></li>
+            <li style="font-size: 11px;"><a href="#outcome">Outcome</a></li>
+            <li style="font-size: 11px;"><a href="#signOff">Sign Off</a></li>
+        </ul>
     </div>
-    <div id="main-content">
-        <div id="patient-details">
-            <label for="patient-name">Patient Name:</label>
-            <input type="text" id="patient-name" name="patient-name">
-            <label for="dob">Date of Birth:</label>
-            <input type="date" id="dob" name="dob">
-        </div>
-        <table id="observation-table">
-            <tr>
-                <th>Resp Rate</th>
-                <th>Pulse</th>
-                <th>SpO2</th>
-                <th>Temp</th>
-                <th>Systolic BP</th>
-                <th>Diastolic BP</th>
-                <th>HR</th>
-                <th>ETCO2</th>
-                <th>ACVPU</th>
-                <th>GCS</th>
-                <th>Pupils</th>
-            </tr>
-            <tr>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-                <td class="vital">...</td>
-            </tr>
-        </table>
-        <div id="gcs-calculator-modal" class="modal">
-            <form>
-                <label for="eye">Eye Response:</label>
-                <select id="eye" name="eye">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <label for="verbal">Verbal Response:</label>
-                <select id="verbal" name="verbal">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <label for="motor">Motor Response:</label>
-                <select id="motor" name="motor">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <button type="submit">Calculate GCS</button>
-            </form>
+    <div id="content">
+        <form id="patientForm">
+            <div id="patientDetails">
+                <h2>Patient Details</h2>
+                <label for="patientName">Patient Name:</label>
+                <input type="text" id="patientName" name="patientName">
+                <label for="dob">Date of Birth:</label>
+                <input type="date" id="dob" name="dob">
+                <h3>Patient Observations</h3>
+                <table id="observationsTable">
+                    <tr>
+                        <th>Resp Rate</th>
+                        <th>Pulse</th>
+                        <th>HR</th>
+                        <th>GCS</th>
+                        <th>SpO2</th>
+                        <th>Temp</th>
+                        <th>ETCO2</th>
+                        <th>ACVPU</th>
+                        <th>Pupils</th>
+                        <th>BP Systolic</th>
+                        <th>BP Diastolic</th>
+                    </tr>
+                    <tr>
+                        <td style="width: 45px;"><input type="text" id="respRate"></td>
+                        <td style="width: 45px;"><input type="text" id="pulse"></td>
+                        <td style="width: 45px;"><input type="text" id="hr"></td>
+                        <td style="width: 45px;"><input type="text" id="gcs"></td>
+                        <td style="width: 50px;"><input type="text" id="spo2"></td>
+                        <td style="width: 50px;"><input type="text" id="temp"></td>
+                        <td style="width: 50px;"><input type="text" id="etco2"></td>
+                        <td style="width: 50px;"><input type="text" id="acvpu"></td>
+                        <td style="width: 50px;"><input type="text" id="pupils"></td>
+                        <td style="width: 50px;"><input type="text" id="bpSystolic"></td>
+                        <td style="width: 50px;"><input type="text" id="bpDiastolic"></td>
+                    </tr>
+                </table>
+                <button type="button" id="gcsCalculatorBtn">GCS Calculator</button>
+            </div>
+            <!-- Additional sections would be here -->
+        </form>
+        <div id="gcsModal" style="display:none;">
+            <h2>GCS Calculator</h2>
+            <!-- GCS calculator form would go here -->
+            <button type="button" id="closeModal">Close</button>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
