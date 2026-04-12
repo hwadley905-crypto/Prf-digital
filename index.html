@@ -595,12 +595,12 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 </thead>
 <tbody id="resusTableBody">
 <tr>
-<td><input type="date"></td>
-<td><input type="time"></td>
+<td><input type="date" style="width: 10ch;"></td>
+<td><input type="time" style="width: 8ch;"></td>
+<td><input class="vital-input" style="width: 15ch;"></td>
 <td><input class="vital-input" style="width: 20ch;"></td>
-<td><input class="vital-input" style="width: 25ch;"></td>
-<td><input class="vital-input" style="width: 20ch;"></td>
-<td><input class="vital-input" style="width: 20ch;"></td>
+<td><input class="vital-input" style="width: 15ch;"></td>
+<td><input class="vital-input" style="width: 15ch;"></td>
 <td><input class="vital-input" style="width: 15ch;"></td>
 <td><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button></td>
 </tr>
@@ -1116,23 +1116,22 @@ function addInterventionRow(){
 function addResusRow(){
   const table=document.getElementById('resusTable');
   const row=table.insertRow();
-  const types=['date','time','text','text','text','text','text','clear'];
-  const widths=[null,null,'20ch','25ch','20ch','20ch','15ch'];
+  const types=['date','time','text','text','text','text','clear'];
+  const widths=['10ch','8ch','15ch','20ch','15ch','15ch','auto'];
   types.forEach((t,i)=>{
     const cell=row.insertCell();
-    if(i===7){ // Clear button
+    if(i===6){ // Clear button (index 6)
       cell.innerHTML=`<button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button>`;
     }else{
       const input=document.createElement('input');
       input.type=t;
       if(i===0 || i===1){
-        // Date and Time - no class like patient observations
+        // Date and Time - apply width styling
+        input.style.width=widths[i];
       } else {
         input.className='vital-input';
         // Set width based on the widths array
-        if(widths[i]){
-          input.style.width=widths[i];
-        }
+        input.style.width=widths[i];
       }
       cell.appendChild(input);
     }
