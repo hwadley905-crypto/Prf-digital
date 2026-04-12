@@ -74,6 +74,7 @@ body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);b
 #sec-secondary{border-left-color:#f97316;}
 #sec-traumatools{border-left-color:#f59e0b;}
 #sec-injuryassessment{border-left-color:#8b5cf6;}
+body.light #sec-injuryassessment h2{color:#000000 !important;}
 #sec-obs{border-left-color:#eab308;}
 #sec-interventions{border-left-color:#84cc16;}
 #sec-drugs{border-left-color:#22c55e;}
@@ -114,6 +115,7 @@ button:hover{filter:brightness(1.15);}
 body.light #clearForm:hover{background:rgba(37,99,235,0.08);filter:none;}
 .signature-box{height:150px;border:2px solid var(--border);border-radius:6px;background:var(--input-bg);cursor:crosshair;display:block;width:100%;max-width:400px;touch-action:none;}
 body.light .signature-box{border:2px solid #90c8f5;}
+.body-map-canvas{border:2px solid var(--border);border-radius:8px;background:white;cursor:crosshair;touch-action:none;margin:10px 0;}
 .gcs-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1000;}
 .gcs-modal.open{display:flex;}
 .gcs-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.7);cursor:pointer;}
@@ -321,7 +323,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
       <li class="trauma-bullet-item"><input type="checkbox" id="silver7"><label for="silver7">Unable to cough/ deep breathe due to pain</label></li>
       <li class="trauma-bullet-item"><input type="checkbox" id="silver8"><label for="silver8">Severe uncontrolled pain</label></li>
       <li class="trauma-bullet-item"><input type="checkbox" id="silver9"><label for="silver9">Bleeding dissorder</label></li>
-      <li class="trauma-bullet-item"><input type="checkbox" id="silver10"><label for="silver10">on clopidogrel or other anticoagulants</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver10"><label for="silver10">On clopidogrel or other anticoagulants</label></li>
     </ul>
   </div>
   
@@ -341,12 +343,11 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 <section class="section" id="sec-injuryassessment"><h2>Injury Assessment Tool</h2>
 
-<h3>Injury Assessment Tool</h3>
 <div class="trauma-flow">
   <div class="trauma-box">
     <h4>Step 1 - assess vital signs</h4>
     <ul class="trauma-bullet-list">
-      <li class="trauma-bullet-item"><input type="checkbox" id="injury1"><label for="injury1">sustained RR&lt;10/&gt;29</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury1"><label for="injury1">Sustained RR&lt;10/&gt;29</label></li>
       <li class="trauma-bullet-item"><input type="checkbox" id="injury2"><label for="injury2">Sustained systolic BP&lt;90</label></li>
       <li class="trauma-bullet-item"><input type="checkbox" id="injury3"><label for="injury3">GCS(M)&gt;5</label></li>
     </ul>
@@ -414,6 +415,46 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 <section class="section" id="sec-bodymap"><h2>Body Map / Injury Documentation</h2>
 <textarea id="bodyMapNotes" placeholder="Describe injury locations..." class="auto"></textarea>
+
+<h3>Human Body Map - Front & Back</h3>
+<div style="display:flex; gap:20px; margin:20px 0; flex-wrap:wrap;">
+  <div style="flex:1; min-width:300px;">
+    <h4>Male Front</h4>
+    <canvas id="maleFrontCanvas" class="body-map-canvas" width="300" height="400" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px;"></canvas>
+    <div style="margin-top:10px;">
+      <button type="button" onclick="clearBodyMap('maleFront')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-right:10px;">Clear</button>
+      <button type="button" onclick="saveBodyMap('maleFront')" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Save</button>
+    </div>
+  </div>
+  
+  <div style="flex:1; min-width:300px;">
+    <h4>Male Back</h4>
+    <canvas id="maleBackCanvas" class="body-map-canvas" width="300" height="400" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px;"></canvas>
+    <div style="margin-top:10px;">
+      <button type="button" onclick="clearBodyMap('maleBack')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-right:10px;">Clear</button>
+      <button type="button" onclick="saveBodyMap('maleBack')" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Save</button>
+    </div>
+  </div>
+  
+  <div style="flex:1; min-width:300px;">
+    <h4>Female Front</h4>
+    <canvas id="femaleFrontCanvas" class="body-map-canvas" width="300" height="400" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px;"></canvas>
+    <div style="margin-top:10px;">
+      <button type="button" onclick="clearBodyMap('femaleFront')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-right:10px;">Clear</button>
+      <button type="button" onclick="saveBodyMap('femaleFront')" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Save</button>
+    </div>
+  </div>
+  
+  <div style="flex:1; min-width:300px;">
+    <h4>Female Back</h4>
+    <canvas id="femaleBackCanvas" class="body-map-canvas" width="300" height="400" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px;"></canvas>
+    <div style="margin-top:10px;">
+      <button type="button" onclick="clearBodyMap('femaleBack')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-right:10px;">Clear</button>
+      <button type="button" onclick="saveBodyMap('femaleBack')" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Save</button>
+    </div>
+  </div>
+</div>
+
 <label>Upload Body Map Image</label>
 <input type="file" accept="image/*" multiple onchange="previewImages(event,'bodyPreview')">
 <div class="image-preview" id="bodyPreview"></div>
@@ -647,6 +688,36 @@ function closeGcsModal(save){
   activeGcsRowId=null;
 }
 
+function showNews2Alert(cell, score){
+  // Remove existing alerts
+  const existingAlert = cell.querySelector('.gcs-alert');
+  if(existingAlert) existingAlert.remove();
+  
+  // Create alert element
+  const alert = document.createElement('div');
+  alert.className = score >= 7 ? 'gcs-alert' : 'gcs-alert amber';
+  
+  const alertContent = score >= 7 
+    ? `<h4>RED ALERT - NEWS2 ${score}</h4>
+       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="NEWS2 Red Alert Protocol" style="width:100%; max-width:500px; height:auto; border-radius:4px; margin:5px 0;">`
+    : `<h4>AMBER ALERT - NEWS2 ${score}</h4>
+       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="NEWS2 Amber Alert Protocol" style="width:100%; max-width:500px; height:auto; border-radius:4px; margin:5px 0;">`;
+  
+  alert.innerHTML = `
+    ${alertContent}
+    <button class="gcs-alert-close" onclick="this.parentElement.remove()">×</button>
+  `;
+  
+  // Position alert below the cell
+  cell.style.position = 'relative';
+  cell.appendChild(alert);
+  
+  // Auto-hide after 10 seconds
+  setTimeout(() => {
+    if(alert.parentElement) alert.remove();
+  }, 10000);
+}
+
 function showGcsAlert(cell, score){
   // Remove existing alerts
   const existingAlert = cell.querySelector('.gcs-alert');
@@ -658,9 +729,9 @@ function showGcsAlert(cell, score){
   
   const alertContent = score <= 8 
     ? `<h4>RED ALERT - GCS ${score}</h4>
-       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="GCS Red Alert Protocol" style="width:100%; max-width:250px; height:auto; border-radius:4px; margin:5px 0;">`
+       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="GCS Red Alert Protocol" style="width:100%; max-width:500px; height:auto; border-radius:4px; margin:5px 0;">`
     : `<h4>AMBER ALERT - GCS ${score}</h4>
-       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="GCS Amber Alert Protocol" style="width:100%; max-width:250px; height:auto; border-radius:4px; margin:5px 0;">`;
+       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="GCS Amber Alert Protocol" style="width:100%; max-width:500px; height:auto; border-radius:4px; margin:5px 0;">`;
   
   alert.innerHTML = `
     ${alertContent}
@@ -783,6 +854,11 @@ function closeNews2Modal(save){
       if(total>=7) td.classList.add('news2-risk-red');
       else if(total>=5) td.classList.add('news2-risk-amber');
       else td.classList.add('news2-risk-green');
+      
+      // Show alert pop-up for amber or red scores
+      if(total>=5){
+        showNews2Alert(td, total);
+      }
     }
     saveForm();
   }
@@ -1041,6 +1117,121 @@ function restoreForm(){
 document.addEventListener('input',saveForm);
 document.addEventListener('change',saveForm);
 restoreForm();
+
+// Body Map Canvas Functions
+let bodyMapDrawing = {};
+
+function initBodyMapCanvas(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let lastX = 0;
+  let lastY = 0;
+
+  // Set canvas size for better touch support
+  function setupCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+  }
+
+  setupCanvas();
+  window.addEventListener('resize', setupCanvas);
+
+  // Mouse events
+  canvas.addEventListener('mousedown', e => {
+    const rect = canvas.getBoundingClientRect();
+    drawing = true;
+    lastX = (e.clientX - rect.left) * window.devicePixelRatio;
+    lastY = (e.clientY - rect.top) * window.devicePixelRatio;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+  });
+
+  canvas.addEventListener('mousemove', e => {
+    if (!drawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const currentX = (e.clientX - rect.left) * window.devicePixelRatio;
+    const currentY = (e.clientY - rect.top) * window.devicePixelRatio;
+    ctx.lineTo(currentX, currentY);
+    ctx.stroke();
+  });
+
+  canvas.addEventListener('mouseup', () => {
+    drawing = false;
+  });
+
+  canvas.addEventListener('mouseleave', () => {
+    drawing = false;
+  });
+
+  // Touch events
+  canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    drawing = true;
+    lastX = (touch.clientX - rect.left) * window.devicePixelRatio;
+    lastY = (touch.clientY - rect.top) * window.devicePixelRatio;
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (!drawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const currentX = (touch.clientX - rect.left) * window.devicePixelRatio;
+    const currentY = (touch.clientY - rect.top) * window.devicePixelRatio;
+    ctx.lineTo(currentX, currentY);
+    ctx.stroke();
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', e => {
+    e.preventDefault();
+    drawing = false;
+  }, { passive: false });
+}
+
+function clearBodyMap(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Reset drawing style
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 2;
+    ctx.lineCap = 'round';
+  }
+}
+
+function saveBodyMap(canvasId) {
+  const canvas = document.getElementById(canvasId);
+  if (canvas) {
+    // Convert canvas to data URL and save to localStorage
+    const dataUrl = canvas.toDataURL('image/png');
+    localStorage.setItem(`prf_bodymap_${canvasId}`, dataUrl);
+    
+    // Show confirmation
+    const bodyPart = canvasId.replace('Canvas', '').replace(/([A-Z])/g, ' $1');
+    alert(`Body map for ${bodyPart} saved successfully!`);
+  }
+}
+
+// Initialize all body map canvases
+document.addEventListener('DOMContentLoaded', () => {
+  initBodyMapCanvas('maleFrontCanvas');
+  initBodyMapCanvas('maleBackCanvas');
+  initBodyMapCanvas('femaleFrontCanvas');
+  initBodyMapCanvas('femaleBackCanvas');
+});
 
 // Clear Form button
 document.getElementById('clearForm').addEventListener('click',()=>{
