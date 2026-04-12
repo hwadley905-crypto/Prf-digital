@@ -75,6 +75,7 @@ body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);b
 #sec-traumatools{border-left-color:#f59e0b;}
 #sec-injuryassessment{border-left-color:#8b5cf6;}
 body.light #sec-injuryassessment h2{color:#000000 !important;}
+body.light .tab-btn[data-section="sec-injuryassessment"]{color:#000000 !important;}
 #sec-obs{border-left-color:#eab308;}
 #sec-interventions{border-left-color:#84cc16;}
 #sec-drugs{border-left-color:#22c55e;}
@@ -179,6 +180,12 @@ body:not(.light) .news2-table td.empty{background:#0c0f14;color:#555;}
 .gcs-alert p{margin:5px 0;font-size:12px;color:var(--text);}
 .gcs-alert-close{position:absolute;top:5px;right:5px;background:none;border:none;color:var(--text);cursor:pointer;font-size:16px;padding:2px;}
 .gcs-alert-close:hover{color:var(--red);}
+.news2-alert{background:var(--card-bg);border:2px solid var(--red);border-radius:8px;padding:20px;margin:20px 0;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.3);width:100%;}
+.news2-alert.amber{border-color:var(--amber);}
+.news2-alert h4{margin:0 0 15px 0;color:var(--red);font-size:18px;text-align:center;}
+.news2-alert.amber h4{color:var(--amber);}
+.news2-alert-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text);cursor:pointer;font-size:20px;padding:2px;}
+.news2-alert-close:hover{color:var(--red);}
 .hamburger{display:none;background:none;border:1px solid var(--border);color:var(--text);padding:5px 9px;border-radius:6px;cursor:pointer;font-size:18px;}
 .hamburger:hover{background:rgba(88,166,255,0.08);filter:none;}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:199;}
@@ -420,7 +427,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div style="display:flex; gap:20px; margin:20px 0; flex-wrap:wrap;">
   <div style="flex:1; min-width:300px;">
     <h4>Male Front</h4>
-    <canvas id="maleFrontCanvas" class="body-map-canvas" width="300" height="400" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px;"></canvas>
+    <canvas id="maleFrontCanvas" class="body-map-canvas" width="300" height="4000" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px; height:4000px;"></canvas>
     <div style="margin-top:10px;">
       <button type="button" onclick="clearBodyMap('maleFront')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-right:10px;">Clear</button>
       <button type="button" onclick="saveBodyMap('maleFront')" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Save</button>
@@ -429,7 +436,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   
   <div style="flex:1; min-width:300px;">
     <h4>Male Back</h4>
-    <canvas id="maleBackCanvas" class="body-map-canvas" width="300" height="400" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px;"></canvas>
+    <canvas id="maleBackCanvas" class="body-map-canvas" width="300" height="4000" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px; height:4000px;"></canvas>
     <div style="margin-top:10px;">
       <button type="button" onclick="clearBodyMap('maleBack')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-right:10px;">Clear</button>
       <button type="button" onclick="saveBodyMap('maleBack')" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Save</button>
@@ -438,7 +445,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   
   <div style="flex:1; min-width:300px;">
     <h4>Female Front</h4>
-    <canvas id="femaleFrontCanvas" class="body-map-canvas" width="300" height="400" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px;"></canvas>
+    <canvas id="femaleFrontCanvas" class="body-map-canvas" width="300" height="4000" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px; height:4000px;"></canvas>
     <div style="margin-top:10px;">
       <button type="button" onclick="clearBodyMap('femaleFront')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-right:10px;">Clear</button>
       <button type="button" onclick="saveBodyMap('femaleFront')" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Save</button>
@@ -447,7 +454,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   
   <div style="flex:1; min-width:300px;">
     <h4>Female Back</h4>
-    <canvas id="femaleBackCanvas" class="body-map-canvas" width="300" height="400" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px;"></canvas>
+    <canvas id="femaleBackCanvas" class="body-map-canvas" width="300" height="4000" style="border:2px solid var(--border); border-radius:8px; background:white; cursor:crosshair; touch-action:none; width:100%; max-width:300px; height:4000px;"></canvas>
     <div style="margin-top:10px;">
       <button type="button" onclick="clearBodyMap('femaleBack')" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer; margin-right:10px;">Clear</button>
       <button type="button" onclick="saveBodyMap('femaleBack')" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:6px; cursor:pointer;">Save</button>
@@ -690,32 +697,35 @@ function closeGcsModal(save){
 
 function showNews2Alert(cell, score){
   // Remove existing alerts
-  const existingAlert = cell.querySelector('.gcs-alert');
+  const existingAlert = document.querySelector('.news2-alert');
   if(existingAlert) existingAlert.remove();
+  
+  // Find the observations section
+  const obsSection = document.getElementById('sec-obs');
+  if(!obsSection) return;
   
   // Create alert element
   const alert = document.createElement('div');
-  alert.className = score >= 7 ? 'gcs-alert' : 'gcs-alert amber';
+  alert.className = score >= 7 ? 'news2-alert' : 'news2-alert amber';
   
   const alertContent = score >= 7 
     ? `<h4>RED ALERT - NEWS2 ${score}</h4>
-       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="NEWS2 Red Alert Protocol" style="width:100%; max-width:500px; height:auto; border-radius:4px; margin:5px 0;">`
+       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="NEWS2 Red Alert Protocol" style="width:100%; max-width:10000px; height:auto; border-radius:4px; margin:10px 0;">`
     : `<h4>AMBER ALERT - NEWS2 ${score}</h4>
-       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="NEWS2 Amber Alert Protocol" style="width:100%; max-width:500px; height:auto; border-radius:4px; margin:5px 0;">`;
+       <img src="https://pbs.twimg.com/media/Cfh-RRHXEAA3wws.jpg" alt="NEWS2 Amber Alert Protocol" style="width:100%; max-width:10000px; height:auto; border-radius:4px; margin:10px 0;">`;
   
   alert.innerHTML = `
     ${alertContent}
-    <button class="gcs-alert-close" onclick="this.parentElement.remove()">×</button>
+    <button class="news2-alert-close" onclick="this.parentElement.remove()">×</button>
   `;
   
-  // Position alert below the cell
-  cell.style.position = 'relative';
-  cell.appendChild(alert);
+  // Position alert below the observations section
+  obsSection.appendChild(alert);
   
-  // Auto-hide after 10 seconds
+  // Auto-hide after 15 seconds (longer for larger image)
   setTimeout(() => {
     if(alert.parentElement) alert.remove();
-  }, 10000);
+  }, 15000);
 }
 
 function showGcsAlert(cell, score){
