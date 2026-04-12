@@ -478,28 +478,10 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
 </section>
 
-<section class="section" id="sec-wallpaper" style="background-image: url('https://i.postimg.cc/ZWQSxxpJ/Adult-ALS.png'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative;">
-<div style="background: rgba(0,0,0,0.7); padding: 20px; border-radius: 8px; backdrop-filter: blur(5px);">
-<h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Adult ALS</h2>
-<div class="field">
-  <p style="color: white; font-size: 14px; line-height: 1.6;">This section contains a persistent wallpaper that remains the same for every new PRF form. The background image is set in the code and cannot be changed by users.</p>
-</div>
-<div class="field">
-  <p style="color: white; font-size: 12px; opacity: 0.8;">To change the wallpaper, modify the background-image URL in the sec-wallpaper section CSS.</p>
-</div>
-</div>
+<section class="section" id="sec-wallpaper" style="background-image: url('https://i.postimg.cc/ZWQSxxpJ/Adult-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
 </section>
 
-<section class="section" id="sec-paedsals" style="background-image: url('https://i.postimg.cc/2S47g5qk/Paeds-ALS.png'); background-size: cover; background-position: center; background-repeat: no-repeat; position: relative;">
-<div style="background: rgba(0,0,0,0.7); padding: 20px; border-radius: 8px; backdrop-filter: blur(5px);">
-<h2 style="color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">Paeds ALS</h2>
-<div class="field">
-  <p style="color: white; font-size: 14px; line-height: 1.6;">This section contains a persistent wallpaper that remains the same for every new PRF form. The background image is set in the code and cannot be changed by users.</p>
-</div>
-<div class="field">
-  <p style="color: white; font-size: 12px; opacity: 0.8;">To change the wallpaper, modify the background-image URL in the sec-paedsals section CSS.</p>
-</div>
-</div>
+<section class="section" id="sec-paedsals" style="background-image: url('https://i.postimg.cc/2S47g5qk/Paeds-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
 </section>
 
 <section class="section" id="sec-resus"><h2>RESUS</h2>
@@ -522,16 +504,16 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 </thead>
 <tbody id="resusTableBody">
 <tr>
-<td><input type="date" class="vital-input"></td>
-<td><input type="time" class="vital-input"></td>
-<td><input type="text" class="vital-input" style="width: 15ch;"></td>
-<td><input type="text" class="vital-input" style="width: 15ch;"></td>
-<td><input type="text" class="vital-input" style="width: 15ch;"></td>
-<td><input type="text" class="vital-input" style="width: 15ch;"></td>
-<td><input type="text" class="vital-input"></td>
-<td><input type="text" class="vital-input"></td>
-<td><input type="text" class="vital-input"></td>
-<td><input type="text" class="vital-input"></td>
+<td><input type="date"></td>
+<td><input type="time"></td>
+<td><input class="vital-input" style="width: 15ch;"></td>
+<td><input class="vital-input" style="width: 15ch;"></td>
+<td><input class="vital-input" style="width: 15ch;"></td>
+<td><input class="vital-input" style="width: 15ch;"></td>
+<td><input class="vital-input"></td>
+<td><input class="vital-input"></td>
+<td><input class="vital-input"></td>
+<td><input class="vital-input"></td>
 <td><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button></td>
 </tr>
 </tbody>
@@ -1054,10 +1036,14 @@ function addResusRow(){
     }else{
       const input=document.createElement('input');
       input.type=t;
-      input.className='vital-input';
-      // Set width for first 6 columns to 15 characters
-      if(i>=2 && i<=6){
-        input.style.width='15ch';
+      if(i===0 || i===1){
+        // Date and Time - no class like patient observations
+      } else {
+        input.className='vital-input';
+        // Set width for first 6 columns to 15 characters
+        if(i>=2 && i<=6){
+          input.style.width='15ch';
+        }
       }
       cell.appendChild(input);
     }
