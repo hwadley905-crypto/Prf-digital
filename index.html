@@ -247,7 +247,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <button class="tab-btn active" data-section="sec-clinician">Clinician</button>
   <button class="tab-btn" data-section="sec-callhistory">Call History</button>
   <button class="tab-btn" data-section="sec-patient">Patient</button>
-  <button class="tab-btn" data-section="sec-als">ALS</button>
   <button class="tab-btn" data-section="sec-primary">Primary</button>
   <button class="tab-btn" data-section="sec-secondary">Secondary</button>
   <button class="tab-btn" data-section="sec-traumatools">Silver Trauma Tool</button>
@@ -412,7 +411,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <section class="section" id="sec-obs"><h2>Patient Observations</h2>
 <table id="obsTable">
 <tr>
-<th>Date</th><th>Time</th><th>Resp</th><th>SpO2</th><th>Temp</th><th>BP Sys</th><th>BP Dia</th><th>HR</th><th>ETCO2</th><th>ACVPU</th><th>GCS</th><th>Pupils</th><th>BGM</th><th>NEWS2</th><th>Ketone</th><th></th>
+<th>Date</th><th>Time</th><th>Resp</th><th>SpO2</th><th>Temp</th><th>BP Sys</th><th>BP Dia</th><th>HR</th><th>ETCO2</th><th>ACVPU</th><th>GCS</th><th>Pupils</th><th>NEWS2</th><th>BGM</th><th>Ketone</th><th></th>
 </tr>
 <tr>
 <td><input type="date"></td><td><input type="time"></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input-wide"></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><button type="button" class="news2-cell-btn" onclick="openGcsModal('0')" aria-label="Open GCS scoring modal">-</button></td><td><input class="vital-input" style="width:50px;"></td><td data-news2row="1"><button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">-</button></td><td><input class="vital-input"></td><td><input class="vital-input"></td><td><button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">X</button></td>
@@ -470,11 +469,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="clinicianName">Clinician Name</label><input type="text" id="clinicianName"></div>
 <div class="field"><label for="clinicianRole">Role</label><input type="text" id="clinicianRole"></div>
 <div class="field"><label for="clinicianPin">Professional PIN</label><input type="text" id="clinicianPin"></div>
-<div class="field"><label for="signDate">Date</label><input type="date" id="signDate"></div>
-<div class="field"><label for="signTime">Time</label><input type="time" id="signTime"></div>
-<div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
-</section>
-
 <section class="section" id="sec-opencase"><h2>Open Case</h2>
 <div class="field">
   <label for="openCase">Select Saved Case</label>
@@ -931,14 +925,7 @@ function addObsRow(){
   const types=['date','time','text','text','text','text','text','text','text','text','text','text'];
   types.forEach((t,i)=>{
     const cell=row.insertCell();
-    if(i===10){ // GCS button
-      cell.setAttribute('data-gcsrow', news2RowCounter);
-      cell.innerHTML=`<button type="button" class="news2-cell-btn" onclick="openGcsModal('${news2RowCounter}')" aria-label="Open GCS scoring modal">-</button>`;
-    }else if(i===13){ // NEWS2 button
-    }else if(i===10){ // Pupils
-      cell.setAttribute('data-gcsrow', news2RowCounter);
-      cell.innerHTML=`<button type="button" class="news2-cell-btn" onclick="openGcsModal('${news2RowCounter}')" aria-label="Open GCS scoring modal">-</button>`;
-    }else if(i===11){ // NEWS2 button
+    if(i===10){ // NEWS2 button
       cell.setAttribute('data-news2row', news2RowCounter);
       cell.innerHTML=`<button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">-</button>`;
     }else if(i===12){ // BGM
@@ -1357,13 +1344,50 @@ function parseAndLoadCase(content){
     if(caseData.dob) document.getElementById('dob').value = caseData.dob;
     if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
     
-    alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\n\nYou can now edit this case and save changes.`);
+    // Clear current form data and replace with loaded case data
+    clearCurrentForm();
+    
+    // Repopulate form with loaded case data
+    setTimeout(() => {
+      if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
+      if(caseData.dob) document.getElementById('dob').value = caseData.dob;
+      if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
+      
+      alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\n\nForm has been cleared and repopulated with case data.`);
+    }, 500);
     
     // Add to local storage for later use
     localStorage.setItem(`prf_case_${Date.now()}`, JSON.stringify(caseData));
     
   } catch(error) {
     alert('Error parsing case file: ' + error.message);
+  }
+}
+
+function clearCurrentForm(){
+  // Clear all form fields
+  document.getElementById('patientName').value = '';
+  document.getElementById('dob').value = '';
+  document.getElementById('allergies').value = '';
+  document.getElementById('nextOfKin').value = '';
+  document.getElementById('capacity').value = '';
+  document.getElementById('dnar').value = '';
+  document.getElementById('medications').value = '';
+  document.getElementById('pastHistory').value = '';
+  document.getElementById('hpc').value = '';
+  
+  // Clear other sections
+  document.getElementById('clinicianName').value = '';
+  document.getElementById('clinicianRole').value = '';
+  document.getElementById('clinicianPin').value = '';
+  document.getElementById('signDate').value = '';
+  document.getElementById('signTime').value = '';
+  
+  // Clear signature
+  const canvas = document.getElementById('signatureCanvas');
+  if(canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 }
 
