@@ -294,8 +294,8 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="airway">(A) Airway</label><textarea id="airway" class="auto"></textarea></div>
 <div class="field"><label for="breathing">(B) Breathing</label><textarea id="breathing" class="auto"></textarea></div>
 <div class="field"><label for="circulation">(C) Circulation</label><textarea id="circulation" class="auto"></textarea></div>
-<div class="field"><label for="disability">(D) Disability</label><textarea id="disability" class="auto"></textarea></div>
-<div class="field"><label for="exposure">(E) Exposure</label><textarea id="exposure" class="auto"></textarea></div>
+<div class="field"><label for="disability">(D) Disability - GCS, FAST, LOC causes, paralysis etc.</label><textarea id="disability" class="auto"></textarea></div>
+<div class="field"><label for="exposure">(E) Exposure - dignity, thermoregulation, inspection</label><textarea id="exposure" class="auto"></textarea></div>
 </section>
 
 <section class="section" id="sec-secondary"><h2>Secondary Survey</h2>
@@ -658,11 +658,6 @@ function closeGcsModal(save){
       else if(total<=12) gcsTd.classList.add('gcs-risk-amber');
       else gcsTd.classList.add('gcs-risk-green');
       
-      // Show alert pop-up for amber or red scores
-      if(total<=12){
-        showGcsAlert(gcsTd, total);
-      }
-      
       saveForm();
     }
   }
@@ -897,7 +892,7 @@ function previewImages(event,id){
 function addObsRow(){
   const table=document.getElementById('obsTable');
   const row=table.insertRow();
-  const types=['date','time','text','text','text','text','text','text','text','text','text','text','text','text','text'];
+  const types=['date','time','text','text','text','text','text','text','text','text','text','text','text','text','text','clear'];
   types.forEach((t,i)=>{
     const cell=row.insertCell();
     if(i===10){ // GCS button
