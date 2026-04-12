@@ -118,7 +118,7 @@ button:hover{filter:brightness(1.15);}
 #clearForm{background:transparent;border:2px solid var(--primary);color:var(--primary);}
 #clearForm:hover{background:rgba(88,166,255,0.1);filter:none;}
 body.light #clearForm:hover{background:rgba(37,99,235,0.08);filter:none;}
-.signature-box{height:150px;border:2px solid var(--border);border-radius:6px;background:var(--input-bg);cursor:crosshair;display:block;width:100%;max-width:400px;touch-action:none;}
+.signature-box{height:200px;border:2px solid var(--border);border-radius:6px;background:var(--input-bg);cursor:crosshair;display:block;width:100%;max-width:800px;touch-action:none;}
 body.light .signature-box{border:2px solid #90c8f5;}
 .body-map-canvas{border:2px solid var(--border);border-radius:8px;background:white;cursor:crosshair;touch-action:none;margin:10px 0;}
 .gcs-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1000;}
@@ -480,13 +480,13 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <select id="openCase" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px; background:var(--input-bg); color:var(--text);">
     <option value="">Select a case to reopen...</option>
   </select>
-  <button type="button" onclick="reopenSavedCase()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Reopen & Edit</button>
+  <button type="button" onclick="reopenAndEditCase()" style="background:var(--primary); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Reopen & Edit</button>
 </div>
 
 <div class="field">
   <label for="uploadCase">Upload Case File</label>
   <input type="file" id="uploadCase" accept=".pdf,.doc,.docx,.txt" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:4px; background:var(--input-bg); color:var(--text);">
-  <button type="button" onclick="loadCaseFile()" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Load Case File</button>
+  <button type="button" onclick="uploadAndLoadCase()" style="background:var(--green); color:white; border:none; padding:8px 16px; border-radius:4px; cursor:pointer; margin-top:10px;">Load Case File</button>
 </div>
 
 <div class="field">
@@ -1038,21 +1038,21 @@ function updateSigStyle(){
 // Set canvas size for better touch support
 function setupCanvas(){
   const rect=canvas.getBoundingClientRect();
-  // Set actual canvas size in pixels
+  // Set actual canvas size in pixels with proper scaling
   canvas.width = rect.width * window.devicePixelRatio;
   canvas.height = rect.height * window.devicePixelRatio;
-  
-  // Scale the drawing context to match the device pixel ratio
+  // Scale drawing context for sharp lines
   ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-  
-  // Set the canvas CSS size back to the original
+  // Set canvas CSS size
   canvas.style.width = rect.width + 'px';
   canvas.style.height = rect.height + 'px';
-  
-  updateSigStyle();
+  // Set drawing styles for touch-friendly signature
+  ctx.strokeStyle = '#ffffff';
+  ctx.lineWidth = 3; // Thicker lines for better visibility
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
 }
 
-// Initialize canvas when page loads
 window.addEventListener('load', setupCanvas);
 window.addEventListener('resize', setupCanvas);
 
@@ -1288,7 +1288,7 @@ function loadCaseFile(){
   }
 }
 
-function reopenAndEditCase(){
+function uploadAndLoadCase(){
   const fileInput = document.getElementById('uploadCase');
   const file = fileInput.files[0];
   
@@ -1300,7 +1300,42 @@ function reopenAndEditCase(){
     };
     reader.readAsText(file);
   } else {
-    // Check if there are saved cases in localStorage
+    alert('Please select a case file first.');
+  }
+}
+
+function reopenAndEditCase(){
+  const select = document.getElementById('openCase');
+  const selectedCaseId = select.value;
+  
+  if(selectedCaseId){
+    // Load the selected saved case
+    const savedCase = localStorage.getItem(selectedCaseId);
+    if(savedCase) {
+      const caseData = JSON.parse(savedCase);
+      
+      // Clear current form data and replace with loaded case data
+      clearCurrentForm();
+      
+      // Repopulate form with loaded case data
+      setTimeout(() => {
+        if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
+        if(caseData.dob) document.getElementById('dob').value = caseData.dob;
+        if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
+        if(caseData.nextOfKin) document.getElementById('nextOfKin').value = caseData.nextOfKin;
+        if(caseData.capacity) document.getElementById('capacity').value = caseData.capacity;
+        if(caseData.dnar) document.getElementById('dnar').value = caseData.dnar;
+        if(caseData.medications) document.getElementById('medications').value = caseData.medications;
+        if(caseData.pastHistory) document.getElementById('pastHistory').value = caseData.pastHistory;
+        if(caseData.hpc) document.getElementById('hpc').value = caseData.hpc;
+        
+        alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\n\nForm has been cleared and repopulated with case data.`);
+      }, 500);
+    } else {
+      alert('Case not found or invalid case ID.');
+    }
+  } else {
+    // Check if there are saved cases in localStorage and populate dropdown
     const savedCases = [];
     for(let i = 0; i < localStorage.length; i++){
       const key = localStorage.key(i);
@@ -1312,7 +1347,6 @@ function reopenAndEditCase(){
     
     if(savedCases.length > 0){
       // Populate dropdown with saved cases
-      const select = document.getElementById('openCase');
       select.innerHTML = '<option value="">Select a case to reopen...</option>';
       savedCases.forEach((caseItem, index) => {
         const option = document.createElement('option');
@@ -1320,9 +1354,9 @@ function reopenAndEditCase(){
         option.textContent = `Case ${index + 1} - ${caseItem.data.patientName || 'Unknown'}`;
         select.appendChild(option);
       });
-      alert('Found saved cases. Please select one from the dropdown.');
+      alert('Found saved cases. Please select one from the dropdown and click "Reopen & Edit" again.');
     } else {
-      alert('No saved cases found. Please upload a case file first.');
+      alert('No saved cases found. Please upload a case file first using the "Load Case File" button.');
     }
   }
 }
@@ -1395,40 +1429,156 @@ function reopenSavedCase(){
 
 function parseAndLoadCase(content){
   try {
-    // Simple parsing logic - in real implementation, this would be more sophisticated
+    // Enhanced parsing logic for tick boxes and observations
     const lines = content.split('\n');
     const caseData = {};
+    const checkboxes = {};
+    const observations = [];
     
     lines.forEach(line => {
+      line = line.trim();
+      
+      // Parse basic patient data
       if(line.includes('Patient Name:')) {
         caseData.patientName = line.split(':')[1].trim();
       } else if(line.includes('Date of Birth:')) {
         caseData.dob = line.split(':')[1].trim();
       } else if(line.includes('Allergies:')) {
         caseData.allergies = line.split(':')[1].trim();
+      } else if(line.includes('Next of Kin:')) {
+        caseData.nextOfKin = line.split(':')[1].trim();
+      } else if(line.includes('Capacity:')) {
+        caseData.capacity = line.split(':')[1].trim();
+      } else if(line.includes('DNAR:')) {
+        caseData.dnar = line.split(':')[1].trim();
+      } else if(line.includes('Medications:')) {
+        caseData.medications = line.split(':')[1].trim();
+      } else if(line.includes('Past Medical History:')) {
+        caseData.pastHistory = line.split(':')[1].trim();
+      } else if(line.includes('History of Presenting Complaint:')) {
+        caseData.hpc = line.split(':')[1].trim();
       }
-      // Add more parsing logic as needed
+      
+      // Parse checkboxes (format: [x] Checkbox Name or [ ] Checkbox Name)
+      const checkboxMatch = line.match(/\[(x|X| )\]\s*(.+)/);
+      if(checkboxMatch) {
+        const isChecked = checkboxMatch[1] === 'x' || checkboxMatch[1] === 'X';
+        const checkboxName = checkboxMatch[2].trim();
+        checkboxes[checkboxName] = isChecked;
+      }
+      
+      // Parse observation rows (format: Date|Time|Resp|SpO2|Temp|BP Sys|BP Dia|HR|ETCO2|ACVPU|GCS|Pupils|BGM|NEWS2|Ketone)
+      if(line.includes('|') && (line.includes('Resp') || line.match(/^\d{4}-\d{2}-\d{2}/))) {
+        const obsData = line.split('|').map(item => item.trim());
+        if(obsData.length >= 15) {
+          observations.push({
+            date: obsData[0],
+            time: obsData[1],
+            resp: obsData[2],
+            spo2: obsData[3],
+            temp: obsData[4],
+            bpSys: obsData[5],
+            bpDia: obsData[6],
+            hr: obsData[7],
+            etco2: obsData[8],
+            acvpu: obsData[9],
+            gcs: obsData[10],
+            pupils: obsData[11],
+            bgm: obsData[12],
+            news2: obsData[13],
+            ketone: obsData[14]
+          });
+        }
+      }
     });
-    
-    // Populate form fields with parsed data
-    if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
-    if(caseData.dob) document.getElementById('dob').value = caseData.dob;
-    if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
     
     // Clear current form data and replace with loaded case data
     clearCurrentForm();
     
     // Repopulate form with loaded case data
     setTimeout(() => {
+      // Populate basic fields
       if(caseData.patientName) document.getElementById('patientName').value = caseData.patientName;
       if(caseData.dob) document.getElementById('dob').value = caseData.dob;
       if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
+      if(caseData.nextOfKin) document.getElementById('nextOfKin').value = caseData.nextOfKin;
+      if(caseData.capacity) document.getElementById('capacity').value = caseData.capacity;
+      if(caseData.dnar) document.getElementById('dnar').value = caseData.dnar;
+      if(caseData.medications) document.getElementById('medications').value = caseData.medications;
+      if(caseData.pastHistory) document.getElementById('pastHistory').value = caseData.pastHistory;
+      if(caseData.hpc) document.getElementById('hpc').value = caseData.hpc;
       
-      alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\n\nForm has been cleared and repopulated with case data.`);
+      // Populate checkboxes
+      Object.keys(checkboxes).forEach(checkboxName => {
+        const checkbox = document.querySelector(`input[type="checkbox"][id*="${checkboxName.toLowerCase().replace(/\s+/g, '')}"]`);
+        if(checkbox) {
+          checkbox.checked = checkboxes[checkboxName];
+        }
+      });
+      
+      // Populate observations table
+      if(observations.length > 0) {
+        const table = document.getElementById('obsTable');
+        // Clear existing rows except header and first empty row
+        while(table.rows.length > 2) {
+          table.deleteRow(2);
+        }
+        
+        // Add observation data
+        observations.forEach((obs, index) => {
+          if(index === 0) {
+            // Populate first row
+            const firstRow = table.rows[1];
+            const cells = firstRow.cells;
+            if(cells[0]) cells[0].querySelector('input').value = obs.date;
+            if(cells[1]) cells[1].querySelector('input').value = obs.time;
+            if(cells[2]) cells[2].querySelector('input').value = obs.resp;
+            if(cells[3]) cells[3].querySelector('input').value = obs.spo2;
+            if(cells[4]) cells[4].querySelector('input').value = obs.temp;
+            if(cells[5]) cells[5].querySelector('input').value = obs.bpSys;
+            if(cells[6]) cells[6].querySelector('input').value = obs.bpDia;
+            if(cells[7]) cells[7].querySelector('input').value = obs.hr;
+            if(cells[8]) cells[8].querySelector('input').value = obs.etco2;
+            if(cells[9]) cells[9].querySelector('input').value = obs.acvpu;
+            if(cells[10]) cells[10].querySelector('button').textContent = obs.gcs;
+            if(cells[11]) cells[11].querySelector('input').value = obs.pupils;
+            if(cells[12]) cells[12].querySelector('button').textContent = obs.news2;
+            if(cells[13]) cells[13].querySelector('input').value = obs.bgm;
+            if(cells[14]) cells[14].querySelector('input').value = obs.ketone;
+          } else {
+            // Add new rows for additional observations
+            addObsRow();
+            const newRow = table.rows[table.rows.length - 1];
+            const cells = newRow.cells;
+            if(cells[0]) cells[0].querySelector('input').value = obs.date;
+            if(cells[1]) cells[1].querySelector('input').value = obs.time;
+            if(cells[2]) cells[2].querySelector('input').value = obs.resp;
+            if(cells[3]) cells[3].querySelector('input').value = obs.spo2;
+            if(cells[4]) cells[4].querySelector('input').value = obs.temp;
+            if(cells[5]) cells[5].querySelector('input').value = obs.bpSys;
+            if(cells[6]) cells[6].querySelector('input').value = obs.bpDia;
+            if(cells[7]) cells[7].querySelector('input').value = obs.hr;
+            if(cells[8]) cells[8].querySelector('input').value = obs.etco2;
+            if(cells[9]) cells[9].querySelector('input').value = obs.acvpu;
+            if(cells[10]) cells[10].querySelector('button').textContent = obs.gcs;
+            if(cells[11]) cells[11].querySelector('input').value = obs.pupils;
+            if(cells[12]) cells[12].querySelector('button').textContent = obs.news2;
+            if(cells[13]) cells[13].querySelector('input').value = obs.bgm;
+            if(cells[14]) cells[14].querySelector('input').value = obs.ketone;
+          }
+        });
+      }
+      
+      alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\nCheckboxes: ${Object.keys(checkboxes).length}\nObservations: ${observations.length}\n\nForm has been cleared and repopulated with case data.`);
     }, 500);
     
-    // Add to local storage for later use
-    localStorage.setItem(`prf_case_${Date.now()}`, JSON.stringify(caseData));
+    // Save complete case data to localStorage
+    const completeCaseData = {
+      ...caseData,
+      checkboxes: checkboxes,
+      observations: observations
+    };
+    localStorage.setItem(`prf_case_${Date.now()}`, JSON.stringify(completeCaseData));
     
   } catch(error) {
     alert('Error parsing case file: ' + error.message);
