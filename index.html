@@ -88,6 +88,18 @@ body.light .tab-btn[data-section="sec-paedsals"]{color:#000000 !important;}
 #sec-resus{border-left-color:#f59e0b;}
 body.light .tab-btn[data-section="sec-resus"]{color:#000000 !important;}
 #sec-signoff{border-left-color:#94a3b8;}
+
+/* Custom background colors for specific tiles */
+#sec-injuryassessment{background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);}
+#sec-wallpaper{background: linear-gradient(135deg, #7c2d12 0%, #dc2626 100%);}
+#sec-paedsals{background: linear-gradient(135deg, #064e3b 0%, #059669 100%);}
+#sec-resus{background: linear-gradient(135deg, #713f12 0%, #d97706 100%);}
+
+/* Light theme versions */
+body.light #sec-injuryassessment{background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);}
+body.light #sec-wallpaper{background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);}
+body.light #sec-paedsals{background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);}
+body.light #sec-resus{background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);}
 .section h2{margin:0 0 16px 0;font-size:16px;color:var(--text);padding-bottom:8px;border-bottom:1px solid var(--divider);}
 .section h3{margin:12px 0 8px 0;font-size:18px;color:var(--text);border-bottom:2px solid var(--divider);padding-bottom:4px;font-weight:700;text-decoration:underline;}
 .field{margin-bottom:14px;}
@@ -478,7 +490,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
 </section>
 
-<section class="section" id="sec-wallpaper" style="background-image: url('https://i.postimg.cc/ZWQSxxpJ/Adult-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
+<section class="section" id="sec-wallpaper" style="background-image: url('https://i.postimg.cc/q7Jv0m76/Adult-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
 </section>
 
 <section class="section" id="sec-paedsals" style="background-image: url('https://i.postimg.cc/2S47g5qk/Paeds-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
@@ -496,9 +508,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <th>Drug</th>
 <th>Dosage</th>
 <th>Rhythm</th>
-<th>Adjunct</th>
-<th>O2</th>
-<th>Pupils</th>
 <th>ROLE</th>
 </tr>
 </thead>
@@ -506,14 +515,11 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <tr>
 <td><input type="date"></td>
 <td><input type="time"></td>
+<td><input class="vital-input" style="width: 20ch;"></td>
+<td><input class="vital-input" style="width: 25ch;"></td>
+<td><input class="vital-input" style="width: 20ch;"></td>
+<td><input class="vital-input" style="width: 20ch;"></td>
 <td><input class="vital-input" style="width: 15ch;"></td>
-<td><input class="vital-input" style="width: 15ch;"></td>
-<td><input class="vital-input" style="width: 15ch;"></td>
-<td><input class="vital-input" style="width: 15ch;"></td>
-<td><input class="vital-input"></td>
-<td><input class="vital-input"></td>
-<td><input class="vital-input"></td>
-<td><input class="vital-input"></td>
 <td><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button></td>
 </tr>
 </tbody>
@@ -1028,10 +1034,11 @@ function addInterventionRow(){
 function addResusRow(){
   const table=document.getElementById('resusTable');
   const row=table.insertRow();
-  const types=['date','time','text','text','text','text','text','text','text','text','clear'];
+  const types=['date','time','text','text','text','text','text','clear'];
+  const widths=[null,null,'20ch','25ch','20ch','20ch','15ch'];
   types.forEach((t,i)=>{
     const cell=row.insertCell();
-    if(i===10){ // Clear button
+    if(i===7){ // Clear button
       cell.innerHTML=`<button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button>`;
     }else{
       const input=document.createElement('input');
@@ -1040,9 +1047,9 @@ function addResusRow(){
         // Date and Time - no class like patient observations
       } else {
         input.className='vital-input';
-        // Set width for first 6 columns to 15 characters
-        if(i>=2 && i<=6){
-          input.style.width='15ch';
+        // Set width based on the widths array
+        if(widths[i]){
+          input.style.width=widths[i];
         }
       }
       cell.appendChild(input);
