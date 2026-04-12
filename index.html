@@ -81,7 +81,7 @@ body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);b
 #sec-outcome{border-left-color:#0ea5e9;}
 #sec-signoff{border-left-color:#94a3b8;}
 .section h2{margin:0 0 16px 0;font-size:16px;color:var(--text);padding-bottom:8px;border-bottom:1px solid var(--divider);}
-.section h3{margin:12px 0 8px 0;font-size:14px;color:var(--text);border-bottom:1px solid var(--divider);padding-bottom:4px;}
+.section h3{margin:12px 0 8px 0;font-size:16px;color:var(--text);border-bottom:1px solid var(--divider);padding-bottom:4px;font-weight:700;}
 .field{margin-bottom:14px;}
 label{font-size:13px;font-weight:600;display:block;margin-bottom:4px;color:var(--text-secondary);}
 textarea,input,select{width:100%;padding:9px 12px;margin-bottom:8px;border-radius:6px;border:1px solid var(--border);font-size:14px;background:var(--input-bg);color:var(--text);transition:box-shadow 0.2s;}
@@ -179,8 +179,9 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 .trauma-arrow{text-align:center;margin:10px 0;font-weight:600;color:var(--text-secondary);}
 .trauma-arrow::before{content:"";display:block;width:2px;height:20px;background:var(--border);margin:0 auto;}
 .trauma-arrow::after{content:"";display:block;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:8px solid var(--border);margin:0 auto;}
-.trauma-bullet-list{margin:10px 0;padding-left:20px;}
-.trauma-bullet-list li{margin:5px 0;font-size:13px;color:var(--text);}
+.trauma-bullet-list{margin:10px 0;padding-left:20px;list-style:none;}
+.trauma-bullet-item{display:flex;align-items:center;margin:8px 0;font-size:13px;color:var(--text);}
+.trauma-bullet-item input[type="checkbox"]{margin-right:10px;transform:scale(1.2);}
 @media(max-width:768px){
   .hamburger{display:inline-flex;}
   .sidebar{position:fixed;left:-130px;top:0;height:100vh;z-index:200;transition:left 0.25s;background:var(--card-bg);border-right:1px solid var(--border);}
@@ -300,16 +301,16 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <div class="trauma-box">
     <h4>Does the Patient have any of the following:</h4>
     <ul class="trauma-bullet-list">
-      <li>Systolic BP&lt;110</li>
-      <li>HR&gt;100</li>
-      <li>RR&gt;30</li>
-      <li>GCS&lt;15</li>
-      <li>Suspected injury &gt;2 areas</li>
-      <li>Unable to straight-leg-raise</li>
-      <li>Unable to cough/ deep breathe due to pain</li>
-      <li>Severe uncontrolled pain</li>
-      <li>Bleeding dissorder</li>
-      <li>on clopidogrel or other anticoagulants</li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver1"><label for="silver1">Systolic BP&lt;110</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver2"><label for="silver2">HR&gt;100</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver3"><label for="silver3">RR&gt;30</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver4"><label for="silver4">GCS&lt;15</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver5"><label for="silver5">Suspected injury &gt;2 areas</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver6"><label for="silver6">Unable to straight-leg-raise</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver7"><label for="silver7">Unable to cough/ deep breathe due to pain</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver8"><label for="silver8">Severe uncontrolled pain</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver9"><label for="silver9">Bleeding dissorder</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="silver10"><label for="silver10">on clopidogrel or other anticoagulants</label></li>
     </ul>
   </div>
   
@@ -330,32 +331,32 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <div class="trauma-box">
     <h4>Step 1 - assess vital signs</h4>
     <ul class="trauma-bullet-list">
-      <li>sustained RR&lt;10/&gt;29</li>
-      <li>Sustained systolic BP&lt;90</li>
-      <li>GCS(M)&gt;5</li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury1"><label for="injury1">sustained RR&lt;10/&gt;29</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury2"><label for="injury2">Sustained systolic BP&lt;90</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury3"><label for="injury3">GCS(M)&gt;5</label></li>
     </ul>
   </div>
   
   <div class="trauma-box">
     <h4>Step 2 - Assess anatomy of injuries</h4>
     <ul class="trauma-bullet-list">
-      <li>Chest injury with new Oxygen requirement</li>
-      <li>Major pelvic fracture</li>
-      <li>Penetrating injury above knee</li>
-      <li>Skull fracture</li>
-      <li>Spinal injury with paralysis</li>
-      <li>&gt;1 mid-shaft long bone fracture</li>
-      <li>Amputation/ mangled wrist or ankle</li>
-      <li>Open fracture</li>
-      <li>Burns/ scalds &gt;20%</li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury4"><label for="injury4">Chest injury with new Oxygen requirement</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury5"><label for="injury5">Major pelvic fracture</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury6"><label for="injury6">Penetrating injury above knee</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury7"><label for="injury7">Skull fracture</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury8"><label for="injury8">Spinal injury with paralysis</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury9"><label for="injury9">&gt;1 mid-shaft long bone fracture</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury10"><label for="injury10">Amputation/ mangled wrist or ankle</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury11"><label for="injury11">Open fracture</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury12"><label for="injury12">Burns/ scalds &gt;20%</label></li>
     </ul>
   </div>
   
   <div class="trauma-box">
     <h4>Step 3 - Assess other circumstances</h4>
     <ul class="trauma-bullet-list">
-      <li>Significant Clinical Concern (supported by Senior Clinician)</li>
-      <li>If Yes to ANY of the above, then transport with pre-alert to ED and contact Trauma Desk</li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury13"><label for="injury13">Significant Clinical Concern (supported by Senior Clinician)</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury14"><label for="injury14">If Yes to ANY of the above, then transport with pre-alert to ED and contact Trauma Desk</label></li>
     </ul>
   </div>
 </div>
@@ -872,28 +873,78 @@ function updateSigStyle(){
 // Set canvas size for better touch support
 function setupCanvas(){
   const rect=canvas.getBoundingClientRect();
-  canvas.width=rect.width;
-  canvas.height=rect.height;
+  // Set actual canvas size in pixels
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  
+  // Scale the drawing context to match the device pixel ratio
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  
+  // Set the canvas CSS size back to the original
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  
   updateSigStyle();
 }
 
-requestAnimationFrame(setupCanvas);
+// Initialize canvas when page loads
+window.addEventListener('load', setupCanvas);
+window.addEventListener('resize', setupCanvas);
 
-canvas.addEventListener('mousedown',e=>{drawing=true;ctx.beginPath();ctx.moveTo(e.offsetX,e.offsetY);});
-canvas.addEventListener('mousemove',e=>{if(!drawing)return;ctx.lineTo(e.offsetX,e.offsetY);ctx.stroke();});
+// Mouse events
+canvas.addEventListener('mousedown',e=>{
+  const rect = canvas.getBoundingClientRect();
+  drawing = true;
+  ctx.beginPath();
+  ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+});
+
+canvas.addEventListener('mousemove',e=>{
+  if (!drawing) return;
+  const rect = canvas.getBoundingClientRect();
+  ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+  ctx.stroke();
+});
+
 canvas.addEventListener('mouseup',()=>drawing=false);
 canvas.addEventListener('mouseleave',()=>drawing=false);
 
+// Touch events
 function getTouchPos(e){
-  const rect=canvas.getBoundingClientRect();
-  return{x:e.touches[0].clientX-rect.left,y:e.touches[0].clientY-rect.top};
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: e.touches[0].clientX - rect.left,
+    y: e.touches[0].clientY - rect.top
+  };
 }
 
-canvas.addEventListener('touchstart',e=>{e.preventDefault();drawing=true;const p=getTouchPos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const p=getTouchPos(e);ctx.lineTo(p.x,p.y);ctx.stroke();},{passive:false});
-canvas.addEventListener('touchend',e=>{e.preventDefault();drawing=false;},{passive:false});
+canvas.addEventListener('touchstart',e=>{
+  e.preventDefault();
+  const p = getTouchPos(e);
+  drawing = true;
+  ctx.beginPath();
+  ctx.moveTo(p.x, p.y);
+},{passive:false});
 
-document.getElementById('clearSig').addEventListener('click',()=>ctx.clearRect(0,0,canvas.width,canvas.height));
+canvas.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  if (!drawing) return;
+  const p = getTouchPos(e);
+  ctx.lineTo(p.x, p.y);
+  ctx.stroke();
+},{passive:false});
+
+canvas.addEventListener('touchend',e=>{
+  e.preventDefault();
+  drawing = false;
+},{passive:false});
+
+// Clear signature
+document.getElementById('clearSig').addEventListener('click',()=>{
+  const rect = canvas.getBoundingClientRect();
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  updateSigStyle();
+});
 
 let resizeTimer;
 window.addEventListener('resize',()=>{
