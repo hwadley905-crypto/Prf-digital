@@ -1711,26 +1711,74 @@ function parseAndLoadCase(content){
 }
 
 function clearCurrentForm(){
-  // Clear all form fields with error handling
-  const fields = [
-    'patientName', 'dob', 'allergies', 'nextOfKin', 'capacity', 'dnar', 
-    'medications', 'pastHistory', 'hpc', 'clinicianName', 'clinicianRole', 
-    'clinicianPin', 'signDate', 'signTime'
-  ];
-  
-  fields.forEach(fieldId => {
-    const element = document.getElementById(fieldId);
-    if(element) {
-      element.value = '';
+  // Clear ALL input fields
+  document.querySelectorAll('input').forEach(input => {
+    if (input.type === 'checkbox') {
+      input.checked = false;
+    } else {
+      input.value = '';
     }
   });
   
-  // Clear signature
+  // Clear ALL textarea fields
+  document.querySelectorAll('textarea').forEach(textarea => {
+    textarea.value = '';
+  });
+  
+  // Clear ALL select fields
+  document.querySelectorAll('select').forEach(select => {
+    select.selectedIndex = 0;
+  });
+  
+  // Clear signature canvas
   const canvas = document.getElementById('signatureCanvas');
   if(canvas) {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
+  
+  // Clear body map canvases
+  document.querySelectorAll('canvas').forEach(canvas => {
+    if (canvas.id !== 'signatureCanvas') {
+      const ctx = canvas.getContext('2d');
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  });
+  
+  // Clear image previews
+  document.querySelectorAll('.image-preview').forEach(preview => {
+    preview.innerHTML = '';
+  });
+  
+  // Reset GCS buttons to default state
+  document.querySelectorAll('.news2-cell-btn').forEach(btn => {
+    if (btn.textContent !== 'X') {
+      btn.textContent = '-';
+    }
+  });
+  
+  // Reset NEWS2 buttons to default state
+  document.querySelectorAll('.news2-cell-btn').forEach(btn => {
+    if (btn.textContent !== 'X') {
+      btn.textContent = '-';
+    }
+  });
+  
+  // Hide FAST/AVVV alerts
+  const fastAlert = document.getElementById('fastAlert');
+  if (fastAlert) {
+    fastAlert.style.display = 'none';
+  }
+  
+  // Hide NEWS2 alerts
+  document.querySelectorAll('.news2-alert').forEach(alert => {
+    alert.remove();
+  });
+  
+  // Hide GCS alerts
+  document.querySelectorAll('.gcs-alert').forEach(alert => {
+    alert.remove();
+  });
 }
 
 function connectCloudStorage(){
