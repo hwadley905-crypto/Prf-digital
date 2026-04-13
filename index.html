@@ -367,9 +367,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <button class="tab-btn" data-section="sec-conveyance">Conveyance</button>
   <button class="tab-btn" data-section="sec-outcome">Outcome</button>
   <button class="tab-btn" data-section="sec-wallpaper">Adult ALS</button>
-  <button class="tab-btn" data-section="sec-paedsals">Paeds ALS</button>
-  <button class="tab-btn" data-section="sec-resus">RESUS</button>
-  <button class="tab-btn" data-section="sec-signoff">Sign Off</button>
+      <button class="tab-btn" data-section="sec-signoff">Sign Off</button>
 </nav>
 
 <main class="content">
@@ -595,9 +593,16 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
 </section>
 
-<section class="section" id="sec-wallpaper" style="background-image: url('https://i.postimg.cc/q7Jv0m76/Adult-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
-</section>
-<section class="section" id="sec-paedsals" style="background-image: url('https://i.postimg.cc/2S47g5qk/Paeds-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
+<section class="section" id="sec-wallpaper">
+  <div style="background-image: url('https://i.postimg.cc/q7Jv0m76/Adult-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px; margin-bottom: 20px;"></div>
+  <div style="background-image: url('https://i.postimg.cc/2S47g5qk/Paeds-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px; margin-bottom: 20px;"></div>
+  
+  <h2>Interventions</h2>
+  <table id="interventionsTable">
+    <tr><th>Time</th><th>Type</th><th>Location</th><th>Outcome</th><th>Clinician</th><th>Reason</th><th></th></tr>
+    <tr><td><input type="time"></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">X</button></td></tr>
+  </table>
+  <button class="add-row-btn" onclick="addInterventionRow()">Add Intervention Row</button>
 </section>
 
 </main>
