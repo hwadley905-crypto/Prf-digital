@@ -406,7 +406,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field">
   <ul class="trauma-bullet-list">
     <li class="trauma-bullet-item"><input type="checkbox" id="fast1" onchange="toggleFastAlert()"><label for="fast1">FAST+</label></li>
-    <li class="trauma-bullet-item"></li><input type="checkbox" id="avvv1" onchange="toggleFastAlert()"><label for="avvv1">AVVV+</label></li>
+    <li class="trauma-bullet-item"><input type="checkbox" id="avvv1" onchange="toggleFastAlert()"><label for="avvv1">AVVV+</label></li>
   </ul>
   <div id="fastAlert" style="display:none; color:red; font-weight:bold; margin-top:10px; padding:10px; background:#ffe6e6; border:1px solid #ff0000; border-radius:4px;">Pre-alert to Stroke Centre or ED URGENT</div>
 </div>
@@ -583,15 +583,15 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <h3>Intervention</h3>
 <div class="field" id="resusContainer">
 <!-- Individual intervention tables will be added here -->
-<div class="resus-intervention-table" style="margin-bottom: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); padding: 15px;">
+<div class="resus-intervention-table" style="margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); padding: 10px;">
 <div style="display: flex; gap: 10px; margin-bottom: 10px;">
   <div style="flex: 0 0 120px;"><label>Date:</label><br><input type="date" style="width: 100%; margin-top: 4px;"></div>
   <div style="flex: 0 0 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></div>
   <div style="flex: 1; text-align: right;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention">X</button></div>
 </div>
-<div style="margin-bottom: 10px;"><label>Shock (J):</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
-<div style="margin-bottom: 10px;"><label>Rhythm:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
-<div style="margin-bottom: 10px;"><label>ROLE:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
+<div style="margin-bottom: 8px;"><label>Shock (J):</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
+<div style="margin-bottom: 8px;"><label>Rhythm:</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
+<div style="margin-bottom: 8px;"><label>ROLE:</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
 </div>
 </div>
 <button type="button" id="addResusRow" class="add-row-btn" onclick="addResusRow()">+ Add Intervention</button>
@@ -1105,7 +1105,7 @@ function addResusRow(){
   const container=document.getElementById('resusContainer');
   const newIntervention=document.createElement('div');
   newIntervention.className='resus-intervention-table';
-  newIntervention.style.cssText='margin-bottom: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); padding: 15px;';
+  newIntervention.style.cssText='margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); padding: 10px;';
   
   newIntervention.innerHTML=`
     <div style="display: flex; gap: 10px; margin-bottom: 10px;">
@@ -1113,9 +1113,9 @@ function addResusRow(){
       <div style="flex: 0 0 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></div>
       <div style="flex: 1; text-align: right;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention">X</button></div>
     </div>
-    <div style="margin-bottom: 10px;"><label>Shock (J):</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
-    <div style="margin-bottom: 10px;"><label>Rhythm:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
-    <div style="margin-bottom: 10px;"><label>ROLE:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
+    <div style="margin-bottom: 8px;"><label>Shock (J):</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
+    <div style="margin-bottom: 8px;"><label>Rhythm:</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
+    <div style="margin-bottom: 8px;"><label>ROLE:</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
   `;
   
   container.appendChild(newIntervention);
