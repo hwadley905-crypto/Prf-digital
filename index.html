@@ -329,7 +329,11 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   /* Show all sections in print */
   .layout{display:block;}
   .content{padding:0;}
-  .section{display:block!important;background:#fff !important;box-shadow:none;page-break-inside:avoid;margin-bottom:20px;border:1px solid #ccc !important;border-left:4px solid #999 !important;}
+  .section{display:block!important;background:#fff !important;box-shadow:none;page-break-before:always;margin-bottom:20px;border:1px solid #ccc !important;border-left:4px solid #999 !important;}
+  
+  /* Allow sections to span multiple pages when needed */
+  .section textarea, .section .field{page-break-inside:auto;}
+  .section table{page-break-inside:auto;}
   
   /* Remove ALS area from print but keep RESUS section */
   #sec-resus .field:has(label:contains("ALS Algorithm")){display:none !important;}
