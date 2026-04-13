@@ -1780,16 +1780,20 @@ function clearCurrentForm(){
     alert.remove();
   });
   
-  // Clear Interventions tables
-  document.querySelectorAll('#interventionsTable tr:not(:first-child)').forEach(row => {
-    row.remove();
-  });
-  
-  // Reset first row in Interventions table
-  const firstInterventionsRow = document.querySelector('#interventionsTable tr:not(:first-child)');
-  if (firstInterventionsRow) {
-    const inputs = firstInterventionsRow.querySelectorAll('input');
-    inputs.forEach(input => input.value = '');
+  // Clear Interventions tables - keep first row, remove others
+  const interventionsTable = document.getElementById('interventionsTable');
+  if (interventionsTable) {
+    const rows = interventionsTable.querySelectorAll('tr');
+    // Keep first row (header + first data row), remove all others
+    for (let i = 2; i < rows.length; i++) {
+      rows[i].remove();
+    }
+    // Clear inputs in first data row
+    const firstDataRow = rows[1]; // Skip header row
+    if (firstDataRow) {
+      const inputs = firstDataRow.querySelectorAll('input');
+      inputs.forEach(input => input.value = '');
+    }
   }
 }
 
