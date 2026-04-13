@@ -345,6 +345,10 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   .trauma-box{background:#ffffff !important;border:1px solid #cccccc !important;border-left:4px solid #999999 !important;}
   .signature-box{border:2px solid #cccccc !important;background:#ffffff !important;}
   
+  /* Force signature strokes to be black when printing */
+  #signatureCanvas{color:#000000 !important;}
+  #signatureCanvas *{stroke:#000000 !important;color:#000000 !important;}
+  
   /* Fix page break issues */
   *{-webkit-print-color-adjust:exact !important;color-adjust:exact !important;}
   .section{orphans:3;widows:3;}
