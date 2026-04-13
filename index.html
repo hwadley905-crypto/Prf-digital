@@ -406,6 +406,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field">
   <ul class="trauma-bullet-list">
     <li class="trauma-bullet-item"><input type="checkbox" id="fast1" onchange="toggleFastAlert()"><label for="fast1">FAST+</label></li>
+    <li class="trauma-bullet-item"></li><input type="checkbox" id="avvv1" onchange="toggleFastAlert()"><label for="avvv1">AVVV+</label></li>
   </ul>
   <div id="fastAlert" style="display:none; color:red; font-weight:bold; margin-top:10px; padding:10px; background:#ffe6e6; border:1px solid #ff0000; border-radius:4px;">Pre-alert to Stroke Centre or ED URGENT</div>
 </div>
@@ -580,29 +581,20 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 <section class="section" id="sec-resus"><h2>RESUS</h2>
 <h3>Intervention</h3>
-<div class="field">
-<table id="resusTable" class="obs-table">
-<thead>
+<div class="field" id="resusContainer">
+<!-- Individual intervention tables will be added here -->
+<table class="resus-intervention-table" style="margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg);">
 <tr>
-<th>Date</th>
-<th>Time</th>
-<th>shock(J)</th>
-<th>Rhythm</th>
-<th>ROLE</th>
+<td style="padding: 10px; width: 120px;"><label>Date:</label><br><input type="date" style="width: 100%; margin-top: 4px;"></td>
+<td style="padding: 10px; width: 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></td>
+<td style="padding: 10px; width: 150px;"><label>Shock (J):</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
+<td style="padding: 10px; width: 200px;"><label>Rhythm:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
+<td style="padding: 10px; width: 200px;"><label>ROLE:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
+<td style="padding: 10px; width: 50px; text-align: center; vertical-align: bottom;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention" style="margin-top: 20px;">X</button></td>
 </tr>
-</thead>
-<tbody id="resusTableBody">
-<tr>
-<td><input type="date" style="width: 12ch;"></td>
-<td><input type="time" style="width: 10ch;"></td>
-<td><input class="vital-input" style="width: 20ch;"></td>
-<td><input class="vital-input" style="width: 20ch;"></td>
-<td><input class="vital-input" style="width: 30ch;"></td>
-<td><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button></td>
-</tr>
-</tbody>
 </table>
-<button type="button" id="addResusRow" class="add-row-btn" onclick="addResusRow()">+ Add Row</button>
+</div>
+<button type="button" id="addResusRow" class="add-row-btn" onclick="addResusRow()">+ Add Intervention</button>
 </div>
 <div class="field">
 <label for="resusNotes">Notes</label>
@@ -1110,35 +1102,41 @@ function addInterventionRow(){
 
 // Add RESUS row
 function addResusRow(){
-  const table=document.getElementById('resusTable');
-  const row=table.insertRow();
-  const types=['date','time','text','text','clear'];
-  const widths=['12ch','10ch','20ch','20ch','30ch'];
-  types.forEach((t,i)=>{
-    const cell=row.insertCell();
-    if(i===4){ // Clear button (index 4)
-      cell.innerHTML=`<button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button>`;
-    }else{
-      const input=document.createElement('input');
-      input.type=t;
-      if(i===0 || i===1){
-        // Date and Time - apply width styling
-        input.style.width=widths[i];
-      } else {
-        input.className='vital-input';
-        // Set width based on the widths array
-        input.style.width=widths[i];
-      }
-      cell.appendChild(input);
-    }
-  });
+  const container=document.getElementById('resusContainer');
+  const newTable=document.createElement('table');
+  newTable.className='resus-intervention-table';
+  newTable.style.cssText='margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg);';
+  
+  newTable.innerHTML=`
+    <tr>
+      <td style="padding: 10px; width: 120px;"><label>Date:</label><br><input type="date" style="width: 100%; margin-top: 4px;"></td>
+      <td style="padding: 10px; width: 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></td>
+      <td style="padding: 10px; width: 150px;"><label>Shock (J):</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
+      <td style="padding: 10px; width: 200px;"><label>Rhythm:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
+      <td style="padding: 10px; width: 200px;"><label>ROLE:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
+      <td style="padding: 10px; width: 50px; text-align: center; vertical-align: bottom;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention" style="margin-top: 20px;">X</button></td>
+    </tr>
+  `;
+  
+  container.appendChild(newTable);
+  saveForm();
 }
 
 // Clear RESUS row
 function clearResusRow(btn){
-  const row=btn.closest('tr');
-  const inputs=row.querySelectorAll('input');
-  inputs.forEach(input=>input.value='');
+  const table=btn.closest('table');
+  const container=document.getElementById('resusContainer');
+  const allTables=container.querySelectorAll('.resus-intervention-table');
+  
+  if(allTables.length<=1){
+    // If this is the last intervention table, just clear the inputs
+    const inputs=table.querySelectorAll('input');
+    inputs.forEach(input=>input.value='');
+  } else {
+    // If there are multiple intervention tables, remove this one
+    table.remove();
+  }
+  saveForm();
 }
 
 // Add drug row
@@ -1402,10 +1400,11 @@ function saveBodyMap(canvasId) {
 }
 
 function toggleFastAlert(){
-  const checkbox = document.getElementById('fast1');
+  const fastCheckbox = document.getElementById('fast1');
+  const avvvCheckbox = document.getElementById('avvv1');
   const alert = document.getElementById('fastAlert');
   
-  if(checkbox.checked){
+  if(fastCheckbox.checked || avvvCheckbox.checked){
     alert.style.display = 'block';
   }else{
     alert.style.display = 'none';
@@ -1825,6 +1824,32 @@ document.getElementById('clearForm').addEventListener('click',()=>{
         }
       }
     }
+    
+    // Clear RESUS tables (keep only one empty intervention table)
+    const resusContainer = document.getElementById('resusContainer');
+    if(resusContainer) {
+      // Remove all intervention tables except the first one
+      const allTables = resusContainer.querySelectorAll('.resus-intervention-table');
+      allTables.forEach((table, index) => {
+        if(index > 0) {
+          table.remove();
+        } else {
+          // Clear the first table's inputs
+          const inputs = table.querySelectorAll('input');
+          inputs.forEach(input => input.value = '');
+        }
+      });
+    }
+    
+    // Clear checkboxes (FAST+ and AVVV+)
+    const fastCheckbox = document.getElementById('fast1');
+    const avvvCheckbox = document.getElementById('avvv1');
+    if(fastCheckbox) fastCheckbox.checked = false;
+    if(avvvCheckbox) avvvCheckbox.checked = false;
+    
+    // Hide the alert if it's visible
+    const alert = document.getElementById('fastAlert');
+    if(alert) alert.style.display = 'none';
     
     // Clear signature canvas
     const canvas = document.getElementById('signatureCanvas');
