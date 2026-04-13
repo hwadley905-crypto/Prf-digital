@@ -595,8 +595,8 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <tr>
 <td><input type="date" style="width: 12ch;"></td>
 <td><input type="time" style="width: 10ch;"></td>
-<td><input class="vital-input" style="width: 35ch;"></td>
-<td><input class="vital-input" style="width: 40ch;"></td>
+<td><input class="vital-input" style="width: 20ch;"></td>
+<td><input class="vital-input" style="width: 20ch;"></td>
 <td><input class="vital-input" style="width: 30ch;"></td>
 <td><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear row">X</button></td>
 </tr>
@@ -1113,7 +1113,7 @@ function addResusRow(){
   const table=document.getElementById('resusTable');
   const row=table.insertRow();
   const types=['date','time','text','text','clear'];
-  const widths=['12ch','10ch','35ch','40ch','30ch'];
+  const widths=['12ch','10ch','20ch','20ch','30ch'];
   types.forEach((t,i)=>{
     const cell=row.insertCell();
     if(i===4){ // Clear button (index 4)
