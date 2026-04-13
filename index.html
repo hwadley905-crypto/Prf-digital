@@ -1779,6 +1779,18 @@ function clearCurrentForm(){
   document.querySelectorAll('.gcs-alert').forEach(alert => {
     alert.remove();
   });
+  
+  // Clear Interventions tables
+  document.querySelectorAll('#interventionsTable tr:not(:first-child)').forEach(row => {
+    row.remove();
+  });
+  
+  // Reset first row in Interventions table
+  const firstInterventionsRow = document.querySelector('#interventionsTable tr:not(:first-child)');
+  if (firstInterventionsRow) {
+    const inputs = firstInterventionsRow.querySelectorAll('input');
+    inputs.forEach(input => input.value = '');
+  }
 }
 
 function connectCloudStorage(){
