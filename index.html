@@ -583,16 +583,16 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <h3>Intervention</h3>
 <div class="field" id="resusContainer">
 <!-- Individual intervention tables will be added here -->
-<table class="resus-intervention-table" style="margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg);">
-<tr>
-<td style="padding: 10px; width: 120px;"><label>Date:</label><br><input type="date" style="width: 100%; margin-top: 4px;"></td>
-<td style="padding: 10px; width: 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></td>
-<td style="padding: 10px; width: 150px;"><label>Shock (J):</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
-<td style="padding: 10px; width: 200px;"><label>Rhythm:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
-<td style="padding: 10px; width: 200px;"><label>ROLE:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
-<td style="padding: 10px; width: 50px; text-align: center; vertical-align: bottom;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention" style="margin-top: 20px;">X</button></td>
-</tr>
-</table>
+<div class="resus-intervention-table" style="margin-bottom: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); padding: 15px;">
+<div style="display: flex; gap: 10px; margin-bottom: 10px;">
+  <div style="flex: 0 0 120px;"><label>Date:</label><br><input type="date" style="width: 100%; margin-top: 4px;"></div>
+  <div style="flex: 0 0 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></div>
+  <div style="flex: 1; text-align: right;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention">X</button></div>
+</div>
+<div style="margin-bottom: 10px;"><label>Shock (J):</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
+<div style="margin-bottom: 10px;"><label>Rhythm:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
+<div style="margin-bottom: 10px;"><label>ROLE:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
+</div>
 </div>
 <button type="button" id="addResusRow" class="add-row-btn" onclick="addResusRow()">+ Add Intervention</button>
 </div>
@@ -1103,38 +1103,38 @@ function addInterventionRow(){
 // Add RESUS row
 function addResusRow(){
   const container=document.getElementById('resusContainer');
-  const newTable=document.createElement('table');
-  newTable.className='resus-intervention-table';
-  newTable.style.cssText='margin-bottom: 15px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg);';
+  const newIntervention=document.createElement('div');
+  newIntervention.className='resus-intervention-table';
+  newIntervention.style.cssText='margin-bottom: 20px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); padding: 15px;';
   
-  newTable.innerHTML=`
-    <tr>
-      <td style="padding: 10px; width: 120px;"><label>Date:</label><br><input type="date" style="width: 100%; margin-top: 4px;"></td>
-      <td style="padding: 10px; width: 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></td>
-      <td style="padding: 10px; width: 150px;"><label>Shock (J):</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
-      <td style="padding: 10px; width: 200px;"><label>Rhythm:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
-      <td style="padding: 10px; width: 200px;"><label>ROLE:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></td>
-      <td style="padding: 10px; width: 50px; text-align: center; vertical-align: bottom;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention" style="margin-top: 20px;">X</button></td>
-    </tr>
+  newIntervention.innerHTML=`
+    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+      <div style="flex: 0 0 120px;"><label>Date:</label><br><input type="date" style="width: 100%; margin-top: 4px;"></div>
+      <div style="flex: 0 0 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></div>
+      <div style="flex: 1; text-align: right;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention">X</button></div>
+    </div>
+    <div style="margin-bottom: 10px;"><label>Shock (J):</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
+    <div style="margin-bottom: 10px;"><label>Rhythm:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
+    <div style="margin-bottom: 10px;"><label>ROLE:</label><br><input type="text" class="vital-input" style="width: 100%; margin-top: 4px;"></div>
   `;
   
-  container.appendChild(newTable);
+  container.appendChild(newIntervention);
   saveForm();
 }
 
 // Clear RESUS row
 function clearResusRow(btn){
-  const table=btn.closest('table');
+  const intervention=btn.closest('.resus-intervention-table');
   const container=document.getElementById('resusContainer');
-  const allTables=container.querySelectorAll('.resus-intervention-table');
+  const allInterventions=container.querySelectorAll('.resus-intervention-table');
   
-  if(allTables.length<=1){
-    // If this is the last intervention table, just clear the inputs
-    const inputs=table.querySelectorAll('input');
+  if(allInterventions.length<=1){
+    // If this is the last intervention, just clear the inputs
+    const inputs=intervention.querySelectorAll('input');
     inputs.forEach(input=>input.value='');
   } else {
-    // If there are multiple intervention tables, remove this one
-    table.remove();
+    // If there are multiple interventions, remove this one
+    intervention.remove();
   }
   saveForm();
 }
@@ -1825,17 +1825,17 @@ document.getElementById('clearForm').addEventListener('click',()=>{
       }
     }
     
-    // Clear RESUS tables (keep only one empty intervention table)
+    // Clear RESUS interventions (keep only one empty intervention card)
     const resusContainer = document.getElementById('resusContainer');
     if(resusContainer) {
-      // Remove all intervention tables except the first one
-      const allTables = resusContainer.querySelectorAll('.resus-intervention-table');
-      allTables.forEach((table, index) => {
+      // Remove all intervention cards except the first one
+      const allInterventions = resusContainer.querySelectorAll('.resus-intervention-table');
+      allInterventions.forEach((intervention, index) => {
         if(index > 0) {
-          table.remove();
+          intervention.remove();
         } else {
-          // Clear the first table's inputs
-          const inputs = table.querySelectorAll('input');
+          // Clear the first intervention's inputs
+          const inputs = intervention.querySelectorAll('input');
           inputs.forEach(input => input.value = '');
         }
       });
