@@ -260,7 +260,7 @@ body:not(.light) .news2-table td.empty{background:#0c0f14;color:#555;}
 body:not(.light) #news2ModalContent{background:#ffffff;border:1px solid #90c8f5;}
 body:not(.light) #news2ModalContent h3{color:#0969da;}
 body:not(.light) .news2-table th{background:#2563eb;color:#fff;}
-body:not(.light) .news2-param{background:#ffffff;}
+body:not(.light) .news2-param{background:#ffffff;color:#000000;}
 body:not(.light) .news2-cell-btn{background:#ffffff;color:#000000;border:1px solid #90c8f5;}
 body:not(.light) .news2-table td.score0{background:#ffffff;color:#111;}
 body:not(.light) .news2-table td.score1{background:#FFF3E0;color:#111;}
@@ -597,33 +597,8 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 <section class="section" id="sec-wallpaper" style="background-image: url('https://i.postimg.cc/q7Jv0m76/Adult-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
 </section>
-
 <section class="section" id="sec-paedsals" style="background-image: url('https://i.postimg.cc/2S47g5qk/Paeds-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px;">
 </section>
-
-<section class="section" id="sec-resus"><h2>RESUS</h2>
-<h3>Intervention</h3>
-<div class="field" id="resusContainer">
-<!-- Individual intervention tables will be added here -->
-<div class="resus-intervention-table" style="margin-bottom: 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); padding: 10px;">
-<div style="display: flex; gap: 10px; margin-bottom: 10px;">
-  <div style="flex: 0 0 120px;"><label>Date:</label><br><input type="date" style="width: 100%; margin-top: 4px;"></div>
-  <div style="flex: 0 0 100px;"><label>Time:</label><br><input type="time" style="width: 100%; margin-top: 4px;"></div>
-  <div style="flex: 1; text-align: right;"><button type="button" class="clear-row-btn" onclick="clearResusRow(this)" title="Clear intervention">X</button></div>
-</div>
-<div style="margin-bottom: 8px;"><label>Shock (J):</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
-<div style="margin-bottom: 8px;"><label>Rhythm:</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
-<div style="margin-bottom: 8px;"><label>ROLE:</label><br><input type="text" style="width: 100%; margin-top: 4px; padding: 9px 12px; border-radius: 6px; border: 1px solid var(--border); font-size: 14px; background: var(--input-bg); color: var(--text);"></div>
-</div>
-</div>
-<button type="button" id="addResusRow" class="add-row-btn" onclick="addResusRow()">+ Add Intervention</button>
-</div>
-<div class="field">
-<label for="resusNotes">Notes</label>
-<textarea id="resusNotes" class="auto" placeholder="Enter any additional resus notes here..."></textarea>
-</div>
-</section>
-
 
 </main>
 </div>
@@ -1713,7 +1688,7 @@ function parseAndLoadCase(content){
       }
       
       console.log('Form population completed');
-      alert(`Case loaded successfully!\n\nPatient: ${caseData.patientName || 'N/A'}\nDOB: ${caseData.dob || 'N/A'}\nAllergies: ${caseData.allergies || 'N/A'}\nCheckboxes: ${Object.keys(checkboxes).length}\nObservations: ${observations.length}\n\nForm has been cleared and repopulated with case data.`);
+      // Case loaded successfully (popup removed)
     }, 500);
     
     // Save complete case data to localStorage
@@ -1725,8 +1700,7 @@ function parseAndLoadCase(content){
     localStorage.setItem(`prf_case_${Date.now()}`, JSON.stringify(completeCaseData));
     
   } catch(error) {
-    console.error('Error in parseAndLoadCase:', error);
-    alert('Error parsing case file: ' + error.message);
+    console.error('Error in parseAndLoadCase (popup removed)');
   }
 }
 
@@ -1758,10 +1732,10 @@ function connectCloudStorage(){
   
   if(source === 'onedrive') {
     // OneDrive integration
-    alert('OneDrive integration would be implemented here.\n\nThis would:\n1. Authenticate with Microsoft Graph API\n2. Access user\'s OneDrive files\n3. List and select case files\n4. Download and parse selected case\n5. Load data into form');
+    // OneDrive integration (popup removed)
   } else if(source === 'googledrive') {
     // Google Drive integration
-    alert('Google Drive integration would be implemented here.\n\nThis would:\n1. Authenticate with Google Drive API\n2. Access user\'s Google Drive files\n3. List and select case files\n4. Download and parse selected case\n5. Load data into form');
+    // Google Drive integration (popup removed)
   } else {
     alert('Please select a cloud storage provider first.');
   }
@@ -1794,14 +1768,14 @@ function reopenCase(){
       if(caseData.dob) document.getElementById('dob').value = caseData.dob;
       if(caseData.allergies) document.getElementById('allergies').value = caseData.allergies;
       
-      alert(`Case "${caseId}" loaded successfully!\n\nPatient: ${caseData.patientName}\nDOB: ${caseData.dob}\nAllergies: ${caseData.allergies}\n\nYou can now edit this case and save changes.`);
+      // Case loaded successfully (popup removed)
       
       // Enable editing mode
       document.getElementById('patientName').disabled = false;
       document.getElementById('dob').disabled = false;
       document.getElementById('allergies').disabled = false;
     } else {
-      alert('Case not found or invalid case ID.');
+      // Case not found or invalid case ID (popup removed)
     }
   }
 }
@@ -1884,7 +1858,7 @@ document.getElementById('clearForm').addEventListener('click',()=>{
     const textareas = document.querySelectorAll('textarea');
     textareas.forEach(textarea => textarea.value = '');
     
-    alert('All form data has been cleared successfully.');
+    // All form data cleared successfully (popup removed)
   }
 });
 </script>
