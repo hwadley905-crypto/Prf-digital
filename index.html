@@ -326,19 +326,24 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   *{color:#111111 !important;background:#ffffff !important;border-color:#cccccc !important;}
   button,input[type=file],.hamburger,.sidebar,.sidebar-overlay{display:none!important;}
   
-  /* Hide RESUS section when printing */
-  #sec-resus{display:none !important;}
-  
-  /* Ensure ALS images are visible when printing */
-  #sec-resus div[style*="background-image"]{display:block !important;}
-  
+  /* Show all sections in print */
   .layout{display:block;}
   .content{padding:0;}
   .section{display:block!important;background:#fff !important;box-shadow:none;page-break-inside:avoid;margin-bottom:20px;border:1px solid #ccc !important;border-left:4px solid #999 !important;}
+  
+  /* Remove ALS area from print but keep RESUS section */
+  #sec-resus .field:has(label:contains("ALS Algorithm")){display:none !important;}
+  #sec-resus div[style*="background-image"]{display:none !important;}
+  
+  /* Ensure all content prints properly */
   .news2-cell-btn{display:inline!important;background:none!important;border:none!important;color:#111!important;padding:0!important;font-size:13px!important;cursor:default!important;}
   header{position:static;box-shadow:none;}
   .trauma-box{background:#ffffff !important;border:1px solid #cccccc !important;border-left:4px solid #999999 !important;}
   .signature-box{border:2px solid #cccccc !important;background:#ffffff !important;}
+  
+  /* Fix page break issues */
+  *{-webkit-print-color-adjust:exact !important;color-adjust:exact !important;}
+  .section{orphans:3;widows:3;}
 }
 </style>
 </head>
