@@ -45,25 +45,25 @@ h1{margin:0;font-size:18px;color:var(--accent);font-weight:700;}
 .header-right{display:flex;gap:8px;align-items:center;}
 .layout{display:flex;min-height:calc(100vh - 53px);}
 .sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);border-right:1px solid var(--border);padding:6px 4px;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;flex-shrink:0;}
-.tab-btn{display:flex;align-items:center;justify-content:center;width:calc(100% - 4px);height:50px;margin:2px 2px;background:var(--tc);border:none;border-radius:8px;padding:4px 4px;cursor:pointer;font-size:11px;font-weight:600;text-wrap:balance;color:white;transition:filter 0.2s,transform 0.2s;}
+.tab-btn{display:flex;align-items:center;justify-content:center;width:50px;height:50px;margin:2px 2px;background:var(--tc);border:none;border-radius:12px;padding:4px 4px;cursor:pointer;font-size:9px;font-weight:600;text-wrap:balance;color:white;transition:filter 0.2s,transform 0.2s;}
 .tab-btn:hover{filter:brightness(1.2);}
 body.light .tab-btn:hover{filter:brightness(0.9);}
 .tab-btn[data-section="sec-clinician"]{--tc:#3b82f6;}
 .tab-btn[data-section="sec-callhistory"]{--tc:#6366f1;}
+.tab-btn[data-section="sec-consent"]{--tc:#ec4899;}
+.tab-btn[data-section="sec-als"]{--tc:#d97706;}
 .tab-btn[data-section="sec-patient"]{--tc:#8b5cf6;}
 .tab-btn[data-section="sec-primary"]{--tc:#ec4899;}
 .tab-btn[data-section="sec-secondary"]{--tc:#f97316;}
-.tab-btn[data-section="sec-traumatools"]{--tc:#f59e0b;}
+.tab-btn[data-section="sec-history"]{--tc:#f97316;}
+.tab-btn[data-section="sec-pastmedhx"]{--tc:#f97316;}
+.tab-btn[data-section="sec-bodymap"]{--tc:#14b8a6;}
+.tab-btn[data-section="sec-trauma"]{--tc:#f59e0b;}
+.tab-btn[data-section="sec-ppci"]{--tc:#ef4444;}
 .tab-btn[data-section="sec-obs"]{--tc:#eab308;}
 .tab-btn[data-section="sec-interventions"]{--tc:#84cc16;}
 .tab-btn[data-section="sec-drugs"]{--tc:#22c55e;}
-.tab-btn[data-section="sec-bodymap"]{--tc:#14b8a6;}
-.tab-btn[data-section="sec-conveyance"]{--tc:#06b6d4;}
 .tab-btn[data-section="sec-outcome"]{--tc:#0ea5e9;}
-.tab-btn[data-section="sec-injuryassessment"]{--tc:#8b5cf6;}
-.tab-btn[data-section="sec-wallpaper"]{--tc:#dc2626;}
-.tab-btn[data-section="sec-paedsals"]{--tc:#059669;}
-.tab-btn[data-section="sec-resus"]{--tc:#d97706;}
 .tab-btn[data-section="sec-signoff"]{--tc:#94a3b8;}
 .tab-btn.active{filter:brightness(1.35);box-shadow:0 0 12px rgba(255,255,255,0.25);transform:scale(1.03);}
 .content{flex:1;padding:24px;overflow-y:auto;min-width:0;background-image:linear-gradient(135deg,rgba(255,255,255,0.015) 0%,transparent 60%);}
@@ -72,44 +72,40 @@ body.light .content{background-image:none;background-color:#ffffff;}
 body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);border:1px solid #90c8f5;border-left:5px solid #90c8f5;}
 .section.active-section{display:block;}
 #sec-clinician{border-left-color:#3b82f6;}
-#sec-signoff{border-left-color:#94a3b8;}
+#sec-callhistory{border-left-color:#6366f1;}
+#sec-consent{border-left-color:#ec4899;}
+#sec-als{border-left-color:#d97706;}
+#sec-patient{border-left-color:#8b5cf6;}
 #sec-primary{border-left-color:#ec4899;}
 #sec-secondary{border-left-color:#f97316;}
-#sec-traumatools{border-left-color:#f59e0b;}
-#sec-injuryassessment{border-left-color:#8b5cf6;}
-body.light #sec-injuryassessment h2{color:#000000 !important;}
-body.light .tab-btn[data-section="sec-injuryassessment"]{color:#000000 !important;}
+#sec-history{border-left-color:#f97316;}
+#sec-pastmedhx{border-left-color:#f97316;}
+#sec-bodymap{border-left-color:#14b8a6;}
+#sec-trauma{border-left-color:#f59e0b;}
+#sec-ppci{border-left-color:#ef4444;}
 #sec-obs{border-left-color:#eab308;}
 #sec-interventions{border-left-color:#84cc16;}
 #sec-drugs{border-left-color:#22c55e;}
-#sec-bodymap{border-left-color:#14b8a6;}
-#sec-conveyance{border-left-color:#06b6d4;}
 #sec-outcome{border-left-color:#0ea5e9;}
-#sec-wallpaper{border-left-color:#ec4899;}
-body.light .tab-btn[data-section="sec-wallpaper"]{color:#000000 !important;}
-#sec-paedsals{border-left-color:#10b981;}
-body.light .tab-btn[data-section="sec-paedsals"]{color:#000000 !important;}
-#sec-resus{border-left-color:#f59e0b;}
-body.light .tab-btn[data-section="sec-resus"]{color:#000000 !important;}
 #sec-signoff{border-left-color:#94a3b8;}
 
 /* Custom background colors for specific tiles - Dark mode: black backgrounds with colored borders */
 #sec-clinician{background: #000000; border-left-color: #3b82f6;}
 #sec-callhistory{background: #000000; border-left-color: #6366f1;}
+#sec-consent{background: #000000; border-left-color: #ec4899;}
+#sec-als{background: #000000; border-left-color: #d97706;}
 #sec-patient{background: #000000; border-left-color: #8b5cf6;}
 #sec-primary{background: #000000; border-left-color: #ec4899;}
 #sec-secondary{background: #000000; border-left-color: #f97316;}
-#sec-traumatools{background: #000000; border-left-color: #f59e0b;}
-#sec-injuryassessment{background: #000000; border-left-color: #8b5cf6;}
+#sec-history{background: #000000; border-left-color: #f97316;}
+#sec-pastmedhx{background: #000000; border-left-color: #f97316;}
+#sec-bodymap{background: #000000; border-left-color: #14b8a6;}
+#sec-trauma{background: #000000; border-left-color: #f59e0b;}
+#sec-ppci{background: #000000; border-left-color: #ef4444;}
 #sec-obs{background: #000000; border-left-color: #eab308;}
 #sec-interventions{background: #000000; border-left-color: #84cc16;}
 #sec-drugs{background: #000000; border-left-color: #22c55e;}
-#sec-bodymap{background: #000000; border-left-color: #14b8a6;}
-#sec-conveyance{background: #000000; border-left-color: #06b6d4;}
 #sec-outcome{background: #000000; border-left-color: #0ea5e9;}
-#sec-wallpaper{background: #000000; border-left-color: #dc2626;}
-#sec-paedsals{background: #000000; border-left-color: #059669;}
-#sec-resus{background: #000000; border-left-color: #d97706;}
 #sec-signoff{background: #000000; border-left-color: #94a3b8;}
 
 /* Custom border colors for form elements in dark mode to match tab button colors */
@@ -118,6 +114,12 @@ body.light .tab-btn[data-section="sec-resus"]{color:#000000 !important;}
 
 #sec-callhistory input, #sec-callhistory textarea, #sec-callhistory select, #sec-callhistory table{border-color: #6366f1 !important;}
 #sec-callhistory .trauma-box{border-left-color: #6366f1;}
+
+#sec-consent input, #sec-consent textarea, #sec-consent select, #sec-consent table{border-color: #ec4899 !important;}
+#sec-consent .trauma-box{border-left-color: #ec4899;}
+
+#sec-als input, #sec-als textarea, #sec-als select, #sec-als table{border-color: #d97706 !important;}
+#sec-als .trauma-box{border-left-color: #d97706;}
 
 #sec-patient input, #sec-patient textarea, #sec-patient select, #sec-patient table{border-color: #8b5cf6 !important;}
 #sec-patient .trauma-box{border-left-color: #8b5cf6;}
@@ -128,11 +130,20 @@ body.light .tab-btn[data-section="sec-resus"]{color:#000000 !important;}
 #sec-secondary input, #sec-secondary textarea, #sec-secondary select, #sec-secondary table{border-color: #f97316 !important;}
 #sec-secondary .trauma-box{border-left-color: #f97316;}
 
-#sec-traumatools input, #sec-traumatools textarea, #sec-traumatools select, #sec-traumatools table{border-color: #f59e0b !important;}
-#sec-traumatools .trauma-box{border-left-color: #f59e0b;}
+#sec-history input, #sec-history textarea, #sec-history select, #sec-history table{border-color: #f97316 !important;}
+#sec-history .trauma-box{border-left-color: #f97316;}
 
-#sec-injuryassessment input, #sec-injuryassessment textarea, #sec-injuryassessment select, #sec-injuryassessment table{border-color: #8b5cf6 !important;}
-#sec-injuryassessment .trauma-box{border-left-color: #8b5cf6;}
+#sec-pastmedhx input, #sec-pastmedhx textarea, #sec-pastmedhx select, #sec-pastmedhx table{border-color: #f97316 !important;}
+#sec-pastmedhx .trauma-box{border-left-color: #f97316;}
+
+#sec-bodymap input, #sec-bodymap textarea, #sec-bodymap select, #sec-bodymap table{border-color: #14b8a6 !important;}
+#sec-bodymap .trauma-box{border-left-color: #14b8a6;}
+
+#sec-trauma input, #sec-trauma textarea, #sec-trauma select, #sec-trauma table{border-color: #f59e0b !important;}
+#sec-trauma .trauma-box{border-left-color: #f59e0b;}
+
+#sec-ppci input, #sec-ppci textarea, #sec-ppci select, #sec-ppci table{border-color: #ef4444 !important;}
+#sec-ppci .trauma-box{border-left-color: #ef4444;}
 
 #sec-obs input, #sec-obs textarea, #sec-obs select, #sec-obs table{border-color: #eab308 !important;}
 #sec-obs .trauma-box{border-left-color: #eab308;}
@@ -143,23 +154,8 @@ body.light .tab-btn[data-section="sec-resus"]{color:#000000 !important;}
 #sec-drugs input, #sec-drugs textarea, #sec-drugs select, #sec-drugs table{border-color: #22c55e !important;}
 #sec-drugs .trauma-box{border-left-color: #22c55e;}
 
-#sec-bodymap input, #sec-bodymap textarea, #sec-bodymap select, #sec-bodymap table{border-color: #14b8a6 !important;}
-#sec-bodymap .trauma-box{border-left-color: #14b8a6;}
-
-#sec-conveyance input, #sec-conveyance textarea, #sec-conveyance select, #sec-conveyance table{border-color: #06b6d4 !important;}
-#sec-conveyance .trauma-box{border-left-color: #06b6d4;}
-
 #sec-outcome input, #sec-outcome textarea, #sec-outcome select, #sec-outcome table{border-color: #0ea5e9 !important;}
 #sec-outcome .trauma-box{border-left-color: #0ea5e9;}
-
-#sec-wallpaper input, #sec-wallpaper textarea, #sec-wallpaper select, #sec-wallpaper table{border-color: #dc2626 !important;}
-#sec-wallpaper .trauma-box{border-left-color: #dc2626;}
-
-#sec-paedsals input, #sec-paedsals textarea, #sec-paedsals select, #sec-paedsals table{border-color: #059669 !important;}
-#sec-paedsals .trauma-box{border-left-color: #059669;}
-
-#sec-resus input, #sec-resus textarea, #sec-resus select, #sec-resus table{border-color: #d97706 !important;}
-#sec-resus .trauma-box{border-left-color: #d97706;}
 
 #sec-signoff input, #sec-signoff textarea, #sec-signoff select, #sec-signoff table{border-color: #94a3b8 !important;}
 #sec-signoff .trauma-box{border-left-color: #94a3b8;}
@@ -352,6 +348,69 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   /* Fix page break issues */
   *{-webkit-print-color-adjust:exact !important;color-adjust:exact !important;}
   .section{orphans:3;widows:3;}
+  
+  /* Auto-expanding textareas for print */
+  textarea{min-height:60px;height:auto;overflow:hidden;}
+  
+  /* Print styles for modal content */
+  @media print{
+    .modal-overlay{display:none !important;}
+    textarea{height:auto !important;min-height:60px !important;}
+    .field textarea{height:auto !important;min-height:60px !important;}
+  }
+}
+
+/* Modal text box styles */
+.modal-overlay{
+  display:none;
+  position:fixed;
+  top:0;left:0;right:0;bottom:0;
+  background:rgba(0,0,0,0.7);
+  z-index:1000;
+  align-items:center;
+  justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal-content{
+  background:var(--card-bg);
+  border:2px solid var(--border);
+  border-radius:12px;
+  padding:24px;
+  max-width:800px;
+  width:90%;
+  max-height:80vh;
+  overflow-y:auto;
+  position:relative;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+.modal-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  background:var(--red);
+  color:white;
+  border:none;
+  border-radius:50%;
+  width:32px;
+  height:32px;
+  font-size:18px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+.modal-close:hover{filter:brightness(1.2);}
+.modal-textarea{
+  width:100%;
+  min-height:200px;
+  padding:12px;
+  background:var(--input-bg);
+  color:var(--text);
+  border:1px solid var(--border);
+  border-radius:8px;
+  font-size:14px;
+  resize:vertical;
 }
 </style>
 </head>
@@ -375,17 +434,19 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <nav class="sidebar" id="sidebar">
   <button class="tab-btn active" data-section="sec-clinician">Clinician</button>
   <button class="tab-btn" data-section="sec-callhistory">Call History</button>
+  <button class="tab-btn" data-section="sec-consent">Consent</button>
+  <button class="tab-btn" data-section="sec-als">ALS</button>
   <button class="tab-btn" data-section="sec-patient">Patient</button>
   <button class="tab-btn" data-section="sec-primary">Primary</button>
-  <button class="tab-btn" data-section="sec-resus">RESUS</button>
   <button class="tab-btn" data-section="sec-secondary">Secondary</button>
-  <button class="tab-btn" data-section="sec-traumatools">Silver Trauma Tool</button>
-  <button class="tab-btn" data-section="sec-injuryassessment">Injury Assessment Tool</button>
+  <button class="tab-btn" data-section="sec-history">History</button>
+  <button class="tab-btn" data-section="sec-pastmedhx">Past Med hx</button>
+  <button class="tab-btn" data-section="sec-bodymap">Body Map</button>
+  <button class="tab-btn" data-section="sec-trauma">Trauma</button>
+  <button class="tab-btn" data-section="sec-ppci">PPCI</button>
   <button class="tab-btn" data-section="sec-obs">Observations</button>
   <button class="tab-btn" data-section="sec-interventions">Interventions</button>
   <button class="tab-btn" data-section="sec-drugs">Drugs</button>
-  <button class="tab-btn" data-section="sec-bodymap">Body Map</button>
-  <button class="tab-btn" data-section="sec-conveyance">Conveyance</button>
   <button class="tab-btn" data-section="sec-outcome">Outcome</button>
   <button class="tab-btn" data-section="sec-signoff">Sign Off</button>
 </nav>
@@ -396,8 +457,12 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><textarea id="clinicianNotes" class="auto" placeholder="Clinician notes / team ID"></textarea></div>
 </section>
 
-<section class="section" id="sec-callhistory"><h2>Call History / Incident Details</h2>
-<div class="field"><textarea id="callHistory" class="auto"></textarea></div>
+<section class="section" id="sec-callhistory"><h2>Call History</h2>
+<div class="field"><label for="complaint">Presenting Complaint</label><textarea id="complaint" class="auto"></textarea></div>
+<div class="field"><label for="otherDetails">Other Details</label><textarea id="otherDetails" class="auto"></textarea></div>
+<div class="field"><label for="address">Address</label><textarea id="address" class="auto"></textarea></div>
+<div class="field"><label for="callerName">Caller Name</label><textarea id="callerName" class="auto"></textarea></div>
+<div class="field"><label for="timeOfCall">Time of Call</label><textarea id="timeOfCall" class="auto"></textarea></div>
 </section>
 
 <section class="section" id="sec-als"><h2>ALS</h2>
@@ -406,19 +471,29 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 </div>
 </section>
 
+<section class="section" id="sec-consent"><h2>Consent</h2>
+<div class="field">
+  <ul class="trauma-bullet-list">
+    <li class="trauma-bullet-item"><input type="checkbox" id="consentCapacity"><label for="consentCapacity">Capacity (MCA 2005)</label></li>
+    <li class="trauma-bullet-item"><input type="checkbox" id="consentGillick"><label for="consentGillick">Gillick & Fraser</label></li>
+    <li class="trauma-bullet-item"><input type="checkbox" id="consentBestInterest"><label for="consentBestInterest">Patient best interest</label></li>
+  </ul>
+</div>
+</section>
+
 <section class="section" id="sec-patient"><h2>Patient Details</h2>
-<div class="field"><label for="patientName">Patient Name</label><input type="text" id="patientName"></div>
-<div class="field"><label for="dob">Date of Birth</label><input type="date" id="dob"></div>
-<div class="field"><label for="allergies">Allergies</label><textarea id="allergies" class="auto"></textarea></div>
+<div class="field"><label for="patientName">Patient Name</label><textarea id="patientName" class="auto"></textarea></div>
+<div class="field"><label for="dob">Date of Birth</label><textarea id="dob" class="auto"></textarea></div>
 <div class="field"><label for="nextOfKin">Next of Kin</label><textarea id="nextOfKin" class="auto"></textarea></div>
-<div class="field"><label for="capacity">Capacity? RESPECT Form</label><textarea id="capacity" class="auto"></textarea></div>
-<div class="field"><label for="dnar">DNAR Form</label><textarea id="dnar" class="auto"></textarea></div>
-<div class="field"><label for="medications">Patient Medications</label><textarea id="medications" class="auto"></textarea></div>
-<div class="field"><label for="pastHistory">Past Medical History</label><textarea id="pastHistory" class="auto"></textarea></div>
-<div class="field"><label for="hpc">History of Presenting Complaint</label><textarea id="hpc" class="auto"></textarea></div>
-<label>Add Medical History Image</label>
-<input type="file" accept="image/*" multiple onchange="previewImages(event,'historyPreview')">
-<div class="image-preview" id="historyPreview"></div>
+<div class="field"><label for="gpAccess">GP Access</label><textarea id="gpAccess" class="auto"></textarea></div>
+<div class="field"><label for="respectDnar">RESPECT/DNAR forms</label><textarea id="respectDnar" class="auto"></textarea></div>
+<div class="field"><label for="patientAllergies">Allergies</label><textarea id="patientAllergies" class="auto"></textarea></div>
+<div class="field"><label for="fireAlarms">Fire Alarms?</label><textarea id="fireAlarms" class="auto"></textarea></div>
+<div class="field"><label for="hoardingStatus">Hoarding Status</label><textarea id="hoardingStatus" class="auto"></textarea></div>
+<div class="field"><label for="frailtyLevel">Frailty level</label><textarea id="frailtyLevel" class="auto"></textarea></div>
+<div style="text-align:center; margin:20px 0;">
+  <a href="https://ibb.co/p6P0Z0HD"><img src="https://i.ibb.co/twhmcm0f/Frailty-Scale.png" alt="Frailty-Scale" border="0" style="max-width:100%; height:auto;"></a>
+</div>
 </section>
 
 <section class="section" id="sec-primary"><h2>Primary Survey - DRCABCDE</h2>
@@ -432,7 +507,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="exposure">(E) Exposure - dignity, thermoregulation, inspection</label><textarea id="exposure" class="auto"></textarea></div>
 </section>
 
-<section class="section" id="sec-resus"><h2>RESUS</h2>
+<section class="section" id="sec-als"><h2>ALS</h2>
   <h2>Interventions</h2>
   <table id="interventionsTable">
     <tr><th>Time</th><th>Type</th><th>Location</th><th>Outcome</th><th>Clinician</th><th>Reason</th><th></th></tr>
@@ -479,8 +554,36 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 </section>
 
-<section class="section" id="sec-traumatools"><h2>Silver Trauma Tool</h2>
+<section class="section" id="sec-history"><h2>History</h2>
+<div class="field"><label for="historyMedications">Medications</label><textarea id="historyMedications" class="auto"></textarea></div>
+<div class="field"><label for="historyAllergies">Allergies</label><textarea id="historyAllergies" class="auto"></textarea></div>
+<div class="field"><label for="familyHistory">Family History</label><textarea id="familyHistory" class="auto"></textarea></div>
+<div class="field"><label for="habitat">Habitat</label><textarea id="habitat" class="auto"></textarea></div>
+<div class="field"><label for="occupation">Occupation</label><textarea id="occupation" class="auto"></textarea></div>
+<div class="field"><label for="recreationalInterests">Recreational Interests</label><textarea id="recreationalInterests" class="auto"></textarea></div>
+<div class="field"><label for="smokingDrinking">Smoking/ Drinking</label><textarea id="smokingDrinking" class="auto"></textarea></div>
+<div class="field"><label for="recentIllness">Exposure to recent illness</label><textarea id="recentIllness" class="auto"></textarea></div>
+<div class="field"><label for="supportNetwork">Support network</label><textarea id="supportNetwork" class="auto"></textarea></div>
+<div class="field"><label for="otherHx">Other hx</label><textarea id="otherHx" class="auto"></textarea></div>
+</section>
 
+<section class="section" id="sec-pastmedhx"><h2>Past Med hx</h2>
+<div class="field"><label for="jaundice">Jaundice</label><textarea id="jaundice" class="auto"></textarea></div>
+<div class="field"><label for="anaemia">Anaemia</label><textarea id="anaemia" class="auto"></textarea></div>
+<div class="field"><label for="malignancy">Malignancy</label><textarea id="malignancy" class="auto"></textarea></div>
+<div class="field"><label for="tuberculosis">Tuberculosis (TB)</label><textarea id="tuberculosis" class="auto"></textarea></div>
+<div class="field"><label for="hypertension">Hypertension/ Heart Disease</label><textarea id="hypertension" class="auto"></textarea></div>
+<div class="field"><label for="rheumaticFever">Rheumatic Fever</label><textarea id="rheumaticFever" class="auto"></textarea></div>
+<div class="field"><label for="epilepsy">Epilepsy</label><textarea id="epilepsy" class="auto"></textarea></div>
+<div class="field"><label for="asthmaCOPD">Asthma/COPD</label><textarea id="asthmaCOPD" class="auto"></textarea></div>
+<div class="field"><label for="diabetes">Diabetes</label><textarea id="diabetes" class="auto"></textarea></div>
+<div class="field"><label for="strokeTIA">Stroke/TIA</label><textarea id="strokeTIA" class="auto"></textarea></div>
+<div class="field"><label for="otherPMH">Other PMH</label><textarea id="otherPMH" class="auto"></textarea></div>
+</section>
+
+<section class="section" id="sec-trauma"><h2>Trauma</h2>
+
+<h3>Silver Trauma Tool</h3>
 <div class="trauma-flow">
   <div class="trauma-box">
     <h4>Is the patient above 65 years of age and has a history of falls from standing height?</h4>
@@ -516,10 +619,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <textarea id="silverTraumaDetails" class="auto" placeholder="Add details about Silver Trauma assessment..."></textarea>
 </div>
 
-</section>
-
-<section class="section" id="sec-injuryassessment"><h2>Injury Assessment Tool</h2>
-
+<h3>Injury Assessment Tool</h3>
 <div class="trauma-flow">
   <div class="trauma-box">
     <h4>Step 1 - assess vital signs</h4>
@@ -603,8 +703,31 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="image-preview" id="bodyPreview"></div>
 </section>
 
-<section class="section" id="sec-conveyance"><h2>Conveyance</h2>
-<h3>ATMIST</h3>
+<section class="section" id="sec-ppci"><h2>PPCI</h2>
+<div class="field">
+  <label>PPCI eligible?</label>
+  <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+    <label style="display: flex; align-items: center; gap: 8px;">
+      <input type="radio" name="ppciEligible" id="ppciYes" value="yes"> Yes
+    </label>
+    <label style="display: flex; align-items: center; gap: 8px;">
+      <input type="radio" name="ppciEligible" id="ppciNo" value="no"> No
+    </label>
+  </div>
+</div>
+<div class="field">
+  <label for="ppciDetails">Details</label>
+  <textarea id="ppciDetails" class="auto"></textarea>
+</div>
+<div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+  <img src="https://i.postimg.cc/7188J0sB4/image.jpg" alt="PPCI Image 1" style="max-width:100%; height:auto; border-radius:8px;">
+  <img src="https://i.postimg.cc/7189J0sB4/image.jpg" alt="PPCI Image 2" style="max-width:100%; height:auto; border-radius:8px;">
+  <img src="https://i.postimg.cc/7190J0sB4/image.jpg" alt="PPCI Image 3" style="max-width:100%; height:auto; border-radius:8px;">
+</div>
+</section>
+
+<section class="section" id="sec-outcome"><h2>Outcome</h2>
+<h3>Conveyance - ATMIST</h3>
 <div class="field"><label for="atmAge">Age</label><textarea id="atmAge" class="auto"></textarea></div>
 <div class="field"><label for="atmTime">Time of incident/onset</label><textarea id="atmTime" class="auto"></textarea></div>
 <div class="field"><label for="atmMechanism">Mechanism / Complaint</label><textarea id="atmMechanism" class="auto"></textarea></div>
@@ -616,10 +739,8 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="sbarBackground">Background</label><textarea id="sbarBackground" class="auto"></textarea></div>
 <div class="field"><label for="sbarAssessment">Assessment</label><textarea id="sbarAssessment" class="auto"></textarea></div>
 <div class="field"><label for="sbarRecommendations">Recommendations</label><textarea id="sbarRecommendations" class="auto"></textarea></div>
-</section>
-
-<section class="section" id="sec-outcome"><h2>Outcome of Case</h2>
-<textarea id="outcome" class="auto"></textarea>
+<h3>Outcome of Case</h3>
+<div class="field"><label for="outcome">Outcome</label><textarea id="outcome" class="auto"></textarea></div>
 </section>
 
 <section class="section" id="sec-signoff"><h2>Sign Off</h2>
@@ -631,8 +752,19 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label>Signature</label><canvas id="signatureCanvas" class="signature-box"></canvas><br><button type="button" id="clearSig" style="margin-top:6px;">Clear Signature</button></div>
 </section>
 
-
 </main>
+
+<!-- Modal for text box expansion -->
+<div class="modal-overlay" id="textModal">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeTextModal()">×</button>
+    <h3 id="modalTitle">Enter Details</h3>
+    <textarea id="modalTextarea" class="modal-textarea"></textarea>
+    <div style="margin-top: 16px; text-align: right;">
+      <button onclick="closeTextModal()" style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: 6px; cursor: pointer;">Save</button>
+    </div>
+  </div>
+</div>
 </div>
 
 <!-- GCS Modal -->
@@ -1956,6 +2088,92 @@ document.getElementById('clearForm').addEventListener('click',()=>{
     
     // All form data cleared successfully (popup removed)
   }
+});
+
+// Modal text box functionality for Observations, Interventions, Drugs
+let activeModalInput = null;
+
+function openTextModal(inputElement) {
+  activeModalInput = inputElement;
+  const modal = document.getElementById('textModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalTextarea = document.getElementById('modalTextarea');
+  
+  modalTitle.textContent = 'Enter Details';
+  modalTextarea.value = inputElement.value || '';
+  modal.classList.add('open');
+}
+
+function closeTextModal() {
+  const modal = document.getElementById('textModal');
+  const modalTextarea = document.getElementById('modalTextarea');
+  
+  if (activeModalInput) {
+    activeModalInput.value = modalTextarea.value;
+    saveForm();
+  }
+  
+  modal.classList.remove('open');
+  activeModalInput = null;
+}
+
+// Add click event listeners to inputs in Observations, Interventions, and Drugs sections
+document.addEventListener('DOMContentLoaded', function() {
+  const obsSection = document.getElementById('sec-obs');
+  const interventionsSection = document.getElementById('sec-interventions');
+  const drugsSection = document.getElementById('sec-drugs');
+  
+  if (obsSection) {
+    const obsInputs = obsSection.querySelectorAll('input');
+    obsInputs.forEach(input => {
+      if (input.type !== 'date' && input.type !== 'time' && input.type !== 'checkbox' && input.type !== 'radio') {
+        input.addEventListener('click', function() {
+          openTextModal(this);
+        });
+        input.addEventListener('focus', function(e) {
+          e.preventDefault();
+          openTextModal(this);
+        });
+      }
+    });
+  }
+  
+  if (interventionsSection) {
+    const interventionInputs = interventionsSection.querySelectorAll('input');
+    interventionInputs.forEach(input => {
+      if (input.type !== 'date' && input.type !== 'time' && input.type !== 'checkbox' && input.type !== 'radio') {
+        input.addEventListener('click', function() {
+          openTextModal(this);
+        });
+        input.addEventListener('focus', function(e) {
+          e.preventDefault();
+          openTextModal(this);
+        });
+      }
+    });
+  }
+  
+  if (drugsSection) {
+    const drugInputs = drugsSection.querySelectorAll('input');
+    drugInputs.forEach(input => {
+      if (input.type !== 'date' && input.type !== 'time' && input.type !== 'checkbox' && input.type !== 'radio') {
+        input.addEventListener('click', function() {
+          openTextModal(this);
+        });
+        input.addEventListener('focus', function(e) {
+          e.preventDefault();
+          openTextModal(this);
+        });
+      }
+    });
+  }
+  
+  // Close modal when clicking outside
+  document.getElementById('textModal').addEventListener('click', function(e) {
+    if (e.target.id === 'textModal') {
+      closeTextModal();
+    }
+  });
 });
 </script>
 </body>
