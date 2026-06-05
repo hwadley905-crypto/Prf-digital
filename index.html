@@ -44,8 +44,8 @@ h1{margin:0;font-size:18px;color:var(--accent);font-weight:700;}
 .header-left{display:flex;align-items:center;gap:12px;}
 .header-right{display:flex;gap:8px;align-items:center;}
 .layout{display:flex;min-height:calc(100vh - 53px);}
-.sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);border-right:1px solid var(--border);padding:6px 4px;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;flex-shrink:0;}
-.tab-btn{display:flex;align-items:center;justify-content:center;width:50px;height:50px;margin:2px 2px;background:var(--tc);border:none;border-radius:12px;padding:4px 4px;cursor:pointer;font-size:9px;font-weight:600;text-wrap:balance;color:white;transition:filter 0.2s,transform 0.2s;}
+.sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);border-right:1px solid var(--border);padding:2px 2px;position:sticky;top:53px;height:calc(100vh - 53px);overflow-y:auto;flex-shrink:0;}
+.tab-btn{display:flex;align-items:center;justify-content:center;width:55px;height:55px;margin:2px 2px;background:var(--tc);border:none;border-radius:12px;padding:4px 4px;cursor:pointer;font-size:9px;font-weight:600;text-wrap:balance;color:white;transition:filter 0.2s,transform 0.2s;}
 .tab-btn:hover{filter:brightness(1.2);}
 body.light .tab-btn:hover{filter:brightness(0.9);}
 .tab-btn[data-section="sec-clinician"]{--tc:#3b82f6;}
@@ -166,18 +166,18 @@ body.light #sec-callhistory{background: linear-gradient(135deg, #e0e7ff 0%, #eef
 body.light #sec-patient{background: linear-gradient(135deg, #f3e8ff 0%, #ede9fe 100%);}
 body.light #sec-primary{background: linear-gradient(135deg, #fce7f3 0%, #fdf2f8 100%);}
 body.light #sec-secondary{background: linear-gradient(135deg, #fed7aa 0%, #ffedd5 100%);}
-body.light #sec-traumatools{background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);}
-body.light #sec-injuryassessment{background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);}
+body.light #sec-history{background: linear-gradient(135deg, #fed7aa 0%, #ffedd5 100%);}
+body.light #sec-pastmedhx{background: linear-gradient(135deg, #fed7aa 0%, #ffedd5 100%);}
+body.light #sec-trauma{background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);}
 body.light #sec-obs{background: linear-gradient(135deg, #fef3c7 0%, #fde047 100%);}
 body.light #sec-interventions{background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);}
 body.light #sec-drugs{background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);}
 body.light #sec-bodymap{background: linear-gradient(135deg, #ccfbf1 0%, #a7f3d0 100%);}
-body.light #sec-conveyance{background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);}
+body.light #sec-ppci{background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);}
 body.light #sec-outcome{background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);}
-body.light #sec-wallpaper{background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);}
-body.light #sec-paedsals{background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);}
-body.light #sec-resus{background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);}
+body.light #sec-als{background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);}
 body.light #sec-signoff{background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);}
+body.light #sec-consent{background: linear-gradient(135deg, #fce7f3 0%, #fdf2f8 100%);}
 .section h2{margin:0 0 16px 0;font-size:16px;color:var(--text);padding-bottom:8px;border-bottom:1px solid var(--divider);}
 .section h3{margin:12px 0 8px 0;font-size:18px;color:var(--text);border-bottom:2px solid var(--divider);padding-bottom:4px;font-weight:700;text-decoration:underline;}
 .field{margin-bottom:14px;}
@@ -355,8 +355,11 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   /* Print styles for modal content */
   @media print{
     .modal-overlay{display:none !important;}
-    textarea{height:auto !important;min-height:60px !important;}
-    .field textarea{height:auto !important;min-height:60px !important;}
+    textarea{height:auto !important;min-height:60px !important; overflow:visible !important;}
+    .field textarea{height:auto !important;min-height:60px !important; overflow:visible !important;}
+    input{height:auto !important; overflow:visible !important;}
+    #sec-obs textarea, #sec-interventions textarea, #sec-drugs textarea{height:auto !important; min-height:100px !important; overflow:visible !important;}
+    #sec-obs input, #sec-interventions input, #sec-drugs input{height:auto !important; min-height:30px !important; overflow:visible !important;}
   }
 }
 
@@ -517,15 +520,26 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   
   <div class="field">
   <label>Adult ALS Algorithm</label>
-  <div style="background-image: url('https://i.postimg.cc/q7Jv0m76/Adult-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px; margin-bottom: 20px; border: 1px solid var(--border); border-radius: 8px;"></div>
+  <img src="https://i.postimg.cc/q7Jv0m76/Adult-ALS.png" alt="Adult ALS Algorithm" style="max-width:100%; height:auto; border-radius:8px; margin-bottom: 20px; border: 1px solid var(--border);">
 </div>
 <div class="field">
   <label>Paeds ALS Algorithm</label>
-  <div style="background-image: url('https://i.postimg.cc/2S47g5qk/Paeds-ALS.png'); background-size: contain; background-position: center; background-repeat: no-repeat; position: relative; min-height: 600px; margin-bottom: 20px; border: 1px solid var(--border); border-radius: 8px;"></div>
+  <img src="https://i.postimg.cc/2S47g5qk/Paeds-ALS.png" alt="Paeds ALS Algorithm" style="max-width:100%; height:auto; border-radius:8px; margin-bottom: 20px; border: 1px solid var(--border);">
 </div>
 </section>
 
 <section class="section" id="sec-secondary"><h2>Secondary Survey</h2>
+<div class="field">
+  <label>See PPCI Tab?</label>
+  <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: center;">
+    <label style="display: flex; align-items: center; gap: 8px;">
+      <input type="radio" name="seePpci" id="seePpciYes" value="yes"> Yes
+    </label>
+    <label style="display: flex; align-items: center; gap: 8px;">
+      <input type="radio" name="seePpci" id="seePpciNo" value="no"> No
+    </label>
+  </div>
+</div>
 <div class="field"><label for="neuro">Neurological</label><textarea id="neuro" class="auto"></textarea></div>
 <div class="field">
   <ul class="trauma-bullet-list">
@@ -583,6 +597,50 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 <section class="section" id="sec-trauma"><h2>Trauma</h2>
 
+<h3>Injury Assessment Tool All Ages</h3>
+<div class="trauma-flow">
+  <div class="trauma-box">
+    <h4>Step 1 - assess vital signs</h4>
+    <ul class="trauma-bullet-list">
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury1"><label for="injury1">Sustained RR&lt;10/&gt;29</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury2"><label for="injury2">Sustained systolic BP&lt;90</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury3"><label for="injury3">GCS(M)&gt;5</label></li>
+    </ul>
+  </div>
+  
+  <div class="trauma-box">
+    <h4>Step 2 - Assess anatomy of injuries</h4>
+    <ul class="trauma-bullet-list">
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury4"><label for="injury4">Chest injury with new Oxygen requirement</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury5"><label for="injury5">Major pelvic fracture</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury6"><label for="injury6">Penetrating injury above knee</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury7"><label for="injury7">Skull fracture</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury8"><label for="injury8">Spinal injury with paralysis</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury9"><label for="injury9">&gt;1 mid-shaft long bone fracture</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury10"><label for="injury10">Amputation/ mangled wrist or ankle</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury11"><label for="injury11">Open fracture</label></li>
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury12"><label for="injury12">Burns/ scalds &gt;20%</label></li>
+    </ul>
+  </div>
+  
+  <div class="trauma-box">
+    <h4>Step 3 - Assess other circumstances</h4>
+    <ul class="trauma-bullet-list">
+      <li class="trauma-bullet-item"><input type="checkbox" id="injury13"><label for="injury13">Significant Clinical Concern (supported by Senior Clinician)</label></li>
+      <li class="trauma-bullet-item">If Yes to ANY of the above, then transport with pre-alert to ED and contact Trauma Desk</li>
+    </ul>
+  </div>
+</div>
+
+<div class="field">
+  <label for="injuryAssessmentDetails">Injury Assessment Details</label>
+  <textarea id="injuryAssessmentDetails" class="auto" placeholder="Add details about Injury Assessment..."></textarea>
+</div>
+
+<div style="text-align:center; margin:20px 0; min-height: 600px;">
+  <img src="https://i.postimg.cc/qqLJsdmg/WMAS-injury-Assessmeny-tool.png" alt="WMAS Injury Assessment Tool" style="max-width:100%; max-height: 600px; height:auto; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.3); object-fit: contain;">
+</div>
+
 <h3>Silver Trauma Tool</h3>
 <div class="trauma-flow">
   <div class="trauma-box">
@@ -618,8 +676,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <label for="silverTraumaDetails">Silver Trauma Details</label>
   <textarea id="silverTraumaDetails" class="auto" placeholder="Add details about Silver Trauma assessment..."></textarea>
 </div>
-
-<h3>Injury Assessment Tool</h3>
 <div class="trauma-flow">
   <div class="trauma-box">
     <h4>Step 1 - assess vital signs</h4>
@@ -705,8 +761,8 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 <section class="section" id="sec-ppci"><h2>PPCI</h2>
 <div class="field">
-  <label>PPCI eligible?</label>
-  <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+  <label style="display: block; margin-bottom: 10px;">PPCI eligible?</label>
+  <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: center;">
     <label style="display: flex; align-items: center; gap: 8px;">
       <input type="radio" name="ppciEligible" id="ppciYes" value="yes"> Yes
     </label>
@@ -720,13 +776,15 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <textarea id="ppciDetails" class="auto"></textarea>
 </div>
 <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
-  <img src="https://i.postimg.cc/7188J0sB4/image.jpg" alt="PPCI Image 1" style="max-width:100%; height:auto; border-radius:8px;">
-  <img src="https://i.postimg.cc/7189J0sB4/image.jpg" alt="PPCI Image 2" style="max-width:100%; height:auto; border-radius:8px;">
-  <img src="https://i.postimg.cc/7190J0sB4/image.jpg" alt="PPCI Image 3" style="max-width:100%; height:auto; border-radius:8px;">
+  <img src="https://i.postimg.cc/ncTFKgY/image1.jpg" alt="PPCI Image 1" style="max-width:100%; height:auto; border-radius:8px;">
+  <img src="https://i.postimg.cc/ncTFKgY/image2.jpg" alt="PPCI Image 2" style="max-width:100%; height:auto; border-radius:8px;">
+  <img src="https://i.postimg.cc/ncTFKgY/image3.jpg" alt="PPCI Image 3" style="max-width:100%; height:auto; border-radius:8px;">
 </div>
 </section>
 
 <section class="section" id="sec-outcome"><h2>Outcome</h2>
+<h3>Outcome of Case</h3>
+<div class="field"><label for="outcome">Outcome</label><textarea id="outcome" class="auto"></textarea></div>
 <h3>Conveyance - ATMIST</h3>
 <div class="field"><label for="atmAge">Age</label><textarea id="atmAge" class="auto"></textarea></div>
 <div class="field"><label for="atmTime">Time of incident/onset</label><textarea id="atmTime" class="auto"></textarea></div>
@@ -739,8 +797,6 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="field"><label for="sbarBackground">Background</label><textarea id="sbarBackground" class="auto"></textarea></div>
 <div class="field"><label for="sbarAssessment">Assessment</label><textarea id="sbarAssessment" class="auto"></textarea></div>
 <div class="field"><label for="sbarRecommendations">Recommendations</label><textarea id="sbarRecommendations" class="auto"></textarea></div>
-<h3>Outcome of Case</h3>
-<div class="field"><label for="outcome">Outcome</label><textarea id="outcome" class="auto"></textarea></div>
 </section>
 
 <section class="section" id="sec-signoff"><h2>Sign Off</h2>
