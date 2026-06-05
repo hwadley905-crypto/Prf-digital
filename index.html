@@ -69,7 +69,7 @@ body.light .tab-btn:hover{filter:brightness(0.9);}
 .tab-btn.active{filter:brightness(1.35);box-shadow:0 0 12px rgba(255,255,255,0.25);transform:scale(1.03);}
 .content{flex:1;padding:24px;overflow-y:auto;min-width:0;background-image:linear-gradient(135deg,rgba(255,255,255,0.015) 0%,transparent 60%);}
 body.light .content{background-image:none;background-color:#ffffff;}
-.section{background:linear-gradient(160deg,var(--card-bg) 0%,#050508 100%);padding:22px;border:1px solid var(--border);border-top:1px solid rgba(255,255,255,0.06);border-left:5px solid var(--primary);border-radius:8px;margin-bottom:20px;display:none;}
+.section{background:linear-gradient(160deg,var(--card-bg) 0%,#050508 100%);padding:22px;border:1px solid var(--border);border-top:1px solid rgba(255,255,255,0.06);border-left:5px solid var(--primary);border-radius:8px;margin-bottom:20px;display:none;position:relative;z-index:1;}
 body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);border:1px solid #90c8f5;border-left:5px solid #90c8f5;}
 .section.active-section{display:block;}
 #sec-clinician{border-left-color:#3b82f6;}
@@ -313,9 +313,9 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 .trauma-arrow::before{content:"";display:block;width:2px;height:20px;background:var(--border);margin:0 auto;}
 .trauma-arrow::after{content:"";display:block;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:8px solid var(--border);margin:0 auto;}
 .trauma-bullet-list{margin:10px 0;padding-left:20px;list-style:none;}
-.trauma-bullet-item{display:flex;align-items:center;margin:8px 0;font-size:13px;color:var(--text);gap:10px;}
-.trauma-bullet-item input[type="checkbox"]{flex-shrink:0;transform:scale(1.2);cursor:pointer;}
-.trauma-bullet-item label{margin:0;display:inline-block;flex:1;cursor:pointer;}
+.trauma-bullet-item{display:block;margin:8px 0;font-size:13px;color:var(--text);position:relative;}
+.trauma-bullet-item input[type="checkbox"]{position:absolute;left:0;top:2px;transform:scale(1.2);cursor:pointer;}
+.trauma-bullet-item label{margin-left:25px;display:inline-block;cursor:pointer;}
 @media(max-width:768px){
   .hamburger{display:inline-flex;}
   .sidebar{position:fixed;left:-130px;top:0;height:100vh;z-index:200;transition:left 0.25s;background:var(--card-bg);border-right:1px solid var(--border);}
@@ -506,53 +506,27 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <label>Legal Framework</label>
   <div id="consentLegal" style="color:var(--text-secondary); font-size:12px; line-height:1.6; margin-top:10px;">
     Mental Capacity Act (2005): 
-    Functional Test - patient able to understand questions and outcomes
-    Diagnostic Test - Any current known/ acute issues with consent or under any LPA/DOLS/ Advanced directives?
-    Causative Nexus - Is decision making capacity related to current identified complaint?
+    Functional Test - patient able to understand questions and outcomes 
+    Diagnostic Test - Any current known/ acute issues with consent or under any LPA/DOLS/ Advanced directives? 
+    Causative Nexus - Is decision making capacity related to current identified complaint? 
 
-    Mental Health Act (1983):
-    Section 136 - AMHP/Police able to convey a patient against will to ED (From a public space)
-    Section 137 - Enables Ambulance staff to convey a patient against will to ED for greater good
+    Mental Health Act (1983): 
+    Section 136 - AMHP/Police able to convey a patient against will to ED (From a public space) 
+    Section 137 - Enables Ambulance staff to convey a patient against will to ED for greater good 
 
-    Gillick (1985):
-    A child under 16 can consent to their own medical treatment if they have enough maturity, intelligence, and understanding to fully understand:
-    the treatment
-    risks and benefits
-    alternatives
-    consequences of refusing treatment
-    The assessment is decision-specific — a young person may be competent for one decision but not another.
+    Gillick (1985): 
+    A child under 16 can consent to their own medical treatment if they have enough maturity, intelligence, and understanding to fully understand
+    The treatment, risks, and benefits alternatives consequences of refusing treatment 
+    The assessment is decision-specific — a young person may be competent for one decision but not another. 
 
-    Fraser (Gillick 1985):
-    These are specific rules relating to contraception and sexual health advice for under-16s. A doctor can provide contraception without parental consent if:
-    The young person understands the advice.
-    The doctor cannot persuade them to involve parents.
-    The young person is likely to continue sexual activity anyway.
-    Their physical or mental health may suffer without treatment/advice.
+    Fraser (Gillick 1985): 
+    These are specific rules relating to contraception and sexual health advice for under-16s. 
+    A doctor can provide contraception without parental consent if: 
+    The young person understands the advice. The doctor cannot persuade them to involve parents. 
+    The young person is likely to continue sexual activity anyway. 
+    Their physical or mental health may suffer without treatment/advice. 
     Treatment is in the young person's best interests.
   </div>
-</div>
-</section>
-
-<section class="section" id="sec-patient"><h2>Patient Details</h2>
-<div class="field"><label for="patientName">Patient Name</label><textarea id="patientName" class="auto"></textarea></div>
-<div class="field"><label for="dob">Date of Birth</label><input type="date" id="dob" onchange="calculateAge()"></div>
-<div class="field"><label for="patientAge">Patient Age</label><input type="text" id="patientAge" readonly style="background:var(--input-bg); cursor:default;"></div>
-
-Gillick (1985):
-A child under 16 can consent to their own medical treatment if they have enough maturity, intelligence, and understanding to fully understand:
-the treatment
-risks and benefits
-alternatives
-consequences of refusing treatment
-The assessment is decision-specific — a young person may be competent for one decision but not another.
-
-Fraser (Gillick 1985):
-These are specific rules relating to contraception and sexual health advice for under-16s. A doctor can provide contraception without parental consent if:
-The young person understands the advice.
-The doctor cannot persuade them to involve parents.
-The young person is likely to continue sexual activity anyway.
-Their physical or mental health may suffer without treatment/advice.
-Treatment is in the young person’s best interests.</textarea>
 </div>
 </section>
 
@@ -617,12 +591,12 @@ Treatment is in the young person’s best interests.</textarea>
 <div class="image-preview" id="ecgPreview"></div>
 <div class="field">
   <label>See PPCI Tab?</label>
-  <div style="display: flex; gap: 20px; margin-top: 8px; align-items: center;">
-    <div style="display: flex; align-items: center; gap: 8px;">
+  <div style="display: flex; gap: 15px; margin-top: 8px; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 6px;">
       <input type="radio" name="seePpci" id="seePpciYes" value="yes">
       <label for="seePpciYes" style="margin:0;">Yes</label>
     </div>
-    <div style="display: flex; align-items: center; gap: 8px;">
+    <div style="display: flex; align-items: center; gap: 6px;">
       <input type="radio" name="seePpci" id="seePpciNo" value="no">
       <label for="seePpciNo" style="margin:0;">No</label>
     </div>
@@ -1416,68 +1390,51 @@ function addDrugRow(){
   clearTd.appendChild(clearBtn);
 }
 
-// Signature pad - optimized loading
-let canvas, ctx, drawing=false;
-let canvasInitialized=false;
+// Signature pad
+const canvas=document.getElementById('signatureCanvas');
+const ctx=canvas.getContext('2d');
+let drawing=false;
 
 function updateSigStyle(){
-  if (!canvas || !ctx) return;
   const isLight=document.body.classList.contains('light');
   ctx.strokeStyle=isLight?'#000000':'#ffffff';
   ctx.lineWidth=2;
   ctx.lineCap='round';
 }
 
-// Set canvas size for better touch support - optimized for performance
+// Set canvas size for better touch support
 function setupCanvas(){
-  if (canvasInitialized) return;
-  
-  canvas = document.getElementById('signatureCanvas');
+  const canvas = document.getElementById('signatureCanvas');
   if (!canvas) {
+    console.log('Signature canvas not found');
     return;
   }
   
   const rect = canvas.getBoundingClientRect();
-  // Use simpler scaling for better performance
-  canvas.width = rect.width;
-  canvas.height = rect.height;
-  
-  ctx = canvas.getContext('2d');
+  // Set actual canvas size in pixels with proper scaling
+  canvas.width = rect.width * window.devicePixelRatio;
+  canvas.height = rect.height * window.devicePixelRatio;
+  // Scale drawing context for sharp lines
+  const ctx = canvas.getContext('2d');
   if (!ctx) {
+    console.log('Canvas context not available');
     return;
   }
-  
+  ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+  // Set canvas CSS size
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
   // Set drawing styles for touch-friendly signature
   ctx.strokeStyle = '#ffffff';
-  ctx.lineWidth = 2; // Reduced line width for better performance
+  ctx.lineWidth = 3; // Thicker lines for better visibility
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   
-  canvasInitialized=true;
+  console.log('Signature canvas initialized');
 }
 
-// Defer canvas initialization until tab is shown
-function initSignatureWhenShown(){
-  const signOffSection = document.getElementById('sec-signoff');
-  if (!signOffSection) return;
-  
-  const observer = new IntersectionObserver((entries)=>{
-    entries.forEach(entry=>{
-      if (entry.isIntersecting && !canvasInitialized) {
-        setTimeout(setupCanvas, 100);
-      }
-    });
-  }, {threshold: 0.1});
-  
-  observer.observe(signOffSection);
-}
-
-// Initialize observer
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initSignatureWhenShown);
-} else {
-  initSignatureWhenShown();
-}
+window.addEventListener('load', setupCanvas);
+window.addEventListener('resize', setupCanvas);
 
 // Mouse events
 canvas.addEventListener('mousedown',e=>{
@@ -2364,7 +2321,12 @@ function addAlsInterventionRow() {
 
 // Save case as JSON file
 function saveCaseAsJSON() {
+  // Prompt for case name
+  const caseName = prompt("Enter a name for this case:", "Case " + new Date().toLocaleDateString());
+  if (!caseName) return; // User cancelled or entered empty name
+  
   const caseData = {
+    caseName: caseName,
     timestamp: new Date().toISOString(),
     formData: {}
   };
@@ -2385,9 +2347,10 @@ function saveCaseAsJSON() {
     caseData.signature = signatureCanvas.toDataURL();
   }
   
-  // Generate filename with timestamp
+  // Generate safe filename from case name
+  const safeName = caseName.replace(/[^a-zA-Z0-9]/g, '_');
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
-  const filename = `WMAS_PRF_Case_${timestamp}.json`;
+  const filename = `WMAS_PRF_${safeName}_${timestamp}.json`;
   
   // Create and download JSON file
   const blob = new Blob([JSON.stringify(caseData, null, 2)], { type: 'application/json' });
@@ -2482,15 +2445,18 @@ function updatePastCasesList() {
   // Create case list
   cases.forEach(caseItem => {
     const date = new Date(caseItem.data.timestamp).toLocaleString();
+    const caseName = caseItem.data.caseName || 'Unnamed Case';
     const caseDiv = document.createElement('div');
     caseDiv.className = 'past-case-item';
     caseDiv.innerHTML = `
       <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; margin-bottom: 8px;">
         <div>
-          <strong style="color: var(--text);">${date}</strong>
+          <strong style="color: var(--text);">${caseName}</strong>
+          <div style="font-size: 11px; color: var(--text-secondary); margin-top: 2px;">${date}</div>
         </div>
         <div style="display: flex; gap: 8px;">
           <button onclick="loadCaseById('${caseItem.id}')" style="padding: 6px 12px; font-size: 12px;">Load</button>
+          <button onclick="renameCase('${caseItem.id}')" style="padding: 6px 12px; font-size: 12px;">Rename</button>
           <button onclick="deleteCase('${caseItem.id}')" style="padding: 6px 12px; font-size: 12px; background: var(--red);">Delete</button>
         </div>
       </div>
@@ -2544,6 +2510,31 @@ function deleteCase(caseId) {
     localStorage.removeItem(`prf_${caseId}`);
     updatePastCasesList();
     alert('Case deleted');
+  }
+}
+
+// Rename case
+function renameCase(caseId) {
+  const caseData = localStorage.getItem(`prf_${caseId}`);
+  if (!caseData) {
+    alert('Case not found');
+    return;
+  }
+  
+  try {
+    const parsedCaseData = JSON.parse(caseData);
+    const currentName = parsedCaseData.caseName || 'Unnamed Case';
+    const newName = prompt("Enter a new name for this case:", currentName);
+    
+    if (!newName || newName === currentName) return;
+    
+    parsedCaseData.caseName = newName;
+    localStorage.setItem(`prf_${caseId}`, JSON.stringify(parsedCaseData));
+    updatePastCasesList();
+    alert('Case renamed successfully');
+  } catch (error) {
+    alert('Error renaming case');
+    console.error(error);
   }
 }
 
