@@ -355,22 +355,25 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   /* Print styles for modal content */
   @media print{
     .modal-overlay{display:none !important;}
-    textarea{height:auto !important;min-height:100px !important; overflow:visible !important; resize:none !important;}
-    .field textarea{height:auto !important;min-height:100px !important; overflow:visible !important;}
+    textarea{height:auto !important;min-height:150px !important; overflow:visible !important; resize:none !important; white-space:pre-wrap !important; word-wrap:break-word !important;}
+    .field textarea{height:auto !important;min-height:150px !important; overflow:visible !important;}
     input{height:auto !important; overflow:visible !important;}
-    #sec-obs textarea, #sec-interventions textarea, #sec-drugs textarea{height:auto !important; min-height:100px !important; overflow:visible !important;}
-    #sec-obs input, #sec-interventions input, #sec-drugs input{height:auto !important; min-height:30px !important; overflow:visible !important;}
+    #sec-obs textarea, #sec-interventions textarea, #sec-drugs textarea, #sec-als textarea{height:auto !important; min-height:150px !important; overflow:visible !important;}
+    #sec-obs input, #sec-interventions input, #sec-drugs input, #sec-als input{height:auto !important; min-height:40px !important; overflow:visible !important;}
     
     /* Force all textareas to show full content */
-    textarea:not([rows]){min-height:120px !important; height:auto !important;}
-    textarea[rows]{min-height:120px !important; height:auto !important;}
+    textarea:not([rows]){min-height:150px !important; height:auto !important; max-height:none !important;}
+    textarea[rows]{min-height:150px !important; height:auto !important; max-height:none !important;}
     
     /* Ensure all inputs display their values */
     input[type="text"], input[type="date"], input[type="time"]{
       height:auto !important;
-      min-height:25px !important;
+      min-height:40px !important;
       overflow:visible !important;
     }
+    
+    /* Prevent page breaks inside sections */
+    .section{page-break-inside:avoid !important;}
   }
 }
 
@@ -484,14 +487,42 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <ul class="trauma-bullet-list">
     <li class="trauma-bullet-item"><input type="checkbox" id="consentCapacity"><label for="consentCapacity">Capacity (MCA 2005)</label></li>
     <li class="trauma-bullet-item"><input type="checkbox" id="consentGillick"><label for="consentGillick">Gillick & Fraser</label></li>
-    <li class="trauma-bullet-item"><input type="checkbox" id="consentBestInterest"><label for="consentBestInterest">Patient best interest</label></li>
+    <li class="trauma-bullet-item"><input type="checkbox" id="consentBestInterest"><label for="consentBestInterest">Consent refused</label></li>
   </ul>
+</div>
+<div class="field">
+  <label for="consentLegal">Legal Framework</label>
+  <textarea id="consentLegal" class="auto" style="min-height: 300px;">Mental Capacity Act (2005): 
+Functional Test - patient able to understand questions and outcomes
+Diagnostic Test - Any current known/ acute issues with consent or under any LPA/DOLS/ Advanced directives?
+Causative Nexus - Is decision making capacity related to current identified complaint?
+
+Mental Health Act (1983):
+Section 136 - AMHP/Police able to convey a patient against will to ED (From a public space)
+Section 137 - Enables Ambulance staff to convey a patient against will to ED for greater good
+
+Gillick (1985):
+A child under 16 can consent to their own medical treatment if they have enough maturity, intelligence, and understanding to fully understand:
+the treatment
+risks and benefits
+alternatives
+consequences of refusing treatment
+The assessment is decision-specific — a young person may be competent for one decision but not another.
+
+Fraser (Gillick 1985):
+These are specific rules relating to contraception and sexual health advice for under-16s. A doctor can provide contraception without parental consent if:
+The young person understands the advice.
+The doctor cannot persuade them to involve parents.
+The young person is likely to continue sexual activity anyway.
+Their physical or mental health may suffer without treatment/advice.
+Treatment is in the young person’s best interests.</textarea>
 </div>
 </section>
 
 <section class="section" id="sec-patient"><h2>Patient Details</h2>
 <div class="field"><label for="patientName">Patient Name</label><textarea id="patientName" class="auto"></textarea></div>
-<div class="field"><label for="dob">Date of Birth</label><textarea id="dob" class="auto"></textarea></div>
+<div class="field"><label for="dob">Date of Birth</label><input type="date" id="dob" onchange="calculateAge()"></div>
+<div class="field"><label for="patientAge">Patient Age</label><input type="text" id="patientAge" readonly style="background:var(--input-bg); cursor:default;"></div>
 <div class="field"><label for="nextOfKin">Next of Kin</label><textarea id="nextOfKin" class="auto"></textarea></div>
 <div class="field"><label for="gpAccess">GP Access</label><textarea id="gpAccess" class="auto"></textarea></div>
 <div class="field"><label for="respectDnar">RESPECT/DNAR forms</label><textarea id="respectDnar" class="auto"></textarea></div>
@@ -521,7 +552,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
     <tr><th>Time</th><th>Type</th><th>Location</th><th>Outcome</th><th>Clinician</th><th>Reason</th><th></th></tr>
     <tr><td><input type="time"></td><td><input></td><td><input></td><td><input></td><td><input></td><td><input></td><td><button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">X</button></td></tr>
   </table>
-  <button class="add-row-btn" onclick="addInterventionRow()">Add Intervention Row</button>
+  <button class="add-row-btn" onclick="addAlsInterventionRow()">Add Intervention Row</button>
   
   <div class="field">
   <label>Adult ALS Algorithm</label>
@@ -549,13 +580,15 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 <div class="image-preview" id="ecgPreview"></div>
 <div class="field">
   <label>See PPCI Tab?</label>
-  <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: center;">
-    <label style="display: flex; align-items: center; gap: 8px;">
-      <input type="radio" name="seePpci" id="seePpciYes" value="yes"> Yes
-    </label>
-    <label style="display: flex; align-items: center; gap: 8px;">
-      <input type="radio" name="seePpci" id="seePpciNo" value="no"> No
-    </label>
+  <div style="display: flex; gap: 20px; margin-top: 8px; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <input type="radio" name="seePpci" id="seePpciYes" value="yes">
+      <label for="seePpciYes" style="margin:0;">Yes</label>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <input type="radio" name="seePpci" id="seePpciNo" value="no">
+      <label for="seePpciNo" style="margin:0;">No</label>
+    </div>
   </div>
 </div>
 <div class="field"><label for="gastro">Gastrointestinal</label><textarea id="gastro" class="auto"></textarea></div>
@@ -719,24 +752,24 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 
 <section class="section" id="sec-ppci"><h2>PPCI</h2>
 <div class="field">
-  <label style="display: block; margin-bottom: 10px;">PPCI eligible?</label>
-  <div style="display: flex; gap: 20px; margin-bottom: 20px; align-items: center;">
-    <label style="display: flex; align-items: center; gap: 8px;">
-      <input type="radio" name="ppciEligible" id="ppciYes" value="yes"> Yes
-    </label>
-    <label style="display: flex; align-items: center; gap: 8px;">
-      <input type="radio" name="ppciEligible" id="ppciNo" value="no"> No
-    </label>
+  <label>PPCI eligible?</label>
+  <div style="display: flex; gap: 20px; margin-top: 8px; align-items: center;">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <input type="radio" name="ppciEligible" id="ppciYes" value="yes">
+      <label for="ppciYes" style="margin:0;">Yes</label>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <input type="radio" name="ppciEligible" id="ppciNo" value="no">
+      <label for="ppciNo" style="margin:0;">No</label>
+    </div>
   </div>
 </div>
 <div class="field">
   <label for="ppciDetails">Details</label>
   <textarea id="ppciDetails" class="auto"></textarea>
 </div>
-<div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
-  <img src="https://i.postimg.cc/PN40P59w/IMG-7188.jpg" alt="PPCI Image 1" style="max-width:100%; height:auto; border-radius:8px;">
-  <img src="https://i.postimg.cc/VSnV1fX5/IMG-7189.jpg" alt="PPCI Image 2" style="max-width:100%; height:auto; border-radius:8px;">
-  <img src="https://i.postimg.cc/7C0WDHST/IMG-7190.jpg" alt="PPCI Image 3" style="max-width:100%; height:auto; border-radius:8px;">
+<div style="text-align:center; margin:20px 0;">
+  <img src="https://i.postimg.cc/JzMdnFZ1/Screenshot-2026-06-05-173528.png" alt="PPCI Information" style="max-width:100%; height:auto; border-radius:8px;">
 </div>
 </section>
 
@@ -2188,7 +2221,81 @@ document.addEventListener('DOMContentLoaded', function() {
       closeTextModal();
     }
   });
+  
+  // Add modal functionality to ALS interventions table
+  const alsSection = document.getElementById('sec-als');
+  if (alsSection) {
+    const alsInputs = alsSection.querySelectorAll('input');
+    alsInputs.forEach(input => {
+      if (input.type !== 'date' && input.type !== 'time' && input.type !== 'checkbox' && input.type !== 'radio') {
+        input.addEventListener('click', function() {
+          openTextModal(this);
+        });
+        input.addEventListener('focus', function(e) {
+          e.preventDefault();
+          openTextModal(this);
+        });
+      }
+    });
+  }
 });
+
+// Calculate age from date of birth
+function calculateAge() {
+  const dobInput = document.getElementById('dob');
+  const ageInput = document.getElementById('patientAge');
+  
+  if (dobInput.value) {
+    const dob = new Date(dobInput.value);
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+    
+    ageInput.value = age + ' years old';
+  } else {
+    ageInput.value = '';
+  }
+}
+
+// Add row to ALS interventions table
+function addAlsInterventionRow() {
+  const table = document.getElementById('alsInterventionsTable');
+  const newRow = table.insertRow(-1);
+  
+  const cells = [
+    { type: 'time' },
+    { type: 'text' },
+    { type: 'text' },
+    { type: 'text' },
+    { type: 'text' },
+    { type: 'text' },
+    { isButton: true }
+  ];
+  
+  cells.forEach((cell, index) => {
+    const newCell = newRow.insertCell(index);
+    if (cell.isButton) {
+      newCell.innerHTML = '<button type="button" class="clear-row-btn" onclick="clearRow(this)" title="Clear row">X</button>';
+    } else {
+      const input = document.createElement('input');
+      input.type = cell.type;
+      input.addEventListener('click', function() {
+        openTextModal(this);
+      });
+      input.addEventListener('focus', function(e) {
+        e.preventDefault();
+        openTextModal(this);
+      });
+      newCell.appendChild(input);
+    }
+  });
+  
+  saveForm();
+}
 </script>
 </body>
 </html>
