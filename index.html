@@ -148,8 +148,27 @@ body.light .section{background:linear-gradient(160deg,#ffffff 0%,#ffffff 100%);b
 #sec-ppci input, #sec-ppci textarea, #sec-ppci select, #sec-ppci table{border-color: #ef4444 !important;}
 #sec-ppci .trauma-box{border-left-color: #ef4444;}
 
+/* Fix checkbox/radio button alignment */
+input[type="checkbox"], input[type="radio"] {
+  vertical-align: middle;
+  margin-right: 6px;
+}
+input[type="checkbox"] + label, input[type="radio"] + label {
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+}
+
 #sec-obs input, #sec-obs textarea, #sec-obs select, #sec-obs table{border-color: #eab308 !important;}
 #sec-obs .trauma-box{border-left-color: #eab308;}
+
+/* Observations table font size and color fixes */
+#sec-obs input{font-size: clamp(10px, 2vw, 14px) !important;}
+body.light #sec-obs input{color: #000000 !important;}
+body.dark #sec-obs input{color: #ffffff !important;}
+#sec-obs textarea{font-size: clamp(10px, 2vw, 14px) !important;}
+body.light #sec-obs textarea{color: #000000 !important;}
+body.dark #sec-obs textarea{color: #ffffff !important;}
 
 #sec-interventions input, #sec-interventions textarea, #sec-interventions select, #sec-interventions table{border-color: #84cc16 !important;}
 #sec-interventions .trauma-box{border-left-color: #84cc16;}
@@ -217,8 +236,8 @@ button:hover{filter:brightness(1.15);}
 #clearForm{background:transparent;border:2px solid var(--primary);color:var(--primary);}
 #clearForm:hover{background:rgba(88,166,255,0.1);filter:none;}
 body.light #clearForm:hover{background:rgba(37,99,235,0.08);filter:none;}
-.signature-box{height:200px;border:2px solid var(--border);border-radius:6px;background:var(--input-bg);cursor:crosshair;display:block;width:100%;max-width:800px;touch-action:none;}
-body.light .signature-box{border:2px solid #90c8f5;}
+.signature-box{height:200px;border:2px solid var(--border);border-radius:6px;background:var(--input-bg);cursor:crosshair;display:block;width:100%;max-width:800px;touch-action:none;position:relative;}
+body.light .signature-box{border:2px solid #90c8f5;background:#ffffff;}
 .body-map-canvas{border:2px solid var(--border);border-radius:8px;background:white;cursor:crosshair;touch-action:none;margin:10px 0;}
 .gcs-modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:1000;}
 .gcs-modal.open{display:flex;}
@@ -466,7 +485,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
   <button class="tab-btn" data-section="sec-als">ALS</button>
   <button class="tab-btn" data-section="sec-patient">Patient</button>
   <button class="tab-btn" data-section="sec-primary">Primary</button>
-  <button class="tab-btn" data-section="sec-secondary">Secondary</button>
+  <button class="tab-btn" data-section="sec-secondary">Secondary and Care Plan</button>
   <button class="tab-btn" data-section="sec-history">History</button>
   <button class="tab-btn" data-section="sec-pastmedhx">Past Med hx</button>
   <button class="tab-btn" data-section="sec-bodymap">Body Map</button>
@@ -509,9 +528,9 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
     
     Mental Capacity Act (2005): 
     
-    Functional Test - patient able to understand questions and outcomes 
+    Functional Test - patient able to understand questions and outcomes.......... 
     
-    Diagnostic Test - Any current known/ acute issues with consent or under any LPA/DOLS/ Advanced directives?
+    Diagnostic Test - Any current known/ acute issues with consent or under any LPA/DOLS/ Advanced directives?............
     
     Causative Nexus - Is decision-making capacity related to the current identified complaint?
 
@@ -524,14 +543,14 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
     
     The treatment, risks, and benefits, alternatives, and consequences of refusing treatment 
     
-    The assessment is decision-specific — a young person may be competent for one decision but not another. 
+    .............The assessment is decision-specific — a young person may be competent for one decision but not another. 
 
     
     
-    Fraser (Gillick 1985): 
-    These are specific rules relating to contraception and sexual health advice for under-16s. 
+    ..............Fraser (Gillick 1985): 
+    ...............These are specific rules relating to contraception and sexual health advice for under-16s. 
     A doctor can provide contraception without parental consent if: 
-    The young person understands the advice. The doctor cannot persuade them to involve parents, 
+    ...............The young person understands the advice. The doctor cannot persuade them to involve parents, 
     The young person is likely to continue sexual activity anyway, 
     Their physical or mental health may suffer without treatment/advice, 
     Treatment is in the young person's best interests.
@@ -584,7 +603,7 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 </div>
 </section>
 
-<section class="section" id="sec-secondary"><h2>Secondary Survey</h2>
+<section class="section" id="sec-secondary"><h2>Secondary and Care Plan</h2>
 <div class="field"><label for="neuro">Neurological</label><textarea id="neuro" class="auto"></textarea></div>
 <div class="field">
   <ul class="trauma-bullet-list">
@@ -991,11 +1010,24 @@ body.light .trauma-box{background:#ffffff;border:1px solid #90c8f5;border-left:4
 </div>
 
 <script>
-// Auto-expand textareas
+// Debounce function for performance optimization
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Auto-expand textareas with debounce for performance
 document.querySelectorAll('textarea').forEach(t=>{
   t.style.height='auto';
   t.style.height=t.scrollHeight+'px';
-  t.addEventListener('input',()=>{t.style.height='auto';t.style.height=t.scrollHeight+'px';});
+  t.addEventListener('input',debounce(()=>{t.style.height='auto';t.style.height=t.scrollHeight+'px';}, 100));
 });
 
 // Dark/light toggle
@@ -1277,7 +1309,8 @@ function addObsRow(){
       input.style.width='50px';
       cell.appendChild(input);
     }else if(i===12){ // NEWS2 button
-      cell.setAttribute('data-news2row', news2RowCounter);
+      const rowId=String(news2RowCounter++);
+      cell.setAttribute('data-news2row', rowId);
       cell.innerHTML=`<button type="button" class="news2-cell-btn" aria-label="Open NEWS2 scoring modal">-</button>`;
     }else if(i===13){ // BGM
       const input=document.createElement('input');
@@ -1300,14 +1333,6 @@ function addObsRow(){
       cell.appendChild(input);
     }
   });
-  const rowId=String(news2RowCounter++);
-  td.dataset.news2row=rowId;
-  const btn=document.createElement('button');
-  btn.type='button';
-  btn.className='news2-cell-btn';
-  btn.textContent='-';
-  btn.setAttribute('aria-label','Open NEWS2 scoring modal');
-  td.appendChild(btn);
   const clearTd=row.insertCell();
   const clearBtn=document.createElement('button');
   clearBtn.type='button';
@@ -1541,8 +1566,8 @@ function restoreForm(){
   }
 }
 
-document.addEventListener('input',saveForm);
-document.addEventListener('change',saveForm);
+document.addEventListener('input',debounce(saveForm, 300));
+document.addEventListener('change',debounce(saveForm, 300));
 restoreForm();
 
 // Body Map Canvas Functions
@@ -1839,30 +1864,35 @@ function parseAndLoadCase(content){
         const capacityField = document.getElementById('capacity');
         if(capacityField) {
           capacityField.value = caseData.capacity;
+          autoResizeTextarea(capacityField);
         }
       }
       if(caseData.dnar) {
         const dnarField = document.getElementById('dnar');
         if(dnarField) {
           dnarField.value = caseData.dnar;
+          autoResizeTextarea(dnarField);
         }
       }
       if(caseData.medications) {
         const medicationsField = document.getElementById('medications');
         if(medicationsField) {
           medicationsField.value = caseData.medications;
+          autoResizeTextarea(medicationsField);
         }
       }
       if(caseData.pastHistory) {
         const pastHistoryField = document.getElementById('pastHistory');
         if(pastHistoryField) {
           pastHistoryField.value = caseData.pastHistory;
+          autoResizeTextarea(pastHistoryField);
         }
       }
       if(caseData.hpc) {
         const hpcField = document.getElementById('hpc');
         if(hpcField) {
           hpcField.value = caseData.hpc;
+          autoResizeTextarea(hpcField);
         }
       }
       
@@ -1944,6 +1974,11 @@ function parseAndLoadCase(content){
   } catch(error) {
     console.error('Error in parseAndLoadCase (popup removed)');
   }
+}
+
+function autoResizeTextarea(textarea) {
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
 }
 
 function clearCurrentForm(){
