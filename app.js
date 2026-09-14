@@ -28,7 +28,27 @@ function deleteCell(row){const td=row.insertCell();const b=document.createElemen
 let activePickerButton=null;
 function openPicker(title,options,button,multi=false){activePickerButton=button;$('pickerTitle').textContent=title;$('pickerChoices').innerHTML='';const current=new Set(button.dataset.values?JSON.parse(button.dataset.values):[]);options.forEach(value=>{const b=document.createElement('button');b.className='choice-button';b.textContent=value;b.classList.toggle('selected',current.has(value));b.onclick=()=>{if(multi){if(current.has(value))current.delete(value);else if(current.size<2)current.add(value);b.classList.toggle('selected',current.has(value));button.dataset.values=JSON.stringify([...current]);button.textContent=[...current].join(' / ')||'-';}else{button.textContent=value;button.dataset.values=JSON.stringify([value]);$('pickerModal').classList.remove('open');}saveDraft();};$('pickerChoices').appendChild(b);});$('pickerModal').classList.add('open');}
 let activeGcs=null,activeNews=null;
-window.addObs=function(v={}){const row=$('obsTable').tBodies[0].insertRow();['time','rr','spo2','bp','hr','temp','etco2','bm','ketones'].forEach(k=>createTextCell(row,k,v[k]||'',k==='time'?'time':'text'));let td=row.insertCell(),b=document.createElement('button');b.className='table-button avpu-button';b.textContent=v.avpu||'-';b.onclick=()=>openPicker('AVPU',['A - Alert','C - New confusion','V - Voice','P - Pain','U - Unresponsive'],b);td.appendChild(b);td=row.insertCell();b=document.createElement('button');b.className='table-button pupil-button';b.textContent=v.pupils||'-';b.dataset.values=JSON.stringify(v.pupilValues||[]);b.onclick=()=>openPicker('Select up to two pupil values',['0 mm','1 mm','2 mm','3 mm','4 mm','5 mm','6 mm','7 mm','8 mm','9 mm','10 mm'],b,true);td.appendChild(b);td=row.insertCell();b=document.createElement('button');b.className='table-button gcs-button';b.textContent=v.gcs||'-';b.onclick=()=>{activeGcs=b;$('gcsModal').classList.add('open');refreshGcs();};td.appendChild(b);td=row.insertCell();b=document.createElement('button');b.className='table-button news-button';b.textContent=v.news2??'-';b.onclick=()=>{activeNews=b;newsSelections={};document.querySelectorAll('#newsTable td.selected').forEach(x=>x.classList.remove('selected'));$('newsModal').classList.add('open');refreshNews();};td.appendChild(b);if(v.news2!==undefined&&v.news2!=='-')paintNews(b,Number(v.news2),v.newsRed);deleteCell(row);};
+let activePupilButton=null;
+const pupilOptions=Array.from({length:11},(_,n)=>n);
+pupilOptions.forEach(n=>{
+  const left=document.createElement('option');left.value=String(n);left.textContent=`${n} mm`;$('pupilLeft').appendChild(left);
+  const right=document.createElement('option');right.value=String(n);right.textContent=`${n} mm`;$('pupilRight').appendChild(right);
+});
+function extractPupil(text,side){const match=String(text||'').match(new RegExp('(10|[0-9])\\s*'+side,'i'));return match?match[1]:null;}
+function openPupilCalculator(button){activePupilButton=button;$('pupilLeft').value=button.dataset.left||extractPupil(button.textContent,'L')||'4';$('pupilRight').value=button.dataset.right||extractPupil(button.textContent,'R')||'4';$('pupilModal').classList.add('open');}
+$('pupilDone').onclick=()=>{if(!activePupilButton)return;$('pupilModal').classList.remove('open');const left=$('pupilLeft').value,right=$('pupilRight').value;activePupilButton.dataset.left=left;activePupilButton.dataset.right=right;activePupilButton.dataset.values=JSON.stringify([`${left}L`,`${right}R`]);activePupilButton.textContent=`${left}L ${right}R`;activePupilButton.title=`Left ${left} mm, right ${right} mm`;saveDraft();};
+function createControlCell(row,className,value,onClick){const td=row.insertCell(),button=document.createElement('button');button.type='button';button.className=`table-button ${className}`;button.textContent=value??'-';button.addEventListener('click',()=>onClick(button));td.appendChild(button);return button;}
+window.addObs=function(v={}){
+  const row=$('obsTable').tBodies[0].insertRow();
+  ['time','rr','spo2','bp','hr','temp','etco2','bm','ketones'].forEach(k=>createTextCell(row,k,v[k]||'',k==='time'?'time':'text'));
+  const avpuButton=createControlCell(row,'avpu-button',v.avpu||'-',button=>openPicker('AVPU',['A - Alert','C - New confusion','V - Voice','P - Pain','U - Unresponsive'],button,false));
+  const pupilButton=createControlCell(row,'pupil-button',v.pupils||'4L 4R',button=>openPupilCalculator(button));
+  pupilButton.dataset.left=String(v.pupilLeft??extractPupil(v.pupils,'L')??4);pupilButton.dataset.right=String(v.pupilRight??extractPupil(v.pupils,'R')??4);pupilButton.dataset.values=JSON.stringify([`${pupilButton.dataset.left}L`,`${pupilButton.dataset.right}R`]);pupilButton.textContent=`${pupilButton.dataset.left}L ${pupilButton.dataset.right}R`;
+  const gcsButton=createControlCell(row,'gcs-button',v.gcs||'-',button=>{activeGcs=button;$('gcsModal').classList.add('open');refreshGcs();});
+  const newsButton=createControlCell(row,'news-button',v.news2??'-',button=>{activeNews=button;newsSelections={};document.querySelectorAll('#newsTable td.selected').forEach(cell=>cell.classList.remove('selected'));$('newsModal').classList.add('open');refreshNews();});
+  if(v.news2!==undefined&&v.news2!=='-')paintNews(newsButton,Number(v.news2),Boolean(v.newsRed));
+  deleteCell(row);
+};
 const gcsData=[['Eye Opening',[['4: Spontaneous',4],['3: To verbal',3],['2: To pain',2],['1: No response',1]]],['Verbal Response',[['5: Oriented',5],['4: Confused',4],['3: Inappropriate',3],['2: Incomprehensible',2],['1: No response',1]]],['Motor Response',[['6: Obeys commands',6],['5: Localises pain',5],['4: Withdraws',4],['3: Flexion',3],['2: Extension',2],['1: No response',1]]]],gcsSelections={0:4,1:5,2:6};
 gcsData.forEach((group,i)=>{const row=document.createElement('div');row.className='gcs-row';row.innerHTML=`<h3>${group[0]}</h3><div></div>`;group[1].forEach(([label,score])=>{const b=document.createElement('button');b.className='calc-choice';b.textContent=label;b.dataset.group=i;b.dataset.score=score;b.onclick=()=>{gcsSelections[i]=score;refreshGcs();};row.lastChild.appendChild(b);});$('gcsRows').appendChild(row);});
 function refreshGcs(){document.querySelectorAll('[data-score]').forEach(b=>b.classList.toggle('selected',gcsSelections[b.dataset.group]===Number(b.dataset.score)));$('gcsTotal').textContent=Object.values(gcsSelections).reduce((a,b)=>a+b,0);}
@@ -90,7 +110,7 @@ function restoreClinicians(items=[]){$('clinicianSignoffs').innerHTML='';clinici
 $('addClinician').onclick=()=>{addClinicianCard();saveDraft();};
 $('showAlsGuidelines').onclick=()=>$('alsGuidelinesModal').classList.add('open');
 $('caseId').textContent=localStorage.getItem('prf_case_id')||`PRF-${Date.now().toString().slice(-8)}`;localStorage.setItem('prf_case_id',$('caseId').textContent);
-function serializeRows(name){return [...$(name+'Table').tBodies[0].rows].map(row=>{const out={};row.querySelectorAll('[data-col]').forEach(x=>out[x.dataset.col]=x.value);if(name==='obs'){const av=row.querySelector('.avpu-button'),pu=row.querySelector('.pupil-button'),gc=row.querySelector('.gcs-button'),ne=row.querySelector('.news-button');out.avpu=av.textContent;out.pupils=pu.textContent;out.pupilValues=JSON.parse(pu.dataset.values||'[]');out.gcs=gc.textContent;out.news2=ne.textContent;out.newsRed=ne.dataset.redScore==='true';}return out;});}
+function serializeRows(name){return [...$(name+'Table').tBodies[0].rows].map(row=>{const out={};row.querySelectorAll('[data-col]').forEach(x=>out[x.dataset.col]=x.value);if(name==='obs'){const av=row.querySelector('.avpu-button'),pu=row.querySelector('.pupil-button'),gc=row.querySelector('.gcs-button'),ne=row.querySelector('.news-button');out.avpu=av.textContent;out.pupils=pu.textContent;out.pupilLeft=pu.dataset.left||extractPupil(pu.textContent,'L')||'4';out.pupilRight=pu.dataset.right||extractPupil(pu.textContent,'R')||'4';out.pupilValues=JSON.parse(pu.dataset.values||'[]');out.gcs=gc.textContent;out.news2=ne.textContent;out.newsRed=ne.dataset.redScore==='true';}return out;});}
 function collect(){const data={version:7,caseId:$('caseId').textContent,savedAt:new Date().toISOString(),priority:localStorage.getItem('prf_priority'),fields:{},obs:serializeRows('obs'),interventions:serializeRows('interventions'),drugs:serializeRows('drugs'),als:serializeRows('als'),clinicians:collectClinicians()};document.querySelectorAll('[data-key]').forEach(x=>data.fields[x.dataset.key]=x.type==='checkbox'?x.checked:x.value);return data;}
 function saveDraft(){localStorage.setItem('prf_current',JSON.stringify(collect()));}
 function populate(data){document.querySelectorAll('[data-key]').forEach(x=>{const v=data.fields?.[x.dataset.key];if(v!==undefined)x.type==='checkbox'?x.checked=!!v:x.value=v;});['obs','interventions','drugs','als'].forEach(n=>$(n+'Table').tBodies[0].innerHTML='');(data.obs||[]).forEach(addObs);(data.interventions||[]).forEach(v=>addTableRow('interventions',v));(data.drugs||[]).forEach(v=>addTableRow('drugs',v));(data.als||[]).forEach(v=>addTableRow('als',v));restoreClinicians(data.clinicians||[]);growAll();updatePrimary();updateAlert();}
@@ -98,199 +118,80 @@ $('saveCase').onclick=()=>{const data=collect(),name=prompt('Case name',data.fie
 $('openCase').onclick=()=>{const cases=[];for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(k?.startsWith('prf_saved_'))try{cases.push(JSON.parse(localStorage.getItem(k)));}catch{}}if(!cases.length){$('caseFile').click();return;}const n=Number(prompt(cases.map((c,i)=>`${i+1}. ${c.name||c.caseId}`).join('\n')));if(cases[n-1])populate(cases[n-1]);};
 $('caseFile').onchange=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{try{populate(JSON.parse(r.result));}catch{alert('Invalid case file');}};r.readAsText(file);};
 $('exportJson').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(collect(),null,2)],{type:'application/json'}));a.download=$('caseId').textContent+'.json';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);};
+function applyTheme(mode){const dark=mode==='dark';document.body.classList.toggle('dark-mode',dark);$('themeToggle').textContent=dark?'Light mode':'Dark mode';localStorage.setItem('prf_theme',dark?'dark':'light');}
+$('themeToggle').onclick=()=>applyTheme(document.body.classList.contains('dark-mode')?'light':'dark');
+applyTheme(localStorage.getItem('prf_theme')||'light');
 restoreClinicians();try{const current=localStorage.getItem('prf_current');if(current)populate(JSON.parse(current));}catch{}
 if(!$('obsTable').tBodies[0].rows.length)addObs();if(!$('interventionsTable').tBodies[0].rows.length)addTableRow('interventions');if(!$('drugsTable').tBodies[0].rows.length)addTableRow('drugs');if(!$('alsTable').tBodies[0].rows.length)addTableRow('als');
 const savedPriority=localStorage.getItem('prf_priority');if(savedPriority)[...document.querySelectorAll('.priority-option')].find(b=>b.textContent===savedPriority)?.classList.add('selected');const savedBpm=localStorage.getItem('prf_metronome_bpm');if(savedBpm)$('metronomeRate').value=savedBpm;const savedTimer=Number(localStorage.getItem('prf_cpr_timer_start'));if(savedTimer)startTimer(savedTimer,false);showPage(localStorage.getItem('prf_page')||'incident');updatePrimary();updateAlert();growAll();
-'use strict';
-/* PRF v10 consolidated fix: observation calculators + light/dark selector.
-   Load AFTER app.js with: <script src="prf-v10-hotfix.js" defer></script> */
+
+
+// v12 startup gate and two-play incident audio
 (() => {
-  const $ = id => document.getElementById(id);
-  const obsTable = $('obsTable');
-  if (!obsTable) {
-    console.error('PRF v10: obsTable not found');
-    return;
+  const screen = document.getElementById('startupScreen');
+  const begin = document.getElementById('beginApp');
+  const notYet = document.getElementById('notYet');
+  const audio = document.getElementById('startupAudio');
+  const beacon = document.getElementById('startupBeacon');
+  const stop = document.getElementById('stopStartupAudio');
+  const status = document.getElementById('startupAudioStatus');
+  if (!screen || !begin || !audio) return;
+
+  let playCount = 0;
+  let starting = false;
+
+  function stopEffects(message = '') {
+    audio.pause();
+    audio.currentTime = 0;
+    beacon.classList.remove('active');
+    stop.classList.add('hidden');
+    status.textContent = message;
+    starting = false;
   }
 
-  // ---------- Light / dark mode ----------
-  const exportButton = $('exportJson');
-  const themeButton = document.createElement('button');
-  themeButton.id = 'themeToggle';
-  themeButton.type = 'button';
-  themeButton.textContent = 'Dark mode';
-  themeButton.title = 'Switch between light and dark mode';
-  if (exportButton) exportButton.insertAdjacentElement('afterend', themeButton);
-  else document.body.appendChild(themeButton);
-
-  const themeStyle = document.createElement('style');
-  themeStyle.textContent = `
-    body.dark-mode{--pale:#111923;--line:#43505e;background:#080c11;color:#f4f7fa}
-    body.dark-mode .topbar,body.dark-mode nav,body.dark-mode .sheet{background:#0f1720;color:#f4f7fa}
-    body.dark-mode .casebar{background:#17293a;color:#8ac7ff}
-    body.dark-mode .field,body.dark-mode table,body.dark-mode .upload-card,
-    body.dark-mode .trauma-step,body.dark-mode .check-list label{background:#111923;color:#fff}
-    body.dark-mode input,body.dark-mode textarea,body.dark-mode select{color:#fff;background:transparent}
-    body.dark-mode .dialog:not(.dark){background:#111923;color:#fff}
-    body.dark-mode .news-score-0{background:#26313c;color:#fff}
-    body.dark-mode .news-score-1{background:#4b4027;color:#fff}
-    body.dark-mode .news-score-2{background:#5d4521;color:#fff}
-    body.dark-mode .news-score-3{background:#5c2930;color:#fff}
-    #themeToggle{padding:10px;background:#303943;color:#fff;border:0;border-radius:7px}
-    .pupil-button{white-space:nowrap;max-width:92px;min-width:62px;padding:5px 2px;
-      font-size:clamp(9px,1.4vw,13px);overflow:hidden;text-overflow:clip}
-    #pupilPairModal select{width:100%;padding:9px;border:1px solid #9eb1bd;border-radius:6px}
-  `;
-  document.head.appendChild(themeStyle);
-
-  function applyTheme(mode) {
-    const dark = mode === 'dark';
-    document.body.classList.toggle('dark-mode', dark);
-    themeButton.textContent = dark ? 'Light mode' : 'Dark mode';
-    localStorage.setItem('prf_theme', dark ? 'dark' : 'light');
-  }
-  themeButton.onclick = () => applyTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark');
-  applyTheme(localStorage.getItem('prf_theme') || 'light');
-
-  // ---------- Dedicated paired pupil selector ----------
-  const pupilModal = document.createElement('div');
-  pupilModal.id = 'pupilPairModal';
-  pupilModal.className = 'modal';
-  const values = Array.from({length: 11}, (_, n) => `<option value="${n}">${n} mm</option>`).join('');
-  pupilModal.innerHTML = `
-    <div class="dialog">
-      <button type="button" class="modal-x" id="pupilPairClose">×</button>
-      <h2>Pupil size</h2>
-      <div class="form-grid">
-        <div class="field"><label for="pupilLeft">Left pupil</label><select id="pupilLeft">${values}</select></div>
-        <div class="field"><label for="pupilRight">Right pupil</label><select id="pupilRight">${values}</select></div>
-      </div>
-      <div class="actions">
-        <button type="button" id="pupilPairDone">Done</button>
-        <button type="button" id="pupilPairCancel">Cancel</button>
-      </div>
-    </div>`;
-  document.body.appendChild(pupilModal);
-  let activePupilButton = null;
-  const closePupils = () => pupilModal.classList.remove('open');
-  $('pupilPairClose').onclick = closePupils;
-  $('pupilPairCancel').onclick = closePupils;
-  $('pupilPairDone').onclick = () => {
-    if (!activePupilButton) return closePupils();
-    const left = $('pupilLeft').value;
-    const right = $('pupilRight').value;
-    activePupilButton.dataset.left = left;
-    activePupilButton.dataset.right = right;
-    activePupilButton.dataset.values = JSON.stringify([`${left}L`, `${right}R`]);
-    activePupilButton.textContent = `${left}L ${right}R`;
-    activePupilButton.title = `Left pupil ${left} mm; right pupil ${right} mm`;
-    closePupils();
-    if (typeof saveDraft === 'function') saveDraft();
-  };
-  const extractPupil = (text, side) => {
-    const match = String(text || '').match(new RegExp('(10|[0-9])\\s*' + side, 'i'));
-    return match ? match[1] : null;
-  };
-  function openPupils(button) {
-    activePupilButton = button;
-    $('pupilLeft').value = button.dataset.left || extractPupil(button.textContent, 'L') || '4';
-    $('pupilRight').value = button.dataset.right || extractPupil(button.textContent, 'R') || '4';
-    pupilModal.classList.add('open');
-  }
-
-  // ---------- Observation row construction ----------
-  function textCell(row, name, value = '', type = 'text') {
-    const td = row.insertCell();
-    if (type === 'time') {
-      const input = document.createElement('input');
-      input.type = 'time'; input.dataset.col = name; input.value = value;
-      td.appendChild(input);
-    } else {
-      const textarea = document.createElement('textarea');
-      textarea.dataset.col = name; textarea.value = value;
-      textarea.addEventListener('input', () => {
-        if (typeof grow === 'function') grow(textarea);
-      });
-      td.appendChild(textarea);
-      if (typeof grow === 'function') grow(textarea);
+  async function playTwice() {
+    playCount = 0;
+    starting = true;
+    beacon.classList.add('active');
+    stop.classList.remove('hidden');
+    status.textContent = 'Playing New Incident audio (1 of 2)';
+    try {
+      audio.currentTime = 0;
+      await audio.play();
+    } catch (error) {
+      stopEffects('Audio unavailable. Add “New Incident.mp3” to the assets folder.');
     }
   }
-  function controlCell(row, className, value, handler) {
-    const td = row.insertCell();
-    const button = document.createElement('button');
-    button.type = 'button'; button.className = `table-button ${className}`;
-    button.textContent = value ?? '-'; button.addEventListener('click', () => handler(button));
-    td.appendChild(button); return button;
-  }
-  function deleteCell(row) {
-    const td = row.insertCell();
-    const button = document.createElement('button');
-    button.type = 'button'; button.className = 'row-delete'; button.textContent = '×';
-    button.onclick = () => { row.remove(); if (typeof saveDraft === 'function') saveDraft(); };
-    td.appendChild(button);
-  }
 
-  // Each calculator captures a unique local button variable. This prevents all results going to NEWS2.
-  window.addObs = function addObservationRow(data = {}) {
-    const row = obsTable.tBodies[0].insertRow();
-    ['time','rr','spo2','bp','hr','temp','etco2','bm','ketones'].forEach(name =>
-      textCell(row, name, data[name] || '', name === 'time' ? 'time' : 'text'));
-
-    const avpuButton = controlCell(row, 'avpu-button', data.avpu || '-', button => {
-      if (typeof openPicker === 'function') {
-        openPicker('AVPU', ['A - Alert','C - New confusion','V - Voice','P - Pain','U - Unresponsive'], button, false);
+  audio.addEventListener('ended', async () => {
+    playCount += 1;
+    if (playCount < 2) {
+      status.textContent = 'Playing New Incident audio (2 of 2)';
+      audio.currentTime = 0;
+      try {
+        await audio.play();
+      } catch (error) {
+        stopEffects('The second playback was blocked by the browser.');
       }
-    });
-
-    const pupilButton = controlCell(row, 'pupil-button', data.pupils || '4L 4R', openPupils);
-    pupilButton.dataset.left = String(data.pupilLeft ?? extractPupil(data.pupils, 'L') ?? 4);
-    pupilButton.dataset.right = String(data.pupilRight ?? extractPupil(data.pupils, 'R') ?? 4);
-    pupilButton.dataset.values = JSON.stringify([`${pupilButton.dataset.left}L`, `${pupilButton.dataset.right}R`]);
-    pupilButton.textContent = `${pupilButton.dataset.left}L ${pupilButton.dataset.right}R`;
-
-    const gcsButton = controlCell(row, 'gcs-button', data.gcs || '-', button => {
-      window.activeGcs = button;
-      if (typeof activeGcs !== 'undefined') activeGcs = button;
-      $('gcsModal')?.classList.add('open');
-      if (typeof refreshGcs === 'function') refreshGcs();
-    });
-
-    const newsButton = controlCell(row, 'news-button', data.news2 ?? '-', button => {
-      window.activeNews = button;
-      if (typeof activeNews !== 'undefined') activeNews = button;
-      if (typeof newsSelections !== 'undefined') newsSelections = {};
-      document.querySelectorAll('#newsTable td.selected').forEach(cell => cell.classList.remove('selected'));
-      $('newsModal')?.classList.add('open');
-      if (typeof refreshNews === 'function') refreshNews();
-    });
-    if (data.news2 !== undefined && data.news2 !== '-' && typeof paintNews === 'function') {
-      paintNews(newsButton, Number(data.news2), Boolean(data.newsRed));
+    } else {
+      stopEffects('Audio complete');
     }
-    deleteCell(row);
-    return {row, avpuButton, pupilButton, gcsButton, newsButton};
-  };
+  });
 
-  function readExisting(row) {
-    const data = {};
-    row.querySelectorAll('[data-col]').forEach(el => data[el.dataset.col] = el.value);
-    const avpu = row.querySelector('.avpu-button');
-    const pupil = row.querySelector('.pupil-button');
-    const gcs = row.querySelector('.gcs-button');
-    const news = row.querySelector('.news-button');
-    data.avpu = avpu?.textContent || '-';
-    data.pupils = pupil?.textContent || '4L 4R';
-    data.pupilLeft = pupil?.dataset.left || extractPupil(data.pupils, 'L') || 4;
-    data.pupilRight = pupil?.dataset.right || extractPupil(data.pupils, 'R') || 4;
-    data.gcs = gcs?.textContent || '-';
-    data.news2 = news?.textContent || '-';
-    data.newsRed = news?.dataset.redScore === 'true';
-    return data;
-  }
+  audio.addEventListener('error', () => {
+    if (starting) stopEffects('Audio unavailable. Add “New Incident.mp3” to the assets folder.');
+  });
 
-  const existing = [...obsTable.tBodies[0].rows].map(readExisting);
-  obsTable.tBodies[0].innerHTML = '';
-  (existing.length ? existing : [{}]).forEach(window.addObs);
-  const addButton = $('addObs');
-  if (addButton) addButton.onclick = () => window.addObs({});
+  begin.addEventListener('click', () => {
+    if (typeof showPage === 'function') showPage('incident');
+    screen.classList.add('dismissed');
+    // The click is a direct user gesture, allowing browser audio playback.
+    playTwice();
+  });
 
-  console.info('PRF v10 observation and theme hotfix loaded');
+  notYet.addEventListener('click', () => {
+    status.textContent = 'The form remains locked until Yes is selected.';
+  });
+
+  stop.addEventListener('click', () => stopEffects('Audio stopped'));
 })();
