@@ -101,3 +101,196 @@ $('exportJson').onclick=()=>{const a=document.createElement('a');a.href=URL.crea
 restoreClinicians();try{const current=localStorage.getItem('prf_current');if(current)populate(JSON.parse(current));}catch{}
 if(!$('obsTable').tBodies[0].rows.length)addObs();if(!$('interventionsTable').tBodies[0].rows.length)addTableRow('interventions');if(!$('drugsTable').tBodies[0].rows.length)addTableRow('drugs');if(!$('alsTable').tBodies[0].rows.length)addTableRow('als');
 const savedPriority=localStorage.getItem('prf_priority');if(savedPriority)[...document.querySelectorAll('.priority-option')].find(b=>b.textContent===savedPriority)?.classList.add('selected');const savedBpm=localStorage.getItem('prf_metronome_bpm');if(savedBpm)$('metronomeRate').value=savedBpm;const savedTimer=Number(localStorage.getItem('prf_cpr_timer_start'));if(savedTimer)startTimer(savedTimer,false);showPage(localStorage.getItem('prf_page')||'incident');updatePrimary();updateAlert();growAll();
+'use strict';
+/* PRF v10 consolidated fix: observation calculators + light/dark selector.
+   Load AFTER app.js with: <script src="prf-v10-hotfix.js" defer></script> */
+(() => {
+  const $ = id => document.getElementById(id);
+  const obsTable = $('obsTable');
+  if (!obsTable) {
+    console.error('PRF v10: obsTable not found');
+    return;
+  }
+
+  // ---------- Light / dark mode ----------
+  const exportButton = $('exportJson');
+  const themeButton = document.createElement('button');
+  themeButton.id = 'themeToggle';
+  themeButton.type = 'button';
+  themeButton.textContent = 'Dark mode';
+  themeButton.title = 'Switch between light and dark mode';
+  if (exportButton) exportButton.insertAdjacentElement('afterend', themeButton);
+  else document.body.appendChild(themeButton);
+
+  const themeStyle = document.createElement('style');
+  themeStyle.textContent = `
+    body.dark-mode{--pale:#111923;--line:#43505e;background:#080c11;color:#f4f7fa}
+    body.dark-mode .topbar,body.dark-mode nav,body.dark-mode .sheet{background:#0f1720;color:#f4f7fa}
+    body.dark-mode .casebar{background:#17293a;color:#8ac7ff}
+    body.dark-mode .field,body.dark-mode table,body.dark-mode .upload-card,
+    body.dark-mode .trauma-step,body.dark-mode .check-list label{background:#111923;color:#fff}
+    body.dark-mode input,body.dark-mode textarea,body.dark-mode select{color:#fff;background:transparent}
+    body.dark-mode .dialog:not(.dark){background:#111923;color:#fff}
+    body.dark-mode .news-score-0{background:#26313c;color:#fff}
+    body.dark-mode .news-score-1{background:#4b4027;color:#fff}
+    body.dark-mode .news-score-2{background:#5d4521;color:#fff}
+    body.dark-mode .news-score-3{background:#5c2930;color:#fff}
+    #themeToggle{padding:10px;background:#303943;color:#fff;border:0;border-radius:7px}
+    .pupil-button{white-space:nowrap;max-width:92px;min-width:62px;padding:5px 2px;
+      font-size:clamp(9px,1.4vw,13px);overflow:hidden;text-overflow:clip}
+    #pupilPairModal select{width:100%;padding:9px;border:1px solid #9eb1bd;border-radius:6px}
+  `;
+  document.head.appendChild(themeStyle);
+
+  function applyTheme(mode) {
+    const dark = mode === 'dark';
+    document.body.classList.toggle('dark-mode', dark);
+    themeButton.textContent = dark ? 'Light mode' : 'Dark mode';
+    localStorage.setItem('prf_theme', dark ? 'dark' : 'light');
+  }
+  themeButton.onclick = () => applyTheme(document.body.classList.contains('dark-mode') ? 'light' : 'dark');
+  applyTheme(localStorage.getItem('prf_theme') || 'light');
+
+  // ---------- Dedicated paired pupil selector ----------
+  const pupilModal = document.createElement('div');
+  pupilModal.id = 'pupilPairModal';
+  pupilModal.className = 'modal';
+  const values = Array.from({length: 11}, (_, n) => `<option value="${n}">${n} mm</option>`).join('');
+  pupilModal.innerHTML = `
+    <div class="dialog">
+      <button type="button" class="modal-x" id="pupilPairClose">×</button>
+      <h2>Pupil size</h2>
+      <div class="form-grid">
+        <div class="field"><label for="pupilLeft">Left pupil</label><select id="pupilLeft">${values}</select></div>
+        <div class="field"><label for="pupilRight">Right pupil</label><select id="pupilRight">${values}</select></div>
+      </div>
+      <div class="actions">
+        <button type="button" id="pupilPairDone">Done</button>
+        <button type="button" id="pupilPairCancel">Cancel</button>
+      </div>
+    </div>`;
+  document.body.appendChild(pupilModal);
+  let activePupilButton = null;
+  const closePupils = () => pupilModal.classList.remove('open');
+  $('pupilPairClose').onclick = closePupils;
+  $('pupilPairCancel').onclick = closePupils;
+  $('pupilPairDone').onclick = () => {
+    if (!activePupilButton) return closePupils();
+    const left = $('pupilLeft').value;
+    const right = $('pupilRight').value;
+    activePupilButton.dataset.left = left;
+    activePupilButton.dataset.right = right;
+    activePupilButton.dataset.values = JSON.stringify([`${left}L`, `${right}R`]);
+    activePupilButton.textContent = `${left}L ${right}R`;
+    activePupilButton.title = `Left pupil ${left} mm; right pupil ${right} mm`;
+    closePupils();
+    if (typeof saveDraft === 'function') saveDraft();
+  };
+  const extractPupil = (text, side) => {
+    const match = String(text || '').match(new RegExp('(10|[0-9])\\s*' + side, 'i'));
+    return match ? match[1] : null;
+  };
+  function openPupils(button) {
+    activePupilButton = button;
+    $('pupilLeft').value = button.dataset.left || extractPupil(button.textContent, 'L') || '4';
+    $('pupilRight').value = button.dataset.right || extractPupil(button.textContent, 'R') || '4';
+    pupilModal.classList.add('open');
+  }
+
+  // ---------- Observation row construction ----------
+  function textCell(row, name, value = '', type = 'text') {
+    const td = row.insertCell();
+    if (type === 'time') {
+      const input = document.createElement('input');
+      input.type = 'time'; input.dataset.col = name; input.value = value;
+      td.appendChild(input);
+    } else {
+      const textarea = document.createElement('textarea');
+      textarea.dataset.col = name; textarea.value = value;
+      textarea.addEventListener('input', () => {
+        if (typeof grow === 'function') grow(textarea);
+      });
+      td.appendChild(textarea);
+      if (typeof grow === 'function') grow(textarea);
+    }
+  }
+  function controlCell(row, className, value, handler) {
+    const td = row.insertCell();
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = `table-button ${className}`;
+    button.textContent = value ?? '-'; button.addEventListener('click', () => handler(button));
+    td.appendChild(button); return button;
+  }
+  function deleteCell(row) {
+    const td = row.insertCell();
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'row-delete'; button.textContent = '×';
+    button.onclick = () => { row.remove(); if (typeof saveDraft === 'function') saveDraft(); };
+    td.appendChild(button);
+  }
+
+  // Each calculator captures a unique local button variable. This prevents all results going to NEWS2.
+  window.addObs = function addObservationRow(data = {}) {
+    const row = obsTable.tBodies[0].insertRow();
+    ['time','rr','spo2','bp','hr','temp','etco2','bm','ketones'].forEach(name =>
+      textCell(row, name, data[name] || '', name === 'time' ? 'time' : 'text'));
+
+    const avpuButton = controlCell(row, 'avpu-button', data.avpu || '-', button => {
+      if (typeof openPicker === 'function') {
+        openPicker('AVPU', ['A - Alert','C - New confusion','V - Voice','P - Pain','U - Unresponsive'], button, false);
+      }
+    });
+
+    const pupilButton = controlCell(row, 'pupil-button', data.pupils || '4L 4R', openPupils);
+    pupilButton.dataset.left = String(data.pupilLeft ?? extractPupil(data.pupils, 'L') ?? 4);
+    pupilButton.dataset.right = String(data.pupilRight ?? extractPupil(data.pupils, 'R') ?? 4);
+    pupilButton.dataset.values = JSON.stringify([`${pupilButton.dataset.left}L`, `${pupilButton.dataset.right}R`]);
+    pupilButton.textContent = `${pupilButton.dataset.left}L ${pupilButton.dataset.right}R`;
+
+    const gcsButton = controlCell(row, 'gcs-button', data.gcs || '-', button => {
+      window.activeGcs = button;
+      if (typeof activeGcs !== 'undefined') activeGcs = button;
+      $('gcsModal')?.classList.add('open');
+      if (typeof refreshGcs === 'function') refreshGcs();
+    });
+
+    const newsButton = controlCell(row, 'news-button', data.news2 ?? '-', button => {
+      window.activeNews = button;
+      if (typeof activeNews !== 'undefined') activeNews = button;
+      if (typeof newsSelections !== 'undefined') newsSelections = {};
+      document.querySelectorAll('#newsTable td.selected').forEach(cell => cell.classList.remove('selected'));
+      $('newsModal')?.classList.add('open');
+      if (typeof refreshNews === 'function') refreshNews();
+    });
+    if (data.news2 !== undefined && data.news2 !== '-' && typeof paintNews === 'function') {
+      paintNews(newsButton, Number(data.news2), Boolean(data.newsRed));
+    }
+    deleteCell(row);
+    return {row, avpuButton, pupilButton, gcsButton, newsButton};
+  };
+
+  function readExisting(row) {
+    const data = {};
+    row.querySelectorAll('[data-col]').forEach(el => data[el.dataset.col] = el.value);
+    const avpu = row.querySelector('.avpu-button');
+    const pupil = row.querySelector('.pupil-button');
+    const gcs = row.querySelector('.gcs-button');
+    const news = row.querySelector('.news-button');
+    data.avpu = avpu?.textContent || '-';
+    data.pupils = pupil?.textContent || '4L 4R';
+    data.pupilLeft = pupil?.dataset.left || extractPupil(data.pupils, 'L') || 4;
+    data.pupilRight = pupil?.dataset.right || extractPupil(data.pupils, 'R') || 4;
+    data.gcs = gcs?.textContent || '-';
+    data.news2 = news?.textContent || '-';
+    data.newsRed = news?.dataset.redScore === 'true';
+    return data;
+  }
+
+  const existing = [...obsTable.tBodies[0].rows].map(readExisting);
+  obsTable.tBodies[0].innerHTML = '';
+  (existing.length ? existing : [{}]).forEach(window.addObs);
+  const addButton = $('addObs');
+  if (addButton) addButton.onclick = () => window.addObs({});
+
+  console.info('PRF v10 observation and theme hotfix loaded');
+})();
