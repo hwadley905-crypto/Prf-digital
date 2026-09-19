@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Practice PRF v24.1.4</title>
+  <link rel="stylesheet" href="styles.css?v=24.1.4">
+  <script src="app.js?v=24.1.4" defer></script>
+</head>
+<body data-app-version="24.1.4">
+<div id="startupGate" class="startup-gate">
+  <div id="redGlow" class="emergency-glow emergency-glow-red"></div>
+  <div id="blueGlow" class="emergency-glow emergency-glow-blue"></div>
+  <div class="startup-panel">
+    <div id="readyPanel">
+      <h1>Ready to begin?</h1>
+      <p>Select Yes to continue.</p>
+      <div class="startup-buttons"><button id="readyYes" type="button">Yes</button><button id="readyNo" type="button">Not yet</button></div>
+    </div>
+    <div id="loadingPanel" hidden>
+      <h1>Loading</h1>
+      <div class="loading-line"><span></span></div>
+      <p>Choose how to begin. The red and blue lights and New Incident audio remain active until a selection is made.</p>
+      <div class="startup-buttons vertical"><button id="startupNewCase" type="button">Create new case</button><button id="startupOpenJson" type="button">Use previous JSON file</button></div>
+      <button id="startupStopEffects" class="stop-effects" type="button">Stop audio and lights</button>
+      <p id="startupMessage" class="startup-message"></p>
+    </div>
+  </div>
+  <audio id="newIncidentAudio" src="assets/New%20Incident.mp3" preload="auto" loop></audio>
+</div>
+
+<header class="topbar">
+  <button id="alertBanner" class="alert-banner">No alerts</button>
+  <div class="quick-actions quick-actions-theme">
+    <button id="startCpr">Start CPR</button>
+    <button data-page="consent">Consent / Capacity</button>
+    <button id="themeToggle" class="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to dark mode">Dark mode</button>
+  </div>
+  <div class="casebar"><strong id="pageTitle">Incident</strong><small id="versionBadge" class="version-badge">Loading…</small><span id="caseId"></span></div>
+</header>
+<div class="app-layout">
+  <nav id="nav"></nav>
+  <main>
+    <section id="incident" class="page active"><div class="sheet"><h1>Incident</h1><h2>Priority</h2><div id="priorityGrid" class="priority-grid"></div><div id="incidentGrid" class="form-grid"></div><div class="actions"><button id="saveCase">Save Case</button><button id="openCase">Open Case</button><button id="timings">Timings</button><button id="printPdf">Print / PDF</button><button id="exportJson">Export JSON</button><button id="systemCheck" type="button">System check</button></div></div></section>
+    <section id="patient" class="page"><div class="sheet"><h1>Patient</h1><div id="patientGrid" class="form-grid"></div><h2>Clinical Frailty Scale</h2><img class="reference-image" src="assets/clinical-frailty-scale.jpg" alt="Clinical Frailty Scale"><div class="field"><label>Frailty score and notes</label><textarea data-key="frailty_notes"></textarea></div></div></section>
+    <section id="primary" class="page"><div class="sheet"><h1>Primary Survey</h1><div id="primaryRows" class="primary-rows"></div></div></section>
+    <section id="secondary" class="page"><div class="sheet"><h1>Secondary Survey</h1><div id="secondaryGrid" class="form-grid"></div><div class="upload-card"><h2>ECGs</h2><input id="ecgUpload" type="file" accept="image/*,.pdf" multiple><button id="showPpci">Display PPCI criteria</button><div id="ecgPreview" class="preview"></div></div><div class="upload-card"><h2>Injury images / files</h2><input id="injuryUpload" type="file" accept="image/*,.pdf" multiple><div id="injuryPreview" class="preview"></div></div></div></section>
+    <section id="history" class="page"><div class="sheet"><div class="section-title-row"><h1>History</h1><button id="openGpHistory" class="gp-history-button" type="button">GP History</button></div><div class="upload-card history-upload-card"><h2>Images and supporting files</h2><p>Take a photo, insert an existing image, or attach a supporting file.</p><div class="history-upload-actions"><label class="file-action-button">Take photo<input id="historyCameraUpload" type="file" accept="image/*" capture="environment"></label><label class="file-action-button">Insert image<input id="historyImageUpload" type="file" accept="image/*" multiple></label><label class="file-action-button">Insert file<input id="historyFileUpload" type="file" multiple></label></div><div id="historyPreview" class="preview"></div></div><div id="historyGrid" class="form-grid history-grid"></div></div></section>
+    <section id="observations" class="page"><div class="sheet"><h1>Observations</h1><div class="table-scroll"><table id="obsTable"><thead><tr><th>Time</th><th>RR</th><th>SpO2</th><th>BP</th><th>HR</th><th>Temp</th><th>ETCO2</th><th>BM</th><th>Ketones</th><th>AVPU</th><th>Pupils</th><th>GCS</th><th>NEWS2</th><th></th></tr></thead><tbody></tbody></table></div><button id="addObs">Add observation</button><div id="sepsisToolPanel" class="sepsis-tool-panel" hidden><div class="sepsis-panel-header"><h2>NEWS2 escalation support</h2><button id="closeSepsisTool" type="button" aria-label="Hide screening tool">×</button></div><p>A NEWS2 score of 5 or more has been recorded. Review the patient clinically and consider whether the sepsis screening tool is relevant.</p><img src="assets/adult-sepsis-screening-tool.jpg" alt="Adult Sepsis Screening Tool"></div></div></section>
+    <section id="consent" class="page"><div class="sheet"><h1>Consent / Capacity</h1><div id="consentChecks" class="check-list"></div><div class="field"><label>Assessment narrative</label><textarea data-key="consent_narrative"></textarea></div></div></section>
+    <section id="trauma" class="page"><div class="sheet trauma-sheet"><h1>Trauma</h1><section id="traumaCommentaryPanel" class="trauma-commentary-panel"><div class="field trauma-commentary-field"><label>Trauma commentary</label><textarea data-key="trauma_narrative" placeholder="Document mechanism, examination findings, decision-making, referrals and destination rationale."></textarea></div></section><div class="trauma-columns"><section id="standardTraumaPanel" class="trauma-tool-panel"><h2>Standard Trauma Tool</h2><div id="standardTraumaTool"></div></section><section id="silverTraumaPanel" class="trauma-tool-panel silver-tool-panel"><h2>Silver Trauma Tool</h2><div id="silverTraumaTool"></div></section></div></div></section>
+    <section id="interventions" class="page"><div class="sheet"><h1>Interventions</h1><div class="table-scroll"><table id="interventionsTable"><thead><tr><th>Time</th><th>Type / pain</th><th>Location</th><th>Outcome</th><th>Clinician</th><th>Reason</th><th></th></tr></thead><tbody></tbody></table></div><button id="addIntervention">Add intervention</button></div></section>
+    <section id="drugs" class="page"><div class="sheet"><h1>Drugs</h1><div class="table-scroll"><table id="drugsTable"><thead><tr><th>Time</th><th>Drug</th><th>Dose</th><th>Route</th><th>Location</th><th>Outcome</th><th>Reaction</th><th>Clinician</th><th></th></tr></thead><tbody></tbody></table></div><button id="addDrug">Add drug</button></div></section>
+    <section id="als" class="page"><div class="sheet"><div class="section-title-row"><h1>ALS Event Record</h1><button id="showAlsGuidelines" class="guideline-button" type="button">ALS Guidelines</button></div><div class="field"><label>CPR started</label><input id="cprStarted" data-key="cpr_started" type="time"></div><div class="table-scroll"><table id="alsTable"><thead><tr><th>Time</th><th>Event / rhythm</th><th>Shock</th><th>Drug / dose</th><th>Clinician</th><th></th></tr></thead><tbody></tbody></table></div><button id="addAls">Add ALS event</button></div></section>
+    <section id="outcome" class="page"><div class="sheet"><h1>Outcome</h1><div id="outcomeGrid" class="form-grid"></div></div></section>
+    <section id="signoff" class="page"><div class="sheet"><h1>Sign Off</h1><p>At least two clinician sign-offs are provided. Add or remove additional clinicians as required.</p><div id="clinicianSignoffs"></div><div class="signoff-actions"><button id="addClinician" type="button">Add clinician</button><button id="exitCase" class="exit-case-button" type="button">Exit case</button></div></div></section>
+  </main>
+</div>
+<div id="cprTimer" class="cpr-timer hidden" aria-live="polite">
+  <button id="closeTimer" class="timer-stop" title="Stop CPR timer and metronome" aria-label="Stop CPR timer and metronome">×</button>
+  <div class="timer-heading"><strong>CPR</strong><span id="timerValue">00:00:00</span></div>
+  <label class="tempo-control" for="metronomeRate">Metronome
+    <select id="metronomeRate" aria-label="Metronome rate in beats per minute">
+      <option>100</option><option>105</option><option>110</option><option>115</option><option selected>120</option><option>125</option><option>130</option><option>135</option><option>140</option>
+    </select> BPM
+  </label>
+  <button id="metronomeToggle" class="metronome-toggle" type="button">Pause sound</button>
+</div>
+<div id="timingsModal" class="modal"><div class="dialog"><button class="modal-x" data-close="timingsModal">×</button><h2>Timings</h2><div id="timingsGrid" class="form-grid"></div><button id="timingsDone">Done</button></div></div>
+<div id="pickerModal" class="modal"><div class="dialog"><button class="modal-x" data-close="pickerModal">×</button><h2 id="pickerTitle">Select</h2><div id="pickerChoices" class="choice-grid"></div><button data-close="pickerModal">Cancel</button></div></div>
+<div id="gcsModal" class="modal"><div class="dialog calculator dark"><button class="modal-x" data-close="gcsModal">×</button><h2>GCS Calculator</h2><div id="gcsRows"></div><h2>Total GCS: <span id="gcsTotal">15</span></h2><button id="gcsDone">Done</button><button data-close="gcsModal">Cancel</button></div></div>
+<div id="newsModal" class="modal"><div class="dialog calculator"><button class="modal-x" data-close="newsModal">×</button><h2>NEWS2 Score Entry</h2><div class="table-scroll"><table id="newsTable"><thead><tr><th>Parameter</th><th>3</th><th>2</th><th>1</th><th>0</th><th>1</th><th>2</th><th>3</th></tr></thead><tbody></tbody></table></div><h2>NEWS2: <span id="newsTotal">0</span></h2><button id="newsDone">Done</button><button data-close="newsModal">Cancel</button></div></div>
+<div id="alsGuidelinesModal" class="modal"><div class="dialog document-dialog"><button class="modal-x" data-close="alsGuidelinesModal">×</button><h2>Adult ALS Algorithm 2025</h2><p class="guideline-source-note">Official Resuscitation Council UK document. Internet access is required.</p><iframe id="alsGuidelinesFrame" title="Resuscitation Council UK Adult ALS Algorithm 2025" loading="lazy" data-src="https://www.resus.org.uk/sites/default/files/2025-10/Adult%20ALS%20algorithm%202025.pdf"></iframe><div class="als-fallback"><a class="open-document" href="https://www.resus.org.uk/sites/default/files/2025-10/Adult%20ALS%20algorithm%202025.pdf" target="_blank" rel="noopener noreferrer">Open official Adult ALS algorithm PDF</a></div></div></div>
+<div id="ppciModal" class="modal"><div class="dialog image-dialog"><button class="modal-x" data-close="ppciModal">×</button><img src="assets/ppci-criteria.jpg" alt="PPCI criteria"></div></div>
+<div id="exitCaseModal" class="modal"><div class="dialog exit-dialog"><button class="modal-x" data-close="exitCaseModal" type="button">×</button><h2>Exit this case?</h2><p>Choose whether to save the current case before returning to the “Ready to begin?” home screen.</p><p id="exitCaseStatus" class="exit-case-status" aria-live="polite"></p><div class="exit-options"><button id="exitSave" type="button">Save and exit</button><button id="exitWithoutSave" type="button">Exit without saving</button><button data-close="exitCaseModal" type="button">Continue editing</button></div></div></div>
+<div id="healthModal" class="modal"><div class="dialog health-dialog"><button class="modal-x" data-close="healthModal" type="button">×</button><h2>Application system check</h2><div id="healthResults"></div><button data-close="healthModal" type="button">Close</button></div></div>
+<input id="caseFile" type="file" accept=".json,application/json" hidden>
+<div id="gpConsentModal" class="modal"><div class="dialog gp-consent-dialog"><button class="modal-x" data-close="gpConsentModal" type="button">×</button><h2>GP History access</h2><p>Does Patient give consent to access records, or under best wishes access?</p><div class="gp-consent-actions"><button id="gpConsentYes" type="button">Yes</button><button id="gpConsentNo" type="button">No</button></div></div></div>
+<div id="gpLoadingOverlay" class="gp-loading-overlay" hidden><div class="gp-loading-card"><div class="gp-spinner" aria-hidden="true"></div><h2>Loading GP History</h2><p>Retrieving record view…</p></div></div>
+<section id="gpHistoryPage" class="gp-history-page" hidden><header class="gp-history-header"><div><h1>GP History</h1><p>Record view</p></div><button id="closeGpHistory" class="gp-history-close" type="button" aria-label="Close GP History">×</button></header><main class="gp-history-main"><div class="gp-history-actions"><span id="gpEditStatus" class="gp-edit-status">Read only</span><button id="unlockGpHistory" type="button">Enable editing</button><button id="lockGpHistory" type="button" hidden>Lock editing</button><button id="addGpHistoryRow" type="button" disabled>Add new row</button></div><div class="gp-history-scroll"><table id="gpHistoryTable"><thead><tr><th>Date</th><th>Context</th><th>Information</th><th>Clinician</th><th>Action</th></tr></thead><tbody></tbody></table></div><p id="gpHistoryMessage" class="gp-history-message" aria-live="polite"></p></main></section>
+<div id="pupil23Modal" class="v23-overlay" hidden><div class="v23-dialog"><button id="pupil23Close" class="v23-close" type="button">×</button><h2>Pupil measurement</h2><div class="v23-pupil-grid"><label>Left pupil (L)<select id="pupil23Left"></select></label><label>Right pupil (R)<select id="pupil23Right"></select></label></div><div class="v23-actions"><button id="pupil23Done" type="button">Done</button><button id="pupil23Cancel" type="button">Cancel</button></div></div></div>
+<div id="news23Overlay" class="v23-overlay" hidden><div class="v23-dialog v23-news-dialog"><button id="news23Close" class="v23-close" type="button">×</button><h2>NEWS2 Scoring System</h2><p>Select one value in each physiological parameter row.</p><div id="news23Rows"></div><div class="v23-total">NEWS2: <strong id="news23Total">0</strong></div><div class="v23-actions"><button id="news23Done" type="button">Done</button><button id="news23Cancel" type="button">Cancel</button></div></div></div>
+<div id="textEditorOverlay" class="text-editor-overlay" hidden><div class="text-editor-shell"><button id="textEditorClose" class="text-editor-close" type="button" aria-label="Close expanded text box">×</button><div id="textEditorLabel" class="text-editor-label">Expanded text box</div><div id="textEditorHost" class="text-editor-host"></div></div></div>
+</body>
+</html>
